@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer components {
+  .url-part {
+    @apply px-1 py-0.5 rounded;
+  }
+
+  .url-scheme {
+    @apply url-part bg-blue-100 dark:bg-blue-900;
+  }
+
+  .url-domain {
+    @apply url-part bg-green-100 dark:bg-green-900;
+  }
+
+  .url-port {
+    @apply url-part bg-yellow-100 dark:bg-yellow-900;
+  }
+
+  .url-path {
+    @apply url-part bg-purple-100 dark:bg-purple-900;
+  }
+
+  .url-query {
+    @apply url-part bg-red-100 dark:bg-red-900;
+  }
+
+  .url-fragment {
+    @apply url-part bg-orange-100 dark:bg-orange-900;
+  }
+
+  .variable-pill {
+    @apply px-2 py-1 rounded-full font-medium text-white;
+  }
+}
