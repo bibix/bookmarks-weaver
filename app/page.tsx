@@ -84,76 +84,100 @@ export default function Home() {
   ];
 
   return (
-    <div className={`min-h-screen p-4 ${isDarkMode ? 'dark' : ''}`}>
-      <header className="w-full max-w-4xl mx-auto mb-8 flex justify-between items-center">
-        <h1 className="text-3xl font-bold">{t('title')}</h1>
+    <div className={`min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-6 ${isDarkMode ? 'dark' : ''}`}>
+      <div className="max-w-6xl mx-auto">
+        <header className="bg-white dark:bg-gray-800 rounded-2xl shadow-soft p-6 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-3">
+            <div className="bg-primary-500 text-white p-2 rounded-xl">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+              </svg>
+            </div>
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600 dark:from-primary-400 dark:to-secondary-400">
+              {t('title')}
+            </h1>
+          </div>
 
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <label htmlFor="dark-mode-toggle" className="text-sm font-medium">
-              {t('darkMode')}
-            </label>
-            <button
-              id="dark-mode-toggle"
-              onClick={toggleDarkMode}
-              className={`w-12 h-6 rounded-full p-1 transition-colors ${
-                isDarkMode ? 'bg-blue-600' : 'bg-gray-300'
-              }`}
-              aria-pressed={isDarkMode}
-              aria-label="Toggle dark mode"
-            >
-              <div
-                className={`w-4 h-4 rounded-full bg-white transition-transform ${
-                  isDarkMode ? 'translate-x-6' : 'translate-x-0'
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 bg-gray-100 dark:bg-gray-700 p-2 rounded-xl">
+              <label htmlFor="dark-mode-toggle" className="text-sm font-medium">
+                {t('darkMode')}
+              </label>
+              <button
+                id="dark-mode-toggle"
+                onClick={toggleDarkMode}
+                className={`w-14 h-7 rounded-full p-1 transition-colors duration-300 ${
+                  isDarkMode ? 'bg-primary-600' : 'bg-gray-300'
                 }`}
+                aria-pressed={isDarkMode}
+                aria-label="Toggle dark mode"
+              >
+                <div
+                  className={`w-5 h-5 rounded-full bg-white shadow-md transition-transform duration-300 ${
+                    isDarkMode ? 'translate-x-7' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
+
+            <div className="flex items-center gap-3 bg-gray-100 dark:bg-gray-700 p-2 rounded-xl">
+              <label htmlFor="language-select" className="text-sm font-medium">
+                {t('language')}
+              </label>
+              <select
+                id="language-select"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200"
+                aria-label="Select language"
+              >
+                {languages.map((lang) => (
+                  <option key={lang.code} value={lang.code}>
+                    {lang.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </header>
+
+        <main className="space-y-8">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-soft p-6 transition-all duration-300 hover:shadow-soft-xl">
+            <UrlInput onUrlChange={handleUrlChange} />
+          </div>
+
+          {url && (
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-soft p-6 transition-all duration-300 hover:shadow-soft-xl">
+              <ParsedUrl
+                url={url}
+                onCreateVariable={handleCreateVariable}
               />
-            </button>
+            </div>
+          )}
+
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-soft p-6 transition-all duration-300 hover:shadow-soft-xl">
+            <VariableManager
+              onVariablesChange={handleVariablesChange}
+            />
           </div>
 
-          <div className="flex items-center gap-2">
-            <label htmlFor="language-select" className="text-sm font-medium">
-              {t('language')}
-            </label>
-            <select
-              id="language-select"
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              className="px-2 py-1 border border-gray-300 rounded-md"
-              aria-label="Select language"
-            >
-              {languages.map((lang) => (
-                <option key={lang.code} value={lang.code}>
-                  {lang.name}
-                </option>
-              ))}
-            </select>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-soft p-6 transition-all duration-300 hover:shadow-soft-xl">
+            <BookmarkGenerator
+              originalUrl={url}
+              variables={variables}
+            />
           </div>
-        </div>
-      </header>
+        </main>
 
-      <main className="w-full max-w-4xl mx-auto">
-        <UrlInput onUrlChange={handleUrlChange} />
-
-        {url && (
-          <ParsedUrl
-            url={url}
-            onCreateVariable={handleCreateVariable}
-          />
-        )}
-
-        <VariableManager
-          onVariablesChange={handleVariablesChange}
-        />
-
-        <BookmarkGenerator
-          originalUrl={url}
-          variables={variables}
-        />
-      </main>
-
-      <footer className="w-full max-w-4xl mx-auto mt-8 pt-4 border-t border-gray-200 text-center text-sm text-gray-500">
-        <p>Bookmarks Weaver - A bookmarks and URL generator</p>
-      </footer>
+        <footer className="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700 text-center">
+          <p className="text-gray-500 dark:text-gray-400">
+            Bookmarks Weaver - A bookmarks and URL generator
+          </p>
+          <div className="mt-2 text-sm text-gray-400 dark:text-gray-500">
+            Made with ❤️ for better bookmarking
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }

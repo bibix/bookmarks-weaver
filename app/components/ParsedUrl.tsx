@@ -100,95 +100,207 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto mb-8 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-      <h2 className="text-xl font-bold mb-4">Parsed URL</h2>
+    <div className="w-full">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary-500" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+          Parsed URL
+        </h2>
+        <div className="text-sm text-gray-500 dark:text-gray-400">
+          Click any part to create a variable
+        </div>
+      </div>
 
-      <div className="space-y-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="font-medium">Scheme:</span>
+      {/* Visual URL representation */}
+      <div className="mb-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-xl overflow-x-auto">
+        <div className="flex flex-wrap items-center gap-1 text-lg">
           <span
-            className="url-scheme cursor-pointer"
+            className="url-scheme cursor-pointer hover:scale-105 transition-transform duration-200 flex items-center"
             onClick={() => handleCreateVariable(parsedUrl.scheme, 'scheme')}
             title="Click to create a variable"
           >
             {parsedUrl.scheme}
           </span>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="font-medium">Domain:</span>
+          <span className="text-gray-400">://</span>
           <span
-            className="url-domain cursor-pointer"
+            className="url-domain cursor-pointer hover:scale-105 transition-transform duration-200"
             onClick={() => handleCreateVariable(parsedUrl.domain, 'domain')}
             title="Click to create a variable"
           >
             {parsedUrl.domain}
           </span>
-        </div>
-
-        {parsedUrl.port && (
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="font-medium">Port:</span>
+          {parsedUrl.port && (
+            <>
+              <span className="text-gray-400">:</span>
+              <span
+                className="url-port cursor-pointer hover:scale-105 transition-transform duration-200"
+                onClick={() => handleCreateVariable(parsedUrl.port, 'port')}
+                title="Click to create a variable"
+              >
+                {parsedUrl.port}
+              </span>
+            </>
+          )}
+          {parsedUrl.path && (
             <span
-              className="url-port cursor-pointer"
-              onClick={() => handleCreateVariable(parsedUrl.port, 'port')}
-              title="Click to create a variable"
-            >
-              {parsedUrl.port}
-            </span>
-          </div>
-        )}
-
-        {parsedUrl.path && (
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="font-medium">Path:</span>
-            <span
-              className="url-path cursor-pointer"
+              className="url-path cursor-pointer hover:scale-105 transition-transform duration-200"
               onClick={() => handleCreateVariable(parsedUrl.path, 'path')}
               title="Click to create a variable"
             >
               {parsedUrl.path}
             </span>
-          </div>
-        )}
-
-        {parsedUrl.queryParams.length > 0 && (
-          <div className="space-y-2">
-            <span className="font-medium">Query Parameters:</span>
-            <div className="pl-4 space-y-2">
+          )}
+          {parsedUrl.queryParams.length > 0 && (
+            <>
+              <span className="text-gray-400">?</span>
               {parsedUrl.queryParams.map((param, index) => (
-                <div key={index} className="flex flex-wrap items-center gap-2">
+                <React.Fragment key={index}>
+                  {index > 0 && <span className="text-gray-400">&</span>}
                   <span
-                    className="url-query cursor-pointer"
+                    className="url-query cursor-pointer hover:scale-105 transition-transform duration-200"
                     onClick={() => handleCreateVariable(param.key, 'query-key')}
                     title="Click to create a variable"
                   >
                     {param.key}
                   </span>
-                  <span>=</span>
+                  <span className="text-gray-400">=</span>
                   <span
-                    className="url-query cursor-pointer"
+                    className="url-query cursor-pointer hover:scale-105 transition-transform duration-200"
                     onClick={() => handleCreateVariable(param.value, 'query-value')}
                     title="Click to create a variable"
                   >
                     {param.value}
                   </span>
+                </React.Fragment>
+              ))}
+            </>
+          )}
+          {parsedUrl.fragment && (
+            <>
+              <span className="text-gray-400">#</span>
+              <span
+                className="url-fragment cursor-pointer hover:scale-105 transition-transform duration-200"
+                onClick={() => handleCreateVariable(parsedUrl.fragment, 'fragment')}
+                title="Click to create a variable"
+              >
+                {parsedUrl.fragment}
+              </span>
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* Detailed URL parts */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+          <h3 className="font-medium mb-3 text-gray-700 dark:text-gray-300">URL Components</h3>
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-20 text-sm text-gray-500 dark:text-gray-400">Scheme:</div>
+              <div
+                className="url-scheme cursor-pointer flex items-center gap-1 hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors duration-200 group"
+                onClick={() => handleCreateVariable(parsedUrl.scheme, 'scheme')}
+                title="Click to create a variable"
+              >
+                {parsedUrl.scheme}
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+                </svg>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-20 text-sm text-gray-500 dark:text-gray-400">Domain:</div>
+              <div
+                className="url-domain cursor-pointer flex items-center gap-1 hover:bg-green-200 dark:hover:bg-green-800 transition-colors duration-200 group"
+                onClick={() => handleCreateVariable(parsedUrl.domain, 'domain')}
+                title="Click to create a variable"
+              >
+                {parsedUrl.domain}
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+                </svg>
+              </div>
+            </div>
+            {parsedUrl.port && (
+              <div className="flex items-center gap-2">
+                <div className="w-20 text-sm text-gray-500 dark:text-gray-400">Port:</div>
+                <div
+                  className="url-port cursor-pointer flex items-center gap-1 hover:bg-yellow-200 dark:hover:bg-yellow-800 transition-colors duration-200 group"
+                  onClick={() => handleCreateVariable(parsedUrl.port, 'port')}
+                  title="Click to create a variable"
+                >
+                  {parsedUrl.port}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+                  </svg>
+                </div>
+              </div>
+            )}
+            {parsedUrl.path && (
+              <div className="flex items-center gap-2">
+                <div className="w-20 text-sm text-gray-500 dark:text-gray-400">Path:</div>
+                <div
+                  className="url-path cursor-pointer flex items-center gap-1 hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors duration-200 group"
+                  onClick={() => handleCreateVariable(parsedUrl.path, 'path')}
+                  title="Click to create a variable"
+                >
+                  {parsedUrl.path}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+                  </svg>
+                </div>
+              </div>
+            )}
+            {parsedUrl.fragment && (
+              <div className="flex items-center gap-2">
+                <div className="w-20 text-sm text-gray-500 dark:text-gray-400">Fragment:</div>
+                <div
+                  className="url-fragment cursor-pointer flex items-center gap-1 hover:bg-orange-200 dark:hover:bg-orange-800 transition-colors duration-200 group"
+                  onClick={() => handleCreateVariable(parsedUrl.fragment, 'fragment')}
+                  title="Click to create a variable"
+                >
+                  {parsedUrl.fragment}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+                  </svg>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {parsedUrl.queryParams.length > 0 && (
+          <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+            <h3 className="font-medium mb-3 text-gray-700 dark:text-gray-300">Query Parameters</h3>
+            <div className="space-y-3">
+              {parsedUrl.queryParams.map((param, index) => (
+                <div key={index} className="flex flex-wrap items-center gap-2 p-2 bg-white dark:bg-gray-800 rounded-lg">
+                  <div
+                    className="url-query cursor-pointer flex items-center gap-1 hover:bg-red-200 dark:hover:bg-red-800 transition-colors duration-200 group"
+                    onClick={() => handleCreateVariable(param.key, 'query-key')}
+                    title="Click to create a variable"
+                  >
+                    {param.key}
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+                    </svg>
+                  </div>
+                  <span className="text-gray-400">=</span>
+                  <div
+                    className="url-query cursor-pointer flex items-center gap-1 hover:bg-red-200 dark:hover:bg-red-800 transition-colors duration-200 group"
+                    onClick={() => handleCreateVariable(param.value, 'query-value')}
+                    title="Click to create a variable"
+                  >
+                    {param.value}
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+                    </svg>
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
-        )}
-
-        {parsedUrl.fragment && (
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="font-medium">Fragment:</span>
-            <span
-              className="url-fragment cursor-pointer"
-              onClick={() => handleCreateVariable(parsedUrl.fragment, 'fragment')}
-              title="Click to create a variable"
-            >
-              {parsedUrl.fragment}
-            </span>
           </div>
         )}
       </div>
