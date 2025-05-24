@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import UrlInput from './components/UrlInput';
-import ParsedUrl from './components/ParsedUrl';
-import VariableManager from './components/VariableManager';
-import BookmarkGenerator from './components/BookmarkGenerator';
+import UrlInput from '@/components/UrlInput';
+import ParsedUrl from '@/components/ParsedUrl';
+import VariableManager from '@/components/VariableManager';
+import BookmarkGenerator from '@/components/BookmarkGenerator';
 
 interface Variable {
   id: string;

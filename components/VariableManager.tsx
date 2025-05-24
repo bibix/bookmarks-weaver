@@ -236,7 +236,7 @@ export default function VariableManager({ onVariablesChange }: VariableManagerPr
                           className="w-full p-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
                           placeholder="Enter values (one per line)"
                           aria-label={`Values for ${variable.name} column 1`}
-                          rows="5"
+                          rows={5}
                         />
                       </div>
                       <div className="space-y-2">
@@ -245,7 +245,7 @@ export default function VariableManager({ onVariablesChange }: VariableManagerPr
                           className="w-full p-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
                           placeholder="Enter values (one per line)"
                           aria-label={`Values for ${variable.name} column 2`}
-                          rows="5"
+                          rows={5}
                         />
                       </div>
                     </div>
@@ -267,7 +267,7 @@ export default function VariableManager({ onVariablesChange }: VariableManagerPr
                           className="flex-1 px-3 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
                           placeholder="Enter value"
                           aria-label={`Value ${index + 1} for ${variable.name}`}
-                          rows="3"
+                          rows={3}
                         />
                         <button
                           onClick={() => removeValueFromVariable(variable.id, index)}
