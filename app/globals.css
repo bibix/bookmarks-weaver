@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "tailwindcss/theme";
+@import "tailwindcss/utilities";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -29,34 +31,34 @@ body {
 
 @layer components {
   .url-part {
-    @apply px-1 py-0.5 rounded;
+    @apply rounded py-0.5 px-1;
   }
 
   .url-scheme {
-    @apply url-part bg-blue-300 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
+    @apply rounded py-0.5 px-1 bg-blue-300 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
   }
 
   .url-domain {
-    @apply url-part bg-green-200 text-green-800 dark:bg-green-900 dark:text-green-200;
+    @apply rounded py-0.5 px-1 bg-green-200 text-green-800 dark:bg-green-900 dark:text-green-200;
   }
 
   .url-port {
-    @apply url-part bg-purple-200 text-purple-800 dark:bg-purple-900 dark:text-purple-200;
+    @apply rounded py-0.5 px-1 bg-purple-200 text-purple-800 dark:bg-purple-900 dark:text-purple-200;
   }
 
   .url-path {
-    @apply url-part bg-orange-200 text-orange-800 dark:bg-orange-900 dark:text-orange-200;
+    @apply rounded py-0.5 px-1 bg-orange-200 text-orange-800 dark:bg-orange-900 dark:text-orange-200;
   }
 
   .url-query {
-    @apply url-part bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200;
+    @apply rounded py-0.5 px-1 bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200;
   }
 
   .url-fragment {
-    @apply url-part bg-blue-200 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
+    @apply rounded py-0.5 px-1 bg-blue-200 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
   }
 
   .variable-pill {
-    @apply px-2 py-1 rounded-full font-medium text-white;
+    @apply rounded-full py-1 px-2 font-medium text-white;
   }
 }
