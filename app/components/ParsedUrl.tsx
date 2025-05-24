@@ -115,7 +115,7 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
 
       {/* Visual URL representation */}
       <div className="mb-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-xl overflow-x-auto">
-        <div className="flex flex-wrap items-center gap-1 text-lg">
+        <div className="flex flex-wrap items-center gap-2 text-lg">
           <span
             className="url-scheme cursor-pointer hover:scale-105 transition-transform duration-200 flex items-center"
             onClick={() => handleCreateVariable(parsedUrl.scheme, 'scheme')}

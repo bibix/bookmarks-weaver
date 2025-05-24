@@ -221,14 +221,41 @@ export default function VariableManager({ onVariablesChange }: VariableManagerPr
                     <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg text-gray-500 dark:text-gray-400">
                       No values yet. Add a value or paste multiple values.
                     </div>
+                  ) : variable.isTable ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                      <div className="space-y-2">
+                        <div className="font-medium text-gray-700 dark:text-gray-300">Column 1</div>
+                        <textarea
+                          value={variable.values.join('\n')}
+                          onChange={(e) => {
+                            const newValues = e.target.value.split('\n');
+                            setVariables(prev =>
+                              prev.map(v => v.id === variable.id ? { ...v, values: newValues } : v)
+                            );
+                          }}
+                          className="w-full p-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
+                          placeholder="Enter values (one per line)"
+                          aria-label={`Values for ${variable.name} column 1`}
+                          rows="5"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="font-medium text-gray-700 dark:text-gray-300">Column 2</div>
+                        <textarea
+                          className="w-full p-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
+                          placeholder="Enter values (one per line)"
+                          aria-label={`Values for ${variable.name} column 2`}
+                          rows="5"
+                        />
+                      </div>
+                    </div>
                   ) : (
                     variable.values.map((value, index) => (
                       <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-700 rounded-lg group">
                         <div className="text-gray-400 dark:text-gray-500 text-sm w-8 text-center">
                           {index + 1}
                         </div>
-                        <input
-                          type="text"
+                        <textarea
                           value={value}
                           onChange={(e) => {
                             const newValues = [...variable.values];
@@ -240,6 +267,7 @@ export default function VariableManager({ onVariablesChange }: VariableManagerPr
                           className="flex-1 px-3 py-2 border-2 border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
                           placeholder="Enter value"
                           aria-label={`Value ${index + 1} for ${variable.name}`}
+                          rows="3"
                         />
                         <button
                           onClick={() => removeValueFromVariable(variable.id, index)}

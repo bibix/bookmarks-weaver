@@ -32,27 +32,27 @@ body {
   }
 
   .url-scheme {
-    @apply url-part bg-blue-100 dark:bg-blue-900;
+    @apply url-part bg-blue-300 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
   }
 
   .url-domain {
-    @apply url-part bg-green-100 dark:bg-green-900;
+    @apply url-part bg-green-200 text-green-800 dark:bg-green-900 dark:text-green-200;
   }
 
   .url-port {
-    @apply url-part bg-yellow-100 dark:bg-yellow-900;
+    @apply url-part bg-purple-200 text-purple-800 dark:bg-purple-900 dark:text-purple-200;
   }
 
   .url-path {
-    @apply url-part bg-purple-100 dark:bg-purple-900;
+    @apply url-part bg-orange-200 text-orange-800 dark:bg-orange-900 dark:text-orange-200;
   }
 
   .url-query {
-    @apply url-part bg-red-100 dark:bg-red-900;
+    @apply url-part bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200;
   }
 
   .url-fragment {
-    @apply url-part bg-orange-100 dark:bg-orange-900;
+    @apply url-part bg-blue-200 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
   }
 
   .variable-pill {

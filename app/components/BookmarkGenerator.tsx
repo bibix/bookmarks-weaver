@@ -248,10 +248,10 @@ export default function BookmarkGenerator({ originalUrl, variables }: BookmarkGe
 
           <button
             onClick={downloadBookmarks}
-            className={`px-6 py-3 rounded-xl flex items-center gap-2 transition-all duration-300 ${
+            className={`px-6 py-2 rounded-md flex items-center gap-2 transition ${
               generatedUrls.length === 0
                 ? 'bg-gray-200 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400'
-                : 'bg-accent-500 text-white hover:bg-accent-600 shadow-md hover:shadow-lg transform hover:-translate-y-1'
+                : 'bg-teal-600 text-white hover:bg-teal-700'
             }`}
             disabled={generatedUrls.length === 0}
             aria-label="Download bookmarks file"
@@ -287,39 +287,28 @@ export default function BookmarkGenerator({ originalUrl, variables }: BookmarkGe
               <p className="text-sm text-gray-400 dark:text-gray-500">Add variables and values to generate URLs.</p>
             </div>
           ) : (
-            <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-2">
-              <ul className="max-h-96 overflow-y-auto divide-y divide-gray-200 dark:divide-gray-600">
-                {generatedUrls.map((url, index) => (
-                  <li key={index} className="p-3 hover:bg-white dark:hover:bg-gray-600 rounded-lg transition-colors duration-200">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 flex items-center justify-center bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 rounded-full text-sm font-medium">
-                        {index + 1}
-                      </div>
-                      <a
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 break-all transition-colors duration-200 flex-1"
-                      >
-                        {url}
-                      </a>
-                      <button
-                        onClick={() => {
-                          navigator.clipboard.writeText(url);
-                        }}
-                        className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 rounded-lg transition-colors duration-200"
-                        title="Copy URL"
-                        aria-label="Copy URL to clipboard"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                          <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
-                          <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
-                        </svg>
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
+              <div className="relative">
+                <textarea
+                  readOnly
+                  className="w-full h-64 p-4 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg font-mono text-sm overflow-y-auto"
+                  value={generatedUrls.join('\n')}
+                  aria-label="Generated URLs"
+                />
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(generatedUrls.join('\n'));
+                  }}
+                  className="absolute top-2 right-2 p-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-colors duration-200"
+                  title="Copy all URLs"
+                  aria-label="Copy all URLs to clipboard"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600 dark:text-gray-300" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                    <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+                  </svg>
+                </button>
+              </div>
             </div>
           )}
         </div>
