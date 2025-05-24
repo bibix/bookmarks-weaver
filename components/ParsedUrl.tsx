@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface ParsedUrlProps {
   url: string;
@@ -25,6 +25,13 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
     queryParams: [],
     fragment: ''
   });
+  const [selection, setSelection] = useState<{
+    text: string;
+    type: string;
+    x: number;
+    y: number;
+  } | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!url) return;
@@ -97,10 +104,48 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
     // Generate a default variable name based on the type
     const defaultName = `${type}${Math.floor(Math.random() * 1000)}`;
     onCreateVariable(defaultName, value, type);
+    // Clear selection after creating variable
+    setSelection(null);
   };
 
+  const handleTextSelection = (e: React.MouseEvent, type: string) => {
+    const selection = window.getSelection();
+    if (selection && selection.toString().trim()) {
+      const selectedText = selection.toString().trim();
+      const rect = selection.getRangeAt(0).getBoundingClientRect();
+
+      // Calculate position relative to the container
+      const containerRect = containerRef.current?.getBoundingClientRect();
+      if (containerRect) {
+        const x = rect.left - containerRect.left + rect.width / 2;
+        const y = rect.bottom - containerRect.top;
+
+        setSelection({
+          text: selectedText,
+          type,
+          x,
+          y
+        });
+      }
+    }
+  };
+
+  // Handle click outside to clear selection
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setSelection(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="w-full">
+    <div className="w-full" ref={containerRef}>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary-500" viewBox="0 0 20 20" fill="currentColor">
@@ -109,9 +154,30 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
           Parsed URL
         </h2>
         <div className="text-sm text-gray-500 dark:text-gray-400">
-          Click any part to create a variable
+          Click any part or select text to create a variable
         </div>
       </div>
+
+      {/* Selection popup */}
+      {selection && (
+        <div
+          className="absolute bg-white dark:bg-gray-800 shadow-lg rounded-lg p-2 z-10 transform -translate-x-1/2 flex items-center gap-2 border border-gray-200 dark:border-gray-700"
+          style={{
+            left: `${selection.x}px`,
+            top: `${selection.y + 10}px`
+          }}
+        >
+          <button
+            className="flex items-center gap-1 px-3 py-1 bg-primary-500 text-white rounded-md hover:bg-primary-600 transition-colors"
+            onClick={() => handleCreateVariable(selection.text, selection.type)}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+            </svg>
+            Create Variable
+          </button>
+        </div>
+      )}
 
       {/* Visual URL representation */}
       <div className="mb-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-xl overflow-x-auto">
@@ -119,7 +185,8 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
           <span
             className="url-scheme cursor-pointer hover:scale-105 transition-transform duration-200 flex items-center"
             onClick={() => handleCreateVariable(parsedUrl.scheme, 'scheme')}
-            title="Click to create a variable"
+            onMouseUp={(e) => handleTextSelection(e, 'scheme')}
+            title="Click to create a variable or select text"
           >
             {parsedUrl.scheme}
           </span>
@@ -127,7 +194,8 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
           <span
             className="url-domain cursor-pointer hover:scale-105 transition-transform duration-200"
             onClick={() => handleCreateVariable(parsedUrl.domain, 'domain')}
-            title="Click to create a variable"
+            onMouseUp={(e) => handleTextSelection(e, 'domain')}
+            title="Click to create a variable or select text"
           >
             {parsedUrl.domain}
           </span>
@@ -137,7 +205,8 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
               <span
                 className="url-port cursor-pointer hover:scale-105 transition-transform duration-200"
                 onClick={() => handleCreateVariable(parsedUrl.port, 'port')}
-                title="Click to create a variable"
+                onMouseUp={(e) => handleTextSelection(e, 'port')}
+                title="Click to create a variable or select text"
               >
                 {parsedUrl.port}
               </span>
@@ -147,7 +216,8 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
             <span
               className="url-path cursor-pointer hover:scale-105 transition-transform duration-200"
               onClick={() => handleCreateVariable(parsedUrl.path, 'path')}
-              title="Click to create a variable"
+              onMouseUp={(e) => handleTextSelection(e, 'path')}
+              title="Click to create a variable or select text"
             >
               {parsedUrl.path}
             </span>
@@ -161,7 +231,8 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
                   <span
                     className="url-query cursor-pointer hover:scale-105 transition-transform duration-200"
                     onClick={() => handleCreateVariable(param.key, 'query-key')}
-                    title="Click to create a variable"
+                    onMouseUp={(e) => handleTextSelection(e, 'query-key')}
+                    title="Click to create a variable or select text"
                   >
                     {param.key}
                   </span>
@@ -169,7 +240,8 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
                   <span
                     className="url-query cursor-pointer hover:scale-105 transition-transform duration-200"
                     onClick={() => handleCreateVariable(param.value, 'query-value')}
-                    title="Click to create a variable"
+                    onMouseUp={(e) => handleTextSelection(e, 'query-value')}
+                    title="Click to create a variable or select text"
                   >
                     {param.value}
                   </span>
@@ -183,7 +255,8 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
               <span
                 className="url-fragment cursor-pointer hover:scale-105 transition-transform duration-200"
                 onClick={() => handleCreateVariable(parsedUrl.fragment, 'fragment')}
-                title="Click to create a variable"
+                onMouseUp={(e) => handleTextSelection(e, 'fragment')}
+                title="Click to create a variable or select text"
               >
                 {parsedUrl.fragment}
               </span>
@@ -202,7 +275,8 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
               <div
                 className="url-scheme cursor-pointer flex items-center gap-1 hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors duration-200 group"
                 onClick={() => handleCreateVariable(parsedUrl.scheme, 'scheme')}
-                title="Click to create a variable"
+                onMouseUp={(e) => handleTextSelection(e, 'scheme')}
+                title="Click to create a variable or select text"
               >
                 {parsedUrl.scheme}
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">
@@ -215,7 +289,8 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
               <div
                 className="url-domain cursor-pointer flex items-center gap-1 hover:bg-green-200 dark:hover:bg-green-800 transition-colors duration-200 group"
                 onClick={() => handleCreateVariable(parsedUrl.domain, 'domain')}
-                title="Click to create a variable"
+                onMouseUp={(e) => handleTextSelection(e, 'domain')}
+                title="Click to create a variable or select text"
               >
                 {parsedUrl.domain}
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">
@@ -229,7 +304,8 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
                 <div
                   className="url-port cursor-pointer flex items-center gap-1 hover:bg-yellow-200 dark:hover:bg-yellow-800 transition-colors duration-200 group"
                   onClick={() => handleCreateVariable(parsedUrl.port, 'port')}
-                  title="Click to create a variable"
+                  onMouseUp={(e) => handleTextSelection(e, 'port')}
+                  title="Click to create a variable or select text"
                 >
                   {parsedUrl.port}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">
@@ -244,7 +320,8 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
                 <div
                   className="url-path cursor-pointer flex items-center gap-1 hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors duration-200 group"
                   onClick={() => handleCreateVariable(parsedUrl.path, 'path')}
-                  title="Click to create a variable"
+                  onMouseUp={(e) => handleTextSelection(e, 'path')}
+                  title="Click to create a variable or select text"
                 >
                   {parsedUrl.path}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">
@@ -259,7 +336,8 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
                 <div
                   className="url-fragment cursor-pointer flex items-center gap-1 hover:bg-orange-200 dark:hover:bg-orange-800 transition-colors duration-200 group"
                   onClick={() => handleCreateVariable(parsedUrl.fragment, 'fragment')}
-                  title="Click to create a variable"
+                  onMouseUp={(e) => handleTextSelection(e, 'fragment')}
+                  title="Click to create a variable or select text"
                 >
                   {parsedUrl.fragment}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">
@@ -280,7 +358,8 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
                   <div
                     className="url-query cursor-pointer flex items-center gap-1 hover:bg-red-200 dark:hover:bg-red-800 transition-colors duration-200 group"
                     onClick={() => handleCreateVariable(param.key, 'query-key')}
-                    title="Click to create a variable"
+                    onMouseUp={(e) => handleTextSelection(e, 'query-key')}
+                    title="Click to create a variable or select text"
                   >
                     {param.key}
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">
@@ -291,7 +370,8 @@ export default function ParsedUrl({ url, onCreateVariable }: ParsedUrlProps) {
                   <div
                     className="url-query cursor-pointer flex items-center gap-1 hover:bg-red-200 dark:hover:bg-red-800 transition-colors duration-200 group"
                     onClick={() => handleCreateVariable(param.value, 'query-value')}
-                    title="Click to create a variable"
+                    onMouseUp={(e) => handleTextSelection(e, 'query-value')}
+                    title="Click to create a variable or select text"
                   >
                     {param.value}
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 20 20" fill="currentColor">

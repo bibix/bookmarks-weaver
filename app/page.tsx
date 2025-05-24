@@ -49,6 +49,7 @@ export default function Home() {
 
   // Handle variables change from VariableManager component
   const handleVariablesChange = (newVariables: Variable[]) => {
+    console.log("handleVariablesChange", {newVariables})
     setVariables(newVariables);
   };
 

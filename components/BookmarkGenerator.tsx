@@ -16,37 +16,245 @@ interface BookmarkGeneratorProps {
   variables: Variable[];
 }
 
+interface GeneratedUrl {
+  url: string;
+  replacements: Array<{
+    variable: Variable;
+    value: string;
+    index: number;
+  }>;
+}
+
 export default function BookmarkGenerator({ originalUrl, variables }: BookmarkGeneratorProps) {
-  const [generatedUrls, setGeneratedUrls] = useState<string[]>([]);
+  const [generatedUrls, setGeneratedUrls] = useState<GeneratedUrl[]>([]);
   const [bookmarkName, setBookmarkName] = useState<string>('Bookmark ${index}');
   const [folderStructure, setFolderStructure] = useState<string>('Bookmarks/${variableName}');
+  const [showVariableDropdown, setShowVariableDropdown] = useState<boolean>(false);
+  const [dropdownPosition, setDropdownPosition] = useState<{ x: number, y: number, field: string }>({ x: 0, y: 0, field: '' });
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedVariableIndex, setSelectedVariableIndex] = useState<number>(0);
+  const [activeField, setActiveField] = useState<string>('');
 
   // Generate URLs whenever variables change
   useEffect(() => {
     if (!originalUrl) return;
-
-    const urls = generateUrlCombinations(originalUrl, variables);
-    setGeneratedUrls(urls);
+    const urlsWithReplacements = generateUrlCombinations(originalUrl, variables);
+    setGeneratedUrls(urlsWithReplacements);
   }, [originalUrl, variables]);
 
-  // Generate all possible combinations of URLs based on variables
-  const generateUrlCombinations = (url: string, vars: Variable[]): string[] => {
-    if (vars.length === 0) return [url];
+  // Handle input changes with variable dropdown detection
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+    const { value, selectionStart } = e.target;
 
-    let result: string[] = [url];
+    if (field === 'bookmarkName') {
+      setBookmarkName(value);
+    } else if (field === 'folderStructure') {
+      setFolderStructure(value);
+    }
+
+    // Check if we're typing a variable reference
+    if (selectionStart !== null) {
+      const currentPosition = selectionStart;
+      const textBeforeCursor = value.substring(0, currentPosition);
+      const dollarSignIndex = textBeforeCursor.lastIndexOf('$');
+
+      if (dollarSignIndex !== -1 && dollarSignIndex < currentPosition) {
+        const searchText = textBeforeCursor.substring(dollarSignIndex + 1);
+
+        // If we have a partial variable name after $
+        if (searchText.length > 0 && !searchText.includes(' ')) {
+          setSearchTerm(searchText);
+          setActiveField(field);
+
+          // Get position for dropdown
+          const rect = e.target.getBoundingClientRect();
+          const charWidth = 8; // Approximate width of a character
+          const xPos = rect.left + (dollarSignIndex * charWidth);
+          const yPos = rect.bottom;
+
+          setDropdownPosition({
+            x: xPos,
+            y: yPos,
+            field
+          });
+
+          setShowVariableDropdown(true);
+          setSelectedVariableIndex(0);
+          return;
+        }
+      }
+    }
+
+    // Hide dropdown if we're not typing a variable
+    setShowVariableDropdown(false);
+  };
+
+  // Handle keyboard navigation in dropdown
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showVariableDropdown) return;
+
+    const filteredVariables = variables.filter(v =>
+      v.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setSelectedVariableIndex(prev =>
+          prev < filteredVariables.length - 1 ? prev + 1 : prev
+        );
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setSelectedVariableIndex(prev => prev > 0 ? prev - 1 : 0);
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (filteredVariables.length > 0) {
+          insertVariable(filteredVariables[selectedVariableIndex].name);
+        }
+        break;
+      case 'Escape':
+        e.preventDefault();
+        setShowVariableDropdown(false);
+        break;
+    }
+  };
+
+  // Insert selected variable into the input field
+  const insertVariable = (variableName: string) => {
+    if (activeField === 'bookmarkName') {
+      const dollarIndex = bookmarkName.lastIndexOf('$', getCursorPosition('bookmarkName'));
+      if (dollarIndex !== -1) {
+        const newValue = bookmarkName.substring(0, dollarIndex) +
+          '${' + variableName + '}' +
+          bookmarkName.substring(getCursorPosition('bookmarkName'));
+        setBookmarkName(newValue);
+      }
+    } else if (activeField === 'folderStructure') {
+      const dollarIndex = folderStructure.lastIndexOf('$', getCursorPosition('folderStructure'));
+      if (dollarIndex !== -1) {
+        const newValue = folderStructure.substring(0, dollarIndex) +
+          '${' + variableName + '}' +
+          folderStructure.substring(getCursorPosition('folderStructure'));
+        setFolderStructure(newValue);
+      }
+    }
+
+    setShowVariableDropdown(false);
+  };
+
+  // Helper to get cursor position in active field
+  const getCursorPosition = (field: string): number => {
+    const element = document.getElementById(field) as HTMLInputElement;
+    return element?.selectionStart || 0;
+  };
+
+  // Get color for variable
+  const getColorForVariable = (name: string): string => {
+    const variable = variables.find(v => v.name === name);
+    if (!variable) return '#6b7280'; // gray-500 as default
+
+    const colorMap: Record<string, string> = {
+      'scheme': '#3b82f6', // blue-500
+      'domain': '#10b981', // green-500
+      'port': '#f59e0b',   // yellow-500
+      'path': '#8b5cf6',   // purple-500
+      'query-key': '#ef4444',   // red-500
+      'query-value': '#ef4444', // red-500
+      'fragment': '#f97316'  // orange-500
+    };
+
+    return colorMap[variable.type] || '#6b7280';
+  };
+
+  // Render input value with highlighted variables
+  const renderHighlightedValue = (value: string) => {
+    // Find all variable references in the format ${variableName}
+    const regex = /\${([^}]+)}/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = regex.exec(value)) !== null) {
+      // Add text before the variable
+      if (match.index > lastIndex) {
+        parts.push(
+          <span key={`text-${lastIndex}`}>
+            {value.substring(lastIndex, match.index)}
+          </span>
+        );
+      }
+
+      // Add the variable with its color
+      const variableName = match[1];
+      const color = getColorForVariable(variableName);
+
+      parts.push(
+        <span
+          key={`var-${match.index}`}
+          className="px-1 py-0.5 rounded"
+          style={{
+            backgroundColor: `${color}20`, // 20% opacity
+            color: color,
+            fontWeight: 'bold'
+          }}
+        >
+          ${'{'}
+          {variableName}
+          {'}'}
+        </span>
+      );
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    // Add any remaining text
+    if (lastIndex < value.length) {
+      parts.push(
+        <span key={`text-${lastIndex}`}>
+          {value.substring(lastIndex)}
+        </span>
+      );
+    }
+
+    return parts;
+  };
+
+  // Generate all possible combinations of URLs based on variables
+  const generateUrlCombinations = (url: string, vars: Variable[]): Array<{url: string, replacements: Array<{variable: Variable, value: string, index: number}>}> => {
+    if (vars.length === 0) return [{url, replacements: []}];
+
+    let result: Array<{url: string, replacements: Array<{variable: Variable, value: string, index: number}>}> = [{url, replacements: []}];
 
     // Process each variable
     vars.forEach(variable => {
-      const newResult: string[] = [];
+      const newResult: Array<{url: string, replacements: Array<{variable: Variable, value: string, index: number}>}> = [];
 
       // For each current URL in the result
-      result.forEach(currentUrl => {
+      result.forEach(item => {
         // For each value of the current variable
         variable.values.forEach(value => {
           // Replace the variable in the URL
           const pattern = new RegExp(variable.value, 'g');
-          const newUrl = currentUrl.replace(pattern, value);
-          newResult.push(newUrl);
+          let newUrl = item.url;
+          let match;
+          let newReplacements = [...item.replacements];
+
+          while ((match = pattern.exec(newUrl)) !== null) {
+            const index = match.index;
+            newReplacements.push({
+              variable,
+              value,
+              index
+            });
+          }
+
+          newUrl = newUrl.replace(pattern, value);
+          newResult.push({
+            url: newUrl,
+            replacements: newReplacements
+          });
         });
       });
 
@@ -67,7 +275,9 @@ export default function BookmarkGenerator({ originalUrl, variables }: BookmarkGe
     // Create folders based on the folder structure
     const folders = new Map<string, string[]>();
 
-    generatedUrls.forEach((url, index) => {
+    generatedUrls.forEach((item, index) => {
+      const { url } = item;
+
       // Replace variables in the folder structure
       let folderPath = folderStructure;
       variables.forEach(variable => {
@@ -136,8 +346,100 @@ export default function BookmarkGenerator({ originalUrl, variables }: BookmarkGe
     URL.revokeObjectURL(url);
   };
 
+  // Render URL with colored variable values
+  const renderColoredUrl = (item: GeneratedUrl) => {
+    const { url, replacements } = item;
+
+    if (replacements.length === 0) return url;
+
+    // Sort replacements by index in descending order to avoid index shifting
+    const sortedReplacements = [...replacements].sort((a, b) => b.index - a.index);
+
+    // Split the URL into parts and color the variable values
+    let parts: React.ReactNode[] = [url];
+
+    sortedReplacements.forEach(replacement => {
+      const { variable, value, index } = replacement;
+      const color = getColorForVariable(variable.name);
+
+      // Get the part that contains the replacement
+      const part = parts[0] as string;
+
+      // Split the part into before, value, and after
+      const before = part.substring(0, index);
+      const after = part.substring(index + value.length);
+
+      // Replace the part with the colored value
+      parts[0] = (
+        <>
+          {before}
+          <span
+            key={`var-${variable.id}-${index}`}
+            className="px-1 py-0.5 rounded"
+            style={{
+              backgroundColor: `${color}20`, // 20% opacity
+              color: color,
+              fontWeight: 'bold'
+            }}
+          >
+            {value}
+          </span>
+          {after}
+        </>
+      );
+    });
+
+    return parts;
+  };
+
+  // Render variable dropdown
+  const renderVariableDropdown = () => {
+    if (!showVariableDropdown) return null;
+
+    const filteredVariables = variables.filter(v =>
+      v.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (filteredVariables.length === 0) return null;
+
+    return (
+      <div
+        className="absolute z-50 bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 max-h-60 overflow-y-auto"
+        style={{
+          left: `${dropdownPosition.x}px`,
+          top: `${dropdownPosition.y}px`,
+          minWidth: '200px'
+        }}
+      >
+        <ul className="py-1">
+          {filteredVariables.map((variable, index) => (
+            <li
+              key={variable.id}
+              className={`px-4 py-2 cursor-pointer flex items-center gap-2 ${
+                index === selectedVariableIndex
+                  ? 'bg-gray-100 dark:bg-gray-700'
+                  : 'hover:bg-gray-50 dark:hover:bg-gray-700'
+              }`}
+              onClick={() => insertVariable(variable.name)}
+              onMouseEnter={() => setSelectedVariableIndex(index)}
+            >
+              <span
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: getColorForVariable(variable.name) }}
+              ></span>
+              <span>{variable.name}</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400 ml-auto">{variable.type}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
   return (
     <div className="w-full">
+      {showVariableDropdown && renderVariableDropdown()}
+
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-accent-500" viewBox="0 0 20 20" fill="currentColor">
@@ -170,14 +472,22 @@ export default function BookmarkGenerator({ originalUrl, variables }: BookmarkGe
 
           <div className="relative">
             <input
-              id="bookmark-name"
+              id="bookmarkName"
               type="text"
               value={bookmarkName}
-              onChange={(e) => setBookmarkName(e.target.value)}
-              className="w-full px-3 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
+              onChange={(e) => handleInputChange(e, 'bookmarkName')}
+              onKeyDown={handleKeyDown}
+              className="w-full px-3 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white dark:bg-gray-800 text-transparent caret-gray-800 dark:caret-gray-100"
               placeholder="Bookmark ${index}"
               aria-label="Bookmark name template"
+              style={{ caretColor: 'currentColor' }}
             />
+            <div
+              className="absolute inset-0 pointer-events-none px-3 py-3 overflow-hidden text-gray-800 dark:text-gray-100 flex items-center"
+              aria-hidden="true"
+            >
+              {renderHighlightedValue(bookmarkName)}
+            </div>
           </div>
 
           <div className="mt-2 text-sm text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
@@ -209,14 +519,22 @@ export default function BookmarkGenerator({ originalUrl, variables }: BookmarkGe
 
           <div className="relative">
             <input
-              id="folder-structure"
+              id="folderStructure"
               type="text"
               value={folderStructure}
-              onChange={(e) => setFolderStructure(e.target.value)}
-              className="w-full px-3 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-secondary-500 focus:border-secondary-500 transition-all duration-200 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"
+              onChange={(e) => handleInputChange(e, 'folderStructure')}
+              onKeyDown={handleKeyDown}
+              className="w-full px-3 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-secondary-500 focus:border-secondary-500 transition-all duration-200 bg-white dark:bg-gray-800 text-transparent caret-gray-800 dark:caret-gray-100"
               placeholder="Bookmarks/${variableName}"
               aria-label="Folder structure template"
+              style={{ caretColor: 'currentColor' }}
             />
+            <div
+              className="absolute inset-0 pointer-events-none px-3 py-3 overflow-hidden text-gray-800 dark:text-gray-100 flex items-center"
+              aria-hidden="true"
+            >
+              {renderHighlightedValue(folderStructure)}
+            </div>
           </div>
 
           <div className="mt-2 text-sm text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
@@ -289,15 +607,19 @@ export default function BookmarkGenerator({ originalUrl, variables }: BookmarkGe
           ) : (
             <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
               <div className="relative">
-                <textarea
-                  readOnly
+                <div
                   className="w-full h-64 p-4 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg font-mono text-sm overflow-y-auto"
-                  value={generatedUrls.join('\n')}
                   aria-label="Generated URLs"
-                />
+                >
+                  {generatedUrls.map((item, index) => (
+                    <div key={index} className="mb-2 break-all">
+                      {renderColoredUrl(item)}
+                    </div>
+                  ))}
+                </div>
                 <button
                   onClick={() => {
-                    navigator.clipboard.writeText(generatedUrls.join('\n'));
+                    navigator.clipboard.writeText(generatedUrls.map(item => item.url).join('\n'));
                   }}
                   className="absolute top-2 right-2 p-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-colors duration-200"
                   title="Copy all URLs"
