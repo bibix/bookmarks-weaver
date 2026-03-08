@@ -5,7 +5,7 @@ import URLInputSection from './components/URLInputSection';
 import ParsedFragmentsSection from './components/ParsedFragmentsSection';
 import VariablesSection from './components/VariablesSection';
 import ResultsSection from './components/ResultsSection';
-import { parseUrl } from './utils/urlParser';
+import { parseTemplatedUrl } from './utils/urlParser';
 import { generateCombinations, DataSource } from './utils/combinator';
 import { Variable } from './types';
 
@@ -24,23 +24,11 @@ const App: React.FC = () => {
   const { rawUrl, variables, dataSources } = state;
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
-  // Parsed URL based on current template (replacing variables with original values for visualization)
-  const displayUrl = useMemo(() => {
-    let result = rawUrl;
-    variables.forEach(v => {
-      // Find the first value in its data source or use original value
-      const source = dataSources.find(s => s.variableIds.includes(v.id));
-      const value = source ? source.rows[0][source.variableIds.indexOf(v.id)] : v.name;
-      result = result.split(`{{${v.id}}}`).join(value);
-    });
-    return result;
-  }, [rawUrl, variables, dataSources]);
-
   const setRawUrl = (url: string) => setState(prev => ({ ...prev, rawUrl: url }));
   const setVariables = (vars: Variable[]) => setState(prev => ({ ...prev, variables: vars }));
   const setDataSources = (sources: DataSource[]) => setState(prev => ({ ...prev, dataSources: sources }));
 
-  const parsedUrl = useMemo(() => parseUrl(displayUrl), [displayUrl]);
+  const parsedUrl = useMemo(() => parseTemplatedUrl(rawUrl), [rawUrl]);
 
   // Combination logic
   const generatedUrls = useMemo(() => {
@@ -62,12 +50,10 @@ const App: React.FC = () => {
     
     setVariables(prev => [...prev, newVar]);
     
-    // Update rawUrl by replacing the selection with placeholder
-    // This is tricky because the rawUrl might already have placeholders
-    // For now, let's assume the selection is from the displayUrl
-    // In a real app, we need to map the selection from displayUrl back to rawUrl
-    // For simplicity, let's just replace the FIRST occurrence for now
-    setRawUrl(prev => prev.replace(selection, `{{${varId}}}`));
+    // Update rawUrl by replacing exactly at the selection range
+    setRawUrl(prev => {
+      return prev.substring(0, start) + `{{${varId}}}` + prev.substring(end);
+    });
     
     // Create a new data source for this variable
     const newSource: DataSource = {
@@ -105,7 +91,7 @@ const App: React.FC = () => {
 
           <section id="parsed-fragments">
             <h2 className="text-xl font-semibold mb-4">{t('parsed_fragments')}</h2>
-            <ParsedFragmentsSection parsedUrl={parsedUrl} />
+            <ParsedFragmentsSection parsedUrl={parsedUrl} variables={variables} />
           </section>
 
           <section id="variables">

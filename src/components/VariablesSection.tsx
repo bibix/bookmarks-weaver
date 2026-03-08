@@ -21,18 +21,35 @@ const VariablesSection: React.FC<VariablesSectionProps> = ({
     const lines = text.split('\n');
     const newSources = dataSources.map(s => {
       if (s.id === id) {
-        const newRows = [...s.rows];
-        // For simplicity, we assume one textarea per column for tables too
-        // or one textarea for the whole list
+        // Find max lines across all columns (including the current update)
+        // We need to check other textareas' current values or use source.rows
+        // Let's just update the rows first
+        const newRows = [...s.rows.map(row => [...row])];
+        
+        // Ensure we have enough rows
+        while (newRows.length < lines.length) {
+          newRows.push(new Array(s.variableIds.length).fill(''));
+        }
+        
+        // Update the specific column
         lines.forEach((line, rowIndex) => {
-          if (!newRows[rowIndex]) newRows[rowIndex] = new Array(s.variableIds.length).fill('');
           newRows[rowIndex][colIndex] = line;
         });
-        // Remove extra rows if lines decreased
-        if (newRows.length > lines.length) {
-          newRows.splice(lines.length);
-        }
-        return { ...s, rows: newRows };
+
+        // After update, some rows might be empty across all columns if we decreased lines in this column
+        // But wait, the requirement says "Each column can be pasted separately", 
+        // which usually implies they should stay in sync by index.
+        // If I paste 10 lines into Col A and then 5 lines into Col B, 
+        // Row 6-10 will have Col A value and empty Col B. This is correct.
+        // If I then change Col A to 5 lines, rows 6-10 should probably be removed if they are empty in ALL columns.
+        
+        // For simplicity and following "automatic update", let's keep all rows that have at least one value
+        const filteredRows = newRows.filter((row, rowIndex) => {
+          if (rowIndex < lines.length) return true; // Keep rows updated by current paste
+          return row.some(cell => cell.trim() !== ''); // Keep rows that have other data
+        });
+
+        return { ...s, rows: filteredRows };
       }
       return s;
     });
@@ -43,11 +60,20 @@ const VariablesSection: React.FC<VariablesSectionProps> = ({
     onDataSourcesChange(dataSources.filter(s => s.id !== id));
   };
 
+  const addList = () => {
+    const newSource: DataSource = {
+      id: `source_${Date.now()}`,
+      variableIds: variables.length > 0 ? [variables[0].id] : [],
+      rows: [['']]
+    };
+    onDataSourcesChange([...dataSources, newSource]);
+  };
+
   const addTable = () => {
     const newSource: DataSource = {
       id: `source_${Date.now()}`,
-      variableIds: [], // User needs to select variables
-      rows: [['']]
+      variableIds: variables.length >= 2 ? [variables[0].id, variables[1].id] : (variables.length > 0 ? [variables[0].id] : []),
+      rows: [['', '']]
     };
     onDataSourcesChange([...dataSources, newSource]);
   };
@@ -56,13 +82,26 @@ const VariablesSection: React.FC<VariablesSectionProps> = ({
     <div className="space-y-6">
       <div className="flex gap-4">
         <button 
+          onClick={addList}
+          className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-md transition border dark:border-gray-700"
+        >
+          <ListIcon className="w-4 h-4 text-teal-600" />
+          {t('add_list', 'Add List')}
+        </button>
+        <button 
           onClick={addTable}
           className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-md transition border dark:border-gray-700"
         >
-          <TableIcon className="w-4 h-4" />
-          {t('add_table')}
+          <TableIcon className="w-4 h-4 text-teal-600" />
+          {t('add_table', 'Add Table')}
         </button>
       </div>
+
+      {variables.length === 0 && (
+        <div className="p-8 border-2 border-dashed rounded-xl text-center text-gray-400 dark:border-gray-700">
+          {t('no_variables_instruction', 'Select some text in the URL to create variables first.')}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {dataSources.map(source => {
