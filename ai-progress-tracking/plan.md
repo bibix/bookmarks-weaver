@@ -42,9 +42,14 @@
 - [x] Fix CSS loading issue by adding `postcss.config.js`.
 - [x] Correct "skewed" layout using `mx-auto` and better container spacing.
 - [x] Synchronize BlockNote theme with dark/light mode toggle via `appState`.
+- [x] Switch BlockNote to use strict schemas from scratch, avoiding all unnecessary 'basic blocks' in both Template and Variable sections.
 - [x] Improve visual hierarchy with card-like sections and shadow effects.
 - [x] Enhance accessibility with better focus states and interactive elements.
 - [x] Fix "Nothing is displayed" bug by restoring missing `appState` import and properties.
+- [x] Fix "Uncaught RangeError: Position undefined out of range" by adding `paragraph` back to schema (for stability) but hiding it from UI.
+- [x] Fix "Comment and Folder components are not editable/viewable" by adding min-height and proper contentRef handling.
+- [x] Fix "Initial loaded comment does not work" by correcting BlockNote initial content format.
+- [x] Remove "Emoji from Others menu" by explicitly disabling emojiPicker and other default UI components in BlockNoteView.
 
 ## 8. Final Verification
 - [ ] A11y check (WCAG 2.1 Level AA).

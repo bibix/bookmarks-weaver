@@ -2,13 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { appState } from '../store';
 import { useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/mantine";
-import { BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";
+import { BlockNoteSchema, defaultBlockSpecs, defaultInlineContentSpecs } from "@blocknote/core";
 import "@blocknote/mantine/style.css";
+
+const tableSchema = BlockNoteSchema.create({
+  blockSpecs: {
+    paragraph: defaultBlockSpecs.paragraph,
+    table: defaultBlockSpecs.table,
+  },
+  inlineContentSpecs: {
+    text: defaultInlineContentSpecs.text,
+  },
+  styleSpecs: {},
+});
 
 export function VariableTable({ tableName }: { tableName: string }) {
   const [theme, setTheme] = useState(appState.theme);
   const editor = useCreateBlockNote({
-      // Initial content should be a table
+    schema: tableSchema,
+    initialContent: [
+      {
+        type: "table",
+        content: [],
+      },
+    ],
   });
 
   useEffect(() => {
@@ -20,7 +37,13 @@ export function VariableTable({ tableName }: { tableName: string }) {
   return (
     <div className="border rounded-md p-2 bg-card">
       <h3 className="font-semibold mb-2">{tableName}</h3>
-      <BlockNoteView editor={editor} theme={theme} />
+      <BlockNoteView 
+        editor={editor} 
+        theme={theme}
+        sideMenu={false}
+        formattingToolbar={false}
+        emojiPicker={false}
+      />
     </div>
   );
 }

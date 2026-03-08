@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { 
   BlockNoteSchema, 
-  defaultBlockSpecs, 
   insertOrUpdateBlock,
-  filterSuggestionItems
+  defaultInlineContentSpecs,
+  defaultBlockSpecs
 } from "@blocknote/core";
 import { 
   useCreateBlockNote,
@@ -25,7 +25,17 @@ const schema = BlockNoteSchema.create({
     folder: FolderBlock,
     bookmark: BookmarkBlock,
   },
+  inlineContentSpecs: {
+    text: defaultInlineContentSpecs.text,
+  },
+  styleSpecs: {}, 
 });
+
+const filterItems = (items: DefaultReactSuggestionItem[], query: string) => 
+  items.filter(item => 
+    item.title.toLowerCase().includes(query.toLowerCase()) ||
+    (item.aliases && item.aliases.some(alias => alias.toLowerCase().includes(query.toLowerCase())))
+  );
 
 export function TemplateEditor() {
   const [theme, setTheme] = React.useState(appState.theme);
@@ -34,7 +44,13 @@ export function TemplateEditor() {
     initialContent: [
       {
         type: "comment",
-        content: "Welcome to Bookmarks Weaver! Start by adding a Folder or Bookmark using the '/' menu.",
+        content: [
+          {
+            type: "text",
+            text: "Welcome to Bookmarks Weaver! Start by adding a Folder or Bookmark using the '/' menu.",
+            styles: {},
+          },
+        ],
       },
     ],
   });
@@ -97,11 +113,14 @@ export function TemplateEditor() {
       <BlockNoteView 
         editor={editor} 
         theme={theme}
+        sideMenu={false}
+        formattingToolbar={false}
+        emojiPicker={false}
       >
         <SuggestionMenuController
           triggerCharacter="/"
           getItems={async (query) => 
-            filterSuggestionItems(getCustomSlashMenuItems(editor), query)
+            filterItems(getCustomSlashMenuItems(editor), query)
           }
         />
       </BlockNoteView>

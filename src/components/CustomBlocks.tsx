@@ -16,7 +16,11 @@ export const CommentBlock = createReactBlockSpec(
       return (
         <div className="flex items-center gap-3 p-2.5 text-muted-foreground italic border-l-4 border-primary/30 bg-muted/20 rounded-r-md">
           <MessageSquare size={16} className="shrink-0" />
-          <div ref={contentRef} className="outline-none w-full" />
+          <div 
+            ref={contentRef} 
+            className="outline-none w-full min-h-[1.5em] empty:before:content-[attr(data-placeholder)] empty:before:text-muted-foreground/50"
+            data-placeholder="Your comment here..."
+          />
         </div>
       );
     },
@@ -36,7 +40,11 @@ export const FolderBlock = createReactBlockSpec(
       return (
         <div className="flex items-center gap-2 py-1">
           <Folder size={20} className="text-primary fill-primary/10 shrink-0" />
-          <div ref={contentRef} className="font-bold text-lg text-foreground tracking-tight" />
+          <div 
+            ref={contentRef} 
+            className="font-bold text-lg text-foreground tracking-tight outline-none w-full min-h-[1.5em] empty:before:content-[attr(data-placeholder)] empty:before:text-muted-foreground/50"
+            data-placeholder="Folder name (Handlebars supported)"
+          />
         </div>
       );
     },
