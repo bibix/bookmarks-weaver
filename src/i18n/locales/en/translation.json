@@ -1,0 +1,19 @@
+{
+  "title": "Bookmarks Weaver",
+  "input_url_placeholder": "Paste your URL here",
+  "parsed_fragments": "Parsed Fragments",
+  "parameters": "Parameters",
+  "variables": "Variables",
+  "results": "Generated Results",
+  "download_bookmarks": "Download Bookmarks",
+  "add_list": "Add List",
+  "add_table": "Add Table",
+  "scheme": "Scheme",
+  "domain": "Domain",
+  "port": "Port",
+  "path": "Path",
+  "query_parameters": "Query Parameters",
+  "fragment": "Fragment",
+  "undo": "Undo",
+  "redo": "Redo"
+}

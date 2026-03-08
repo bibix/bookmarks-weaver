@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply transition-colors duration-200;
+  }
+}
+
+.url-fragment-scheme { @apply bg-scheme text-blue-900 px-1 rounded; }
+.url-fragment-domain { @apply bg-domain text-green-900 px-1 rounded; }
+.url-fragment-port { @apply bg-port text-purple-900 px-1 rounded; }
+.url-fragment-path { @apply bg-path text-orange-900 px-1 rounded; }
+.url-fragment-query { @apply bg-gray-100 text-gray-800 px-1 rounded dark:bg-gray-700 dark:text-gray-200; }
+.url-fragment-fragment { @apply bg-fragment text-blue-900 px-1 rounded; }
