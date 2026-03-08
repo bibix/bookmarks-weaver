@@ -53,10 +53,14 @@
 - [x] Fix "Folder component placeholder does not disappear" by adding focus-based CSS and empty-check improvements.
 - [x] Implement "Column-specific shades" for Handlebars highlighting and variable table headers.
 - [x] Implement "Rich text highlighting" for Bookmark block fields (Title, URL, etc.) using a custom overlay component.
+- [x] Fix "Variable resolution logic" to include bookmark deduplication for correct sibling looping.
+- [x] Update "Netscape Bookmarks generator" to include KEYWORDS attribute and support date variables (yyyy, mm, dd) in all templates.
+- [x] Refine "Custom Block placeholders" to disappear correctly on focus or when content is present.
 
 ## 8. Final Verification
-- [ ] A11y check (WCAG 2.1 Level AA).
-- [ ] Responsive design check (Mobile/Desktop).
-- [ ] Multi-language check.
-- [ ] Dark/Light mode and color theme check.
-- [ ] Performance check (large variable tables).
+- [x] A11y check (WCAG 2.1 Level AA).
+- [x] Responsive design check (Mobile/Desktop).
+- [x] Multi-language check.
+- [x] Dark/Light mode and color theme check.
+- [x] Performance check (large variable tables).
+- [x] Build and project stability verification.

@@ -63,10 +63,18 @@
 }
 
 /* Ensure BlockNote placeholder behavior matches requirements */
-[data-content-type="comment"] [data-placeholder],
-[data-content-type="folder"] [data-placeholder] {
-    opacity: 0.5;
+.blocknote-placeholder:empty:before,
+.blocknote-placeholder.bn-empty:before {
+    content: attr(data-placeholder);
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.4;
     font-style: italic;
+    font-weight: normal;
+}
+
+.blocknote-placeholder:focus:before {
+    display: none;
 }
 
 .variable-table-container [data-content-type="table"] table {

@@ -46,7 +46,8 @@ export function generateNetscapeBookmarks(root: Folder): string {
       }
     } else {
       const tags = node.tags.join(',');
-      html += `${space}<DT><A HREF="${node.url}" TAGS="${tags}">${node.title}</A>\n`;
+      const keywords = node.keywords.join(',');
+      html += `${space}<DT><A HREF="${node.url}" TAGS="${tags}" KEYWORDS="${keywords}">${node.title}</A>\n`;
       if (node.description) {
         html += `${space}<DD>${node.description}\n`;
       }
@@ -85,9 +86,16 @@ export function resolveAll(blocks: any[], variables: Record<string, string[][]>)
         tableData.push(rowsData.map(val => ({ [name]: val })));
     });
 
+    const now = new Date();
+    const dateVars = {
+        yyyy: String(now.getFullYear()),
+        mm: String(now.getMonth() + 1).padStart(2, '0'),
+        dd: String(now.getDate()).padStart(2, '0')
+    };
+
     if (tableData.length === 0) {
         // Just resolve with empty data once
-        const tree = resolveBlocks(blocks, {});
+        const tree = resolveBlocks(blocks, { ...dateVars });
         mergeTrees(root, tree);
         return root;
     }
@@ -96,7 +104,7 @@ export function resolveAll(blocks: any[], variables: Record<string, string[][]>)
     const combinations = cartesianProduct(tableData);
 
     combinations.forEach(combo => {
-        const data = combo.reduce((acc, curr) => ({ ...acc, ...curr }), {});
+        const data = combo.reduce((acc, curr) => ({ ...acc, ...curr }), { ...dateVars });
         const tree = resolveBlocks(blocks, data);
         mergeTrees(root, tree);
     });
@@ -150,9 +158,18 @@ function mergeTrees(target: Folder, source: (Folder | Bookmark)[]) {
                 target.children.push(item);
             }
         } else {
-            // Bookmarks are always added? Or deduplicated?
-            // Usually bookmarks are kept separate.
-            target.children.push(item);
+            // Deduplicate bookmarks to handle sibling Cartesian product loops correctly
+            const isDuplicate = target.children.some(c => 
+                !('children' in c) && 
+                c.title === item.title && 
+                c.url === item.url && 
+                c.description === item.description &&
+                c.tags.join(',') === item.tags.join(',') &&
+                c.keywords.join(',') === item.keywords.join(',')
+            );
+            if (!isDuplicate) {
+                target.children.push(item);
+            }
         }
     });
 }

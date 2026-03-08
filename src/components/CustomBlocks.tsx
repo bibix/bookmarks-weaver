@@ -20,7 +20,7 @@ export const CommentBlock = createReactBlockSpec(
           <MessageSquare size={16} className="shrink-0" />
           <div 
             ref={contentRef} 
-            className="outline-none w-full min-h-[1.5em] empty:before:content-[attr(data-placeholder)] empty:before:text-muted-foreground/50 focus:before:content-none"
+            className="outline-none w-full min-h-[1.5em] relative blocknote-placeholder"
             data-placeholder="Your comment here..."
           />
         </div>
@@ -44,7 +44,7 @@ export const FolderBlock = createReactBlockSpec(
           <Folder size={20} className="text-primary fill-primary/10 shrink-0 group-hover:scale-110 transition-transform" />
           <div 
             ref={contentRef} 
-            className="font-bold text-lg text-foreground tracking-tight outline-none w-full min-h-[1.5em] empty:before:content-[attr(data-placeholder)] empty:before:text-muted-foreground/50 focus:before:content-none"
+            className="font-bold text-lg text-foreground tracking-tight outline-none w-full min-h-[1.5em] relative blocknote-placeholder"
             data-placeholder="Folder name (Handlebars supported)"
           />
         </div>
