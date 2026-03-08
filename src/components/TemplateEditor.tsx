@@ -63,6 +63,12 @@ export function TemplateEditor() {
   React.useEffect(() => {
     return appState.subscribe(() => {
       setTheme(appState.theme);
+      
+      // Update editor content if it differs from appState (e.g., after renaming)
+      if (editor && JSON.stringify(editor.document) !== JSON.stringify(appState.template)) {
+          editor.replaceBlocks(editor.document, appState.template);
+      }
+
       // Force refresh decorations when variables change
       if (editor && (editor as any)._tiptapEditor) {
           const tiptap = (editor as any)._tiptapEditor;

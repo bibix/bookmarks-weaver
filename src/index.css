@@ -2,25 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-.hb-invalid {
-    text-decoration: underline red wavy;
-    text-underline-offset: 4px;
-}
-
-.hb-missing {
-    text-decoration: underline orange double;
-    text-underline-offset: 4px;
-}
-
-/* Fallback for double wavy if possible */
-@supports (text-decoration-style: wavy) {
-    .hb-missing {
-        text-decoration: underline orange wavy;
-        text-decoration-thickness: 2px;
-    }
-}
-
 @layer base {
+  * {
+    @apply border-border;
+  }
   body {
     @apply bg-background text-foreground;
   }
@@ -58,20 +43,39 @@
   --ring: 213 27% 84%;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-/* Custom wiggly lines for Handlebars validation */
 .hb-invalid {
-  text-decoration: underline wavy red;
+    text-decoration: underline wavy red;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
 }
 
 .hb-missing {
-  text-decoration: underline wavy orange 2px;
+    text-decoration: underline wavy orange;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+}
+
+/* Custom styles for variable coloring in Template Editor */
+.variable-tag {
+    border-radius: 2px;
+    padding: 0 2px;
+    font-weight: 500;
+}
+
+/* Ensure BlockNote placeholder behavior matches requirements */
+[data-content-type="comment"] [data-placeholder],
+[data-content-type="folder"] [data-placeholder] {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.variable-table-container [data-content-type="table"] table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.variable-table-container [data-content-type="table"] td {
+    border: 1px solid var(--border);
+    padding: 8px;
 }

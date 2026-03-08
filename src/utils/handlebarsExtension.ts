@@ -77,6 +77,15 @@ function findHandlebars(doc: any) {
           decorations.push(Decoration.inline(start, end, { class: "hb-invalid" }));
         } else if (isMissing) {
           decorations.push(Decoration.inline(start, end, { class: "hb-missing" }));
+        } else {
+            const parts = raw.split('.');
+            const tableName = parts[0];
+            const color = appState.variableColors[tableName];
+            if (color) {
+                decorations.push(Decoration.inline(start, end, { 
+                    style: `background-color: ${color.bg}; color: ${color.text}; border: 1px solid ${color.border}; border-radius: 2px; padding: 0 2px;` 
+                }));
+            }
         }
       }
     }
