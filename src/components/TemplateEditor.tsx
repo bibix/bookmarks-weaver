@@ -17,6 +17,7 @@ import "@blocknote/mantine/style.css";
 import { CommentBlock, FolderBlock, BookmarkBlock } from "./CustomBlocks";
 import { MessageSquare, Folder, Bookmark as BookmarkIcon } from "lucide-react";
 import { appState } from "../store";
+import { HandlebarsHighlighter } from "../utils/handlebarsExtension";
 
 const schema = BlockNoteSchema.create({
   blockSpecs: {
@@ -27,6 +28,7 @@ const schema = BlockNoteSchema.create({
   },
   inlineContentSpecs: {
     text: defaultInlineContentSpecs.text,
+    link: defaultInlineContentSpecs.link,
   },
   styleSpecs: {}, 
 });
@@ -53,13 +55,21 @@ export function TemplateEditor() {
         ],
       },
     ],
+    _tiptapOptions: {
+        extensions: [HandlebarsHighlighter],
+    },
   });
 
   React.useEffect(() => {
     return appState.subscribe(() => {
       setTheme(appState.theme);
+      // Force refresh decorations when variables change
+      if (editor && (editor as any)._tiptapEditor) {
+          const tiptap = (editor as any)._tiptapEditor;
+          tiptap.view.dispatch(tiptap.state.tr.setMeta("forceUpdateHandlebars", true));
+      }
     });
-  }, []);
+  }, [editor]);
 
   const getCustomSlashMenuItems = (
     editor: any

@@ -5,20 +5,6 @@ interface Variable {
   columnName?: string;
 }
 
-interface AppState {
-  fileName: string;
-  setFileName: (name: string) => void;
-  variables: Record<string, string[][]>; // tableName -> rows (header is first row)
-  setVariables: (vars: Record<string, string[][]>) => void;
-  detectedVariables: Variable[];
-  setDetectedVariables: (vars: Variable[]) => void;
-}
-
-// Simple store using standard React context or a lightweight lib
-// Since I can't install new libs easily (I can but let's keep it simple), 
-// I'll just use a simple event emitter or React context.
-// Actually, I'll use a simple global object for now since it's a small app.
-
 export const appState = {
   fileName: "bookmarks-{{yyyy}}-{{mm}}-{{dd}}.html",
   setFileName: (name: string) => {
@@ -35,11 +21,37 @@ export const appState = {
   },
   setTemplate: (blocks: any[]) => {
     appState.template = blocks;
-    // Extract variables and update detectedVariables
-    const text = JSON.stringify(blocks); // Simplified extraction
-    // Actually, I should traverse blocks
     const vars = extractAllVariables(blocks);
     appState.detectedVariables = vars;
+    
+    // Sync variables data
+    const newVariables = { ...appState.variables };
+    vars.forEach(v => {
+      if (!newVariables[v.tableName]) {
+        // Initialize new table with headers
+        if (v.columnName) {
+            newVariables[v.tableName] = [[v.columnName], [""]];
+        } else {
+            newVariables[v.tableName] = [[v.tableName], [""]];
+        }
+      } else {
+        // Ensure column exists in headers
+        const headers = newVariables[v.tableName][0];
+        const colName = v.columnName || v.tableName;
+        if (!headers.includes(colName)) {
+            headers.push(colName);
+            // Add empty cell to all data rows
+            for (let i = 1; i < newVariables[v.tableName].length; i++) {
+                newVariables[v.tableName][i].push("");
+            }
+        }
+      }
+    });
+    appState.variables = newVariables;
+    appState.notify();
+  },
+  setVariableData: (tableName: string, rows: string[][]) => {
+    appState.variables[tableName] = rows;
     appState.notify();
   },
   listeners: [] as (() => void)[],
@@ -55,15 +67,35 @@ export const appState = {
 };
 
 function extractAllVariables(blocks: any[]): Variable[] {
-  const text = JSON.stringify(blocks);
-  const regex = /{{[#\/]?\s*([a-zA-Z0-9._]+)\s*}}/g;
   const variables: Variable[] = [];
-  let match;
-  while ((match = regex.exec(text)) !== null) {
-      const parts = match[1].split('.');
-      if (parts[0].startsWith('/') || parts[0].startsWith('#')) continue;
-      variables.push({ tableName: parts[0], columnName: parts[1] });
+  
+  function traverse(obj: any) {
+    if (typeof obj === 'string') {
+      const regex = /{{[#\/]?\s*([a-zA-Z0-9._]+)\s*}}/g;
+      let match;
+      while ((match = regex.exec(obj)) !== null) {
+        const full = match[1];
+        if (full.startsWith('/') || full.startsWith('#')) continue;
+        const parts = full.split('.');
+        const tableName = parts[0];
+        const builtIns = ["yyyy", "mm", "dd"];
+        if (builtIns.includes(tableName)) continue;
+
+        if (parts.length === 1) {
+          variables.push({ tableName });
+        } else if (parts.length === 2) {
+          variables.push({ tableName, columnName: parts[1] });
+        }
+      }
+    } else if (Array.isArray(obj)) {
+      obj.forEach(traverse);
+    } else if (obj && typeof obj === 'object') {
+      Object.values(obj).forEach(traverse);
+    }
   }
+
+  traverse(blocks);
+  
   return variables.filter((v, index, self) =>
     index === self.findIndex((t) => t.tableName === v.tableName && t.columnName === v.columnName)
   );

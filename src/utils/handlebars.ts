@@ -31,9 +31,30 @@ export const extractVariables = (template: string): HandlebarsVariable[] => {
 
 export const validateHandlebars = (template: string): { isValid: boolean; error?: string } => {
   try {
+    if (!template.includes('{{')) return { isValid: true };
     Handlebars.precompile(template);
     return { isValid: true };
   } catch (err: any) {
     return { isValid: false, error: err.message };
   }
+};
+
+export const checkMissingVariables = (template: string, variables: Record<string, any[][]>): string[] => {
+    const vars = extractVariables(template);
+    const missing: string[] = [];
+    const builtIns = ["yyyy", "mm", "dd"];
+
+    vars.forEach(v => {
+        if (builtIns.includes(v.tableName)) return;
+        
+        if (!variables[v.tableName]) {
+            missing.push(v.raw);
+        } else if (v.columnName) {
+            const headers = variables[v.tableName][0];
+            if (!headers.includes(v.columnName)) {
+                missing.push(v.raw);
+            }
+        }
+    });
+    return missing;
 };

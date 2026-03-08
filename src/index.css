@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+.hb-invalid {
+    text-decoration: underline red wavy;
+    text-underline-offset: 4px;
+}
+
+.hb-missing {
+    text-decoration: underline orange double;
+    text-underline-offset: 4px;
+}
+
+/* Fallback for double wavy if possible */
+@supports (text-decoration-style: wavy) {
+    .hb-missing {
+        text-decoration: underline orange wavy;
+        text-decoration-thickness: 2px;
+    }
+}
+
 @layer base {
   body {
     @apply bg-background text-foreground;

@@ -1,7 +1,9 @@
 import { defaultProps } from "@blocknote/core";
 import { createReactBlockSpec } from "@blocknote/react";
-import React from "react";
-import { MessageSquare, Folder, Bookmark } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { MessageSquare, Folder, Bookmark, AlertCircle, HelpCircle } from "lucide-react";
+import { validateHandlebars, checkMissingVariables } from "../utils/handlebars";
+import { appState } from "../store";
 
 export const CommentBlock = createReactBlockSpec(
   {
@@ -14,7 +16,7 @@ export const CommentBlock = createReactBlockSpec(
   {
     render: ({ contentRef }) => {
       return (
-        <div className="flex items-center gap-3 p-2.5 text-muted-foreground italic border-l-4 border-primary/30 bg-muted/20 rounded-r-md">
+        <div className="flex items-center gap-3 p-2.5 text-muted-foreground italic border-l-4 border-primary/30 bg-muted/20 rounded-r-md my-1">
           <MessageSquare size={16} className="shrink-0" />
           <div 
             ref={contentRef} 
@@ -38,8 +40,8 @@ export const FolderBlock = createReactBlockSpec(
   {
     render: ({ contentRef }) => {
       return (
-        <div className="flex items-center gap-2 py-1">
-          <Folder size={20} className="text-primary fill-primary/10 shrink-0" />
+        <div className="flex items-center gap-2 py-2 group">
+          <Folder size={20} className="text-primary fill-primary/10 shrink-0 group-hover:scale-110 transition-transform" />
           <div 
             ref={contentRef} 
             className="font-bold text-lg text-foreground tracking-tight outline-none w-full min-h-[1.5em] empty:before:content-[attr(data-placeholder)] empty:before:text-muted-foreground/50"
@@ -50,6 +52,62 @@ export const FolderBlock = createReactBlockSpec(
     },
   }
 );
+
+function ValidatedInput({ 
+    placeholder, 
+    value, 
+    onChange, 
+    isTextArea = false, 
+    className = "" 
+}: { 
+    placeholder: string, 
+    value: string, 
+    onChange: (val: string) => void,
+    isTextArea?: boolean,
+    className?: string
+}) {
+  const [vars, setVars] = useState(appState.variables);
+  useEffect(() => {
+    return appState.subscribe(() => setVars({ ...appState.variables }));
+  }, []);
+
+  const { isValid, error } = validateHandlebars(value);
+  const missing = checkMissingVariables(value, vars);
+  
+  let borderColor = "border-border";
+  let Icon = null;
+  let title = "";
+
+  if (!isValid) {
+      borderColor = "border-red-500 shadow-[0_0_0_1px_rgba(239,68,68,0.2)]";
+      Icon = AlertCircle;
+      title = `Invalid Handlebars: ${error}`;
+  } else if (missing.length > 0) {
+      borderColor = "border-orange-400 shadow-[0_0_0_1px_rgba(251,146,60,0.2)]";
+      Icon = HelpCircle;
+      title = `Missing variables: ${missing.join(', ')}`;
+  }
+
+  const Component = isTextArea ? 'textarea' : 'input';
+
+  return (
+    <div className="relative group/input">
+      <Component
+        placeholder={placeholder}
+        className={`w-full p-2.5 border rounded-lg text-sm bg-background transition-all focus:ring-2 focus:ring-primary/20 focus:outline-none ${borderColor} ${className}`}
+        value={value}
+        rows={isTextArea ? 2 : undefined}
+        onChange={(e: any) => onChange(e.target.value)}
+        title={title}
+      />
+      {Icon && (
+          <div className="absolute right-3 top-3 pointer-events-none">
+              <Icon size={14} className={!isValid ? "text-red-500" : "text-orange-400"} />
+          </div>
+      )}
+    </div>
+  );
+}
 
 export const BookmarkBlock = createReactBlockSpec(
   {
@@ -73,43 +131,42 @@ export const BookmarkBlock = createReactBlockSpec(
       };
 
       return (
-        <div className="grid gap-3 p-4 border rounded-md bg-muted/30 shadow-sm">
-          <div className="flex items-center gap-2 font-semibold">
-             <Bookmark size={18} className="text-primary" />
-             <span>Bookmark</span>
+        <div className="grid gap-4 p-5 border rounded-xl bg-card shadow-sm my-2 border-primary/20 relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-1 h-full bg-primary" />
+          <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 font-bold text-primary">
+                 <Bookmark size={18} className="fill-primary/10" />
+                 <span>Bookmark</span>
+              </div>
           </div>
-          <div className="grid gap-2">
-            <input
+          <div className="grid gap-3">
+            <ValidatedInput
               placeholder="Title (Handlebars supported)"
-              className="p-2 border rounded-md text-sm bg-background focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all shadow-sm"
               value={block.props.title}
-              onChange={(e) => updateProp('title', e.target.value)}
+              onChange={(v) => updateProp('title', v)}
             />
-            <input
+            <ValidatedInput
               placeholder="URL (Handlebars supported)"
-              className="p-2 border rounded-md text-sm bg-background focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all shadow-sm"
               value={block.props.url}
-              onChange={(e) => updateProp('url', e.target.value)}
+              onChange={(v) => updateProp('url', v)}
+              className="font-mono text-[13px]"
             />
-            <textarea
+            <ValidatedInput
               placeholder="Description (Handlebars supported)"
-              className="p-2 border rounded-md text-sm bg-background focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all shadow-sm"
-              rows={2}
+              isTextArea={true}
               value={block.props.description}
-              onChange={(e) => updateProp('description', e.target.value)}
+              onChange={(v) => updateProp('description', v)}
             />
-            <div className="grid grid-cols-2 gap-2">
-              <input
+            <div className="grid grid-cols-2 gap-3">
+              <ValidatedInput
                 placeholder="Tags (comma separated)"
-                className="p-2 border rounded-md text-sm bg-background focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all shadow-sm"
                 value={block.props.tags}
-                onChange={(e) => updateProp('tags', e.target.value)}
+                onChange={(v) => updateProp('tags', v)}
               />
-              <input
+              <ValidatedInput
                 placeholder="Keywords (comma separated)"
-                className="p-2 border rounded-md text-sm bg-background focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all shadow-sm"
                 value={block.props.keywords}
-                onChange={(e) => updateProp('keywords', e.target.value)}
+                onChange={(v) => updateProp('keywords', v)}
               />
             </div>
           </div>
