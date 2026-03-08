@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+:root {
+  --background: 210 20% 98%;
+  --foreground: 222 47% 11%;
+  
+  --primary: 175 39% 34%; /* Teal-ish from 1100.a.fix-style.md */
+  --primary-foreground: 210 20% 98%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 222 47% 11%;
+
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 222 47% 11%;
+  --foreground: 210 20% 98%;
+
+  --primary: 175 39% 44%;
+  --primary-foreground: 210 20% 98%;
+
+  --card: 222 47% 11%;
+  --card-foreground: 210 20% 98%;
+
+  --border: 217 33% 17%;
+  --input: 217 33% 17%;
+  --ring: 213 27% 84%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom wiggly lines for Handlebars validation */
+.hb-invalid {
+  text-decoration: underline wavy red;
+}
+
+.hb-missing {
+  text-decoration: underline wavy orange 2px;
+}
