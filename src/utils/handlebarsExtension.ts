@@ -80,10 +80,11 @@ function findHandlebars(doc: any) {
         } else {
             const parts = raw.split('.');
             const tableName = parts[0];
-            const color = appState.variableColors[tableName];
+            const colName = parts[1];
+            const color = appState.getColumnColor(tableName, colName);
             if (color) {
                 decorations.push(Decoration.inline(start, end, { 
-                    style: `background-color: ${color.bg}; color: ${color.text}; border: 1px solid ${color.border}; border-radius: 2px; padding: 0 2px;` 
+                    style: `background-color: ${color.bg}; color: ${color.text}; border: 1px solid ${color.border}; border-radius: 2px; padding: 0 2px; font-weight: 500;` 
                 }));
             }
         }

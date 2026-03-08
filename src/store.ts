@@ -24,6 +24,27 @@ export const appState = {
   },
   variables: {} as Record<string, string[][]>,
   variableColors: {} as Record<string, typeof COLORS[0]>,
+  getColumnColor: (tableName: string, colName?: string) => {
+    const baseColor = appState.variableColors[tableName];
+    if (!baseColor) return null;
+    if (!colName || colName === tableName) return baseColor;
+
+    const headers = appState.variables[tableName]?.[0] || [];
+    const index = headers.indexOf(colName);
+    if (index === -1) return baseColor;
+
+    // Generate shades by modifying background opacity or using CSS color-mix
+    // For simplicity, we'll return CSS values that use color-mix if possible, 
+    // but since we need it for JS style objects, we'll use a simple alpha approach.
+    // Base bg is already light, so we can make it slightly darker/more opaque for different columns.
+    
+    // index 0: 0.1, index 1: 0.2, ...
+    const opacity = 0.1 + (index % 5) * 0.15;
+    return {
+        ...baseColor,
+        bg: `${baseColor.border}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}`,
+    };
+  },
   detectedVariables: [] as Variable[],
   template: [] as any[], // BlockNote blocks
   theme: "light" as "light" | "dark",

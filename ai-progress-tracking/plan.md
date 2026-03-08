@@ -50,6 +50,9 @@
 - [x] Fix "Comment and Folder components are not editable/viewable" by adding min-height and proper contentRef handling.
 - [x] Fix "Initial loaded comment does not work" by correcting BlockNote initial content format.
 - [x] Remove "Emoji from Others menu" by explicitly disabling emojiPicker and other default UI components in BlockNoteView.
+- [x] Fix "Folder component placeholder does not disappear" by adding focus-based CSS and empty-check improvements.
+- [x] Implement "Column-specific shades" for Handlebars highlighting and variable table headers.
+- [x] Implement "Rich text highlighting" for Bookmark block fields (Title, URL, etc.) using a custom overlay component.
 
 ## 8. Final Verification
 - [ ] A11y check (WCAG 2.1 Level AA).

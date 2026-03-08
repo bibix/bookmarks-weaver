@@ -127,10 +127,15 @@ function VariableTable({ tableName }: { tableName: string }) {
         <style>{`
             .variable-table-container [data-content-type="table"] table th,
             .variable-table-container [data-content-type="table"] tr:first-child td {
-                background-color: ${color?.bg}88 !important;
                 font-weight: bold !important;
                 font-family: monospace !important;
             }
+            ${(appState.variables[tableName]?.[0] || [tableName]).map((col, i) => `
+                .variable-table-container [data-content-type="table"] tr:first-child td:nth-child(${i + 1}) {
+                    background-color: ${appState.getColumnColor(tableName, col)?.bg} !important;
+                    color: ${appState.getColumnColor(tableName, col)?.text} !important;
+                }
+            `).join('\n')}
         `}</style>
         <BlockNoteView 
           editor={editor} 
