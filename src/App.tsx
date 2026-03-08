@@ -4,6 +4,7 @@ import { TemplateEditor } from './components/TemplateEditor';
 import { VariablesSection } from './components/VariablesSection';
 import { PreviewSection } from './components/PreviewSection';
 import { Globe, Sun, Moon } from 'lucide-react';
+import { appState } from './store';
 
 function App() {
   const { t, i18n } = useTranslation();

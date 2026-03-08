@@ -21,6 +21,10 @@ interface AppState {
 
 export const appState = {
   fileName: "bookmarks-{{yyyy}}-{{mm}}-{{dd}}.html",
+  setFileName: (name: string) => {
+    appState.fileName = name;
+    appState.notify();
+  },
   variables: {} as Record<string, string[][]>,
   detectedVariables: [] as Variable[],
   template: [] as any[], // BlockNote blocks

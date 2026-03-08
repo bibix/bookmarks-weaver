@@ -44,6 +44,7 @@
 - [x] Synchronize BlockNote theme with dark/light mode toggle via `appState`.
 - [x] Improve visual hierarchy with card-like sections and shadow effects.
 - [x] Enhance accessibility with better focus states and interactive elements.
+- [x] Fix "Nothing is displayed" bug by restoring missing `appState` import and properties.
 
 ## 8. Final Verification
 - [ ] A11y check (WCAG 2.1 Level AA).
