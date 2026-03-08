@@ -56,6 +56,9 @@
 - [x] Fix "Variable resolution logic" to include bookmark deduplication for correct sibling looping.
 - [x] Update "Netscape Bookmarks generator" to include KEYWORDS attribute and support date variables (yyyy, mm, dd) in all templates.
 - [x] Refine "Custom Block placeholders" to disappear correctly on focus or when content is present.
+- [x] Increase application maximum width to `1400px` for better display of long URLs and wider bookmark components.
+- [x] Remove Folder placeholder and improve its visual identification for direct editability.
+- [x] Robustify variable resolution and folder looping logic in `generator.ts`, including trimming and robust merging.
 
 ## 8. Final Verification
 - [x] A11y check (WCAG 2.1 Level AA).

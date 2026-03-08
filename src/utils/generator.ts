@@ -121,20 +121,20 @@ function resolveBlocks(blocks: any[], data: any): (Folder | Bookmark)[] {
 
     blocks.forEach(block => {
         if (block.type === 'folder') {
-            const nameTemplate = block.content.map((i: any) => i.text).join('');
-            const resolvedName = resolveTemplate(nameTemplate, data);
+            const nameTemplate = (block.content || []).map((i: any) => i.text || "").join('');
+            const resolvedName = resolveTemplate(nameTemplate, data).trim();
             results.push({
-                name: resolvedName,
+                name: resolvedName || "Untitled Folder",
                 children: resolveBlocks(block.children || [], data)
             } as Folder);
         } else if (block.type === 'bookmark') {
             const props = block.props;
             results.push({
-                title: resolveTemplate(props.title, data),
-                url: resolveTemplate(props.url, data),
-                description: resolveTemplate(props.description, data),
-                tags: resolveTemplate(props.tags, data).split(',').map((s: string) => s.trim()).filter(Boolean),
-                keywords: resolveTemplate(props.keywords, data).split(',').map((s: string) => s.trim()).filter(Boolean),
+                title: resolveTemplate(props.title || "", data).trim(),
+                url: resolveTemplate(props.url || "", data).trim(),
+                description: resolveTemplate(props.description || "", data).trim(),
+                tags: resolveTemplate(props.tags || "", data).split(',').map((s: string) => s.trim()).filter(Boolean),
+                keywords: resolveTemplate(props.keywords || "", data).split(',').map((s: string) => s.trim()).filter(Boolean),
             } as Bookmark);
         } else if (block.type === 'paragraph' || block.type === 'comment') {
              // Handle children of paragraphs/comments if they have folders/bookmarks inside
@@ -151,11 +151,11 @@ function resolveBlocks(blocks: any[], data: any): (Folder | Bookmark)[] {
 function mergeTrees(target: Folder, source: (Folder | Bookmark)[]) {
     source.forEach(item => {
         if ('children' in item) {
-            let existingFolder = target.children.find(c => 'children' in c && c.name === item.name) as Folder;
+            let existingFolder = target.children.find(c => 'children' in c && c.name.trim() === item.name.trim()) as Folder;
             if (existingFolder) {
                 mergeTrees(existingFolder, item.children);
             } else {
-                target.children.push(item);
+                target.children.push(JSON.parse(JSON.stringify(item)));
             }
         } else {
             // Deduplicate bookmarks to handle sibling Cartesian product loops correctly

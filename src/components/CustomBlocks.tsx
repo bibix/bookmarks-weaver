@@ -40,12 +40,11 @@ export const FolderBlock = createReactBlockSpec(
   {
     render: ({ contentRef }) => {
       return (
-        <div className="flex items-center gap-2 py-2 group">
+        <div className="flex items-center gap-2 py-2 group border-b border-dashed border-primary/20 hover:border-primary/40 transition-all cursor-text">
           <Folder size={20} className="text-primary fill-primary/10 shrink-0 group-hover:scale-110 transition-transform" />
           <div 
             ref={contentRef} 
-            className="font-bold text-lg text-foreground tracking-tight outline-none w-full min-h-[1.5em] relative blocknote-placeholder"
-            data-placeholder="Folder name (Handlebars supported)"
+            className="font-bold text-lg text-foreground tracking-tight outline-none w-full min-h-[1.5em] relative"
           />
         </div>
       );

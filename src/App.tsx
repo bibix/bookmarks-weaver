@@ -58,7 +58,7 @@ function App() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 max-w-5xl grid gap-12">
+      <main className="container mx-auto px-4 py-8 max-w-[1400px] grid gap-12">
         <section className="space-y-4">
           <div className="flex items-center gap-2">
             <h2 className="text-2xl font-semibold tracking-tight">{t('sections.fileName')}</h2>
