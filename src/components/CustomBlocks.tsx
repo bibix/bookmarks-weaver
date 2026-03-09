@@ -1,53 +1,49 @@
 import { defaultProps } from "@blocknote/core";
-import { createReactBlockSpec } from "@blocknote/react";
+import { createReactBlockSpec, createReactInlineContentSpec } from "@blocknote/react";
 import React, { useState, useEffect } from "react";
 import { MessageSquare, Folder, Bookmark, AlertCircle, HelpCircle } from "lucide-react";
 import { validateHandlebars, checkMissingVariables } from "../utils/handlebars";
 import { appState } from "../store";
 
-export const CommentBlock = createReactBlockSpec(
+export const CommentInline = createReactInlineContentSpec(
   {
     type: "comment",
-    propSchema: {
-      ...defaultProps,
-    },
-    content: "inline",
+    propSchema: {},
+    content: "styled",
   },
   {
     render: ({ contentRef }) => {
       return (
-        <div className="flex items-center gap-3 p-2.5 text-muted-foreground italic border-l-4 border-primary/30 bg-muted/20 rounded-r-md my-1">
-          <MessageSquare size={16} className="shrink-0" />
-          <div 
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 text-muted-foreground italic border-l-2 border-primary/30 bg-muted/10 rounded-sm mx-1 align-middle">
+          <MessageSquare size={14} className="shrink-0" />
+          <span 
             ref={contentRef} 
-            className="outline-none w-full min-h-[1.5em] relative blocknote-placeholder"
-            data-placeholder="Your comment here..."
+            className="outline-none min-w-[1em] relative blocknote-placeholder"
+            data-placeholder="Comment..."
           />
-        </div>
+        </span>
       );
     },
   }
 );
 
-export const FolderBlock = createReactBlockSpec(
+export const FolderInline = createReactInlineContentSpec(
   {
-    type: "bulletListItem",
-    propSchema: {
-      ...defaultProps,
-    },
-    content: "inline",
+    type: "folder",
+    propSchema: {},
+    content: "styled",
   },
   {
     render: ({ contentRef }) => {
       return (
-        <div className="flex items-center gap-2 py-2 group border-b border-dashed border-primary/20 focus-within:border-primary/60 transition-all cursor-text">
-          <Folder size={20} className="text-primary fill-primary/10 shrink-0 group-hover:scale-110 transition-transform" />
-          <div 
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 font-bold border-b border-dashed border-primary/40 text-foreground mx-1 align-middle">
+          <Folder size={16} className="text-primary shrink-0" />
+          <span 
             ref={contentRef} 
-            className="font-bold text-lg text-foreground tracking-tight outline-none w-full min-h-[1.5em] relative blocknote-placeholder"
+            className="outline-none min-w-[2em] relative blocknote-placeholder"
             data-placeholder="Folder Name"
           />
-        </div>
+        </span>
       );
     },
   }

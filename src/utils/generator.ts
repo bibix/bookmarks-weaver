@@ -125,18 +125,33 @@ function getInlineContentText(content: any): string {
         return content.map(getInlineContentText).join('');
     }
     if (typeof content === 'object') {
+        if (content.type === 'comment') return "";
         if (typeof content.text === 'string') return content.text;
         if (content.type === 'text' && typeof content.text === 'string') return content.text;
+        // Recursive for custom inline content with "styled" content
         if (content.content) return getInlineContentText(content.content);
     }
     return "";
+}
+
+function hasFolderInline(content: any): boolean {
+    if (!content) return false;
+    if (Array.isArray(content)) {
+        return content.some(hasFolderInline);
+    }
+    if (typeof content === 'object') {
+        if (content.type === 'folder') return true;
+        if (content.content) return hasFolderInline(content.content);
+    }
+    return false;
 }
 
 function resolveBlocks(blocks: any[], data: any): (Folder | Bookmark)[] {
     const results: (Folder | Bookmark)[] = [];
 
     blocks.forEach(block => {
-        if (block.type === 'folder' || block.type === 'bulletListItem') {
+        const isFolder = block.type === 'folder' || block.type === 'bulletListItem' || hasFolderInline(block.content);
+        if (isFolder) {
             const nameTemplate = getInlineContentText(block.content);
             const resolvedName = resolveTemplate(nameTemplate, data).trim();
             results.push({
