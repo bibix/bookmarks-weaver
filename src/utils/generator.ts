@@ -100,7 +100,9 @@ export function resolveAll(blocks: any[], variables: Record<string, string[][]>)
         return root;
     }
 
-    // Cartesian product of tableData
+    // Cartesian product of tableData ensures that "Nested folders create extra nested looped structure"
+    // as requested by business requirements. For each combination of variables from all tables,
+    // we resolve the entire block structure and merge it into the root tree.
     const combinations = cartesianProduct(tableData);
 
     combinations.forEach(combo => {
@@ -116,17 +118,35 @@ function cartesianProduct(arrays: any[][]): any[][] {
     return arrays.reduce((a, b) => a.flatMap(d => b.map(e => [d, e].flat())), [[]]);
 }
 
+function getInlineContentText(content: any): string {
+    if (!content) return "";
+    if (typeof content === 'string') return content;
+    if (Array.isArray(content)) {
+        return content.map(getInlineContentText).join('');
+    }
+    if (typeof content === 'object') {
+        if (typeof content.text === 'string') return content.text;
+        if (content.type === 'text' && typeof content.text === 'string') return content.text;
+        if (content.content) return getInlineContentText(content.content);
+    }
+    return "";
+}
+
 function resolveBlocks(blocks: any[], data: any): (Folder | Bookmark)[] {
     const results: (Folder | Bookmark)[] = [];
 
     blocks.forEach(block => {
-        if (block.type === 'folder') {
-            const nameTemplate = (block.content || []).map((i: any) => i.text || "").join('');
+        if (block.type === 'folder' || block.type === 'bulletListItem') {
+            const nameTemplate = getInlineContentText(block.content);
             const resolvedName = resolveTemplate(nameTemplate, data).trim();
             results.push({
                 name: resolvedName || "Untitled Folder",
                 children: resolveBlocks(block.children || [], data)
             } as Folder);
+        } else if (block.type === 'bulletList' || block.type === 'orderedList') {
+             if (block.children) {
+                 results.push(...resolveBlocks(block.children, data));
+             }
         } else if (block.type === 'bookmark') {
             const props = block.props;
             results.push({

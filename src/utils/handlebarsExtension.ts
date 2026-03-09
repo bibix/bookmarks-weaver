@@ -84,7 +84,8 @@ function findHandlebars(doc: any) {
             const color = appState.getColumnColor(tableName, colName);
             if (color) {
                 decorations.push(Decoration.inline(start, end, { 
-                    style: `background-color: ${color.bg}; color: ${color.text}; border: 1px solid ${color.border}; border-radius: 2px; padding: 0 2px; font-weight: 500;` 
+                    class: "variable-tag",
+                    style: `background-color: ${color.bg}; color: ${color.text}; border: 1px solid ${color.border};` 
                 }));
             }
         }

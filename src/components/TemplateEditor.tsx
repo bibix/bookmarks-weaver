@@ -23,7 +23,7 @@ const schema = BlockNoteSchema.create({
   blockSpecs: {
     paragraph: defaultBlockSpecs.paragraph,
     comment: CommentBlock,
-    folder: FolderBlock,
+    bulletListItem: FolderBlock,
     bookmark: BookmarkBlock,
   },
   inlineContentSpecs: {
@@ -95,7 +95,7 @@ export function TemplateEditor() {
       title: "Folder",
       onItemClick: () => {
         insertOrUpdateBlock(editor, {
-          type: "folder",
+          type: "bulletListItem",
         });
       },
       aliases: ["folder", "group"],

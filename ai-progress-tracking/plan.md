@@ -59,6 +59,10 @@
 - [x] Increase application maximum width to `1400px` for better display of long URLs and wider bookmark components.
 - [x] Remove Folder placeholder and improve its visual identification for direct editability.
 - [x] Robustify variable resolution and folder looping logic in `generator.ts`, including trimming and robust merging.
+- [x] Extend `FolderBlock` from `BulletListItem` to support editor nesting/indentation (Tab/Shift-Tab).
+- [x] Fix "Untitled Folder" rendering by more robust extraction of text from folder blocks in `generator.ts`.
+- [x] Fix variable highlighting in `FolderBlock` by updating `HandlebarsHighlighter` to use `.variable-tag` class and support built-ins.
+- [x] Enhance `FolderBlock` with a placeholder and focus state to make it clear where to enter the name.
 
 ## 8. Final Verification
 - [x] A11y check (WCAG 2.1 Level AA).

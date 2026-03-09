@@ -25,6 +25,14 @@ export const appState = {
   variables: {} as Record<string, string[][]>,
   variableColors: {} as Record<string, typeof COLORS[0]>,
   getColumnColor: (tableName: string, colName?: string) => {
+    const builtIns: Record<string, typeof COLORS[0]> = {
+        yyyy: { bg: '#f1f5f9', text: '#475569', border: '#94a3b8' },
+        mm: { bg: '#f1f5f9', text: '#475569', border: '#94a3b8' },
+        dd: { bg: '#f1f5f9', text: '#475569', border: '#94a3b8' }
+    };
+
+    if (builtIns[tableName]) return builtIns[tableName];
+
     const baseColor = appState.variableColors[tableName];
     if (!baseColor) return null;
     if (!colName || colName === tableName) return baseColor;
