@@ -1,0 +1,113 @@
+{
+  "app": {
+    "title": "Bookmarks Weaver",
+    "tagline": "Incolla un URL, intreccia le variabili, ottieni un set completo di segnalibri.",
+    "skipToContent": "Vai al contenuto principale",
+    "mainLandmark": "Area di lavoro di Bookmarks Weaver",
+    "footer": "Tutto avviene nel browser. Niente viene inviato al server."
+  },
+  "modes": {
+    "beginner": "Modalità guidata",
+    "expert": "Modalità esperto",
+    "toggleHint": "Passa dal tutorial passo-passo alla vista compatta."
+  },
+  "controls": {
+    "theme": "Tema",
+    "themeLight": "Chiaro",
+    "themeDark": "Scuro",
+    "themeSystem": "Sistema",
+    "palette": "Palette colori",
+    "paletteDefault": "Predefinita",
+    "paletteDeuteranopia": "Per deuteranopia",
+    "paletteProtanopia": "Per protanopia",
+    "paletteTritanopia": "Per tritanopia",
+    "paletteHighContrast": "Alto contrasto",
+    "language": "Lingua",
+    "textSize": "Dimensione testo",
+    "textSizeDecrease": "Riduci testo",
+    "textSizeIncrease": "Ingrandisci testo",
+    "textSizeReset": "Dimensione predefinita",
+    "undo": "Annulla",
+    "redo": "Ripeti",
+    "reset": "Reimposta tutto"
+  },
+  "sections": {
+    "input": "Input URL",
+    "inputHelp": "Incolla qualsiasi URL. Ogni parte viene analizzata e colorata automaticamente.",
+    "parsed": "URL analizzato",
+    "parsedHelp": "Ogni frammento è mostrato come pillola con il suo colore.",
+    "parameters": "Parametri di query",
+    "parametersHelp": "Ogni chiave e ogni valore sono separati: puoi trasformarli in variabili.",
+    "variables": "Variabili",
+    "variablesHelp": "Definisci elenchi o tabelle. Ogni riga aggiunge un set di valori ai segnalibri generati.",
+    "templates": "Template segnalibri",
+    "templatesHelp": "Usa segnaposto {{example}} per comporre cartelle, nomi e parole chiave.",
+    "results": "Segnalibri generati"
+  },
+  "input": {
+    "label": "URL da analizzare",
+    "placeholder": "https://esempio.it/percorso?chiave=valore#frammento",
+    "paste": "Incolla dagli appunti"
+  },
+  "parts": {
+    "scheme": "Schema",
+    "domain": "Dominio",
+    "port": "Porta",
+    "path": "Percorso",
+    "query": "Query",
+    "queryKey": "Chiave",
+    "queryValue": "Valore",
+    "fragment": "Frammento",
+    "variable": "Variabile",
+    "empty": "—"
+  },
+  "selection": {
+    "tooltip": "Selezionato: \"{{text}}\"",
+    "create": "Crea variabile",
+    "namePrompt": "Nome variabile",
+    "cancel": "Annulla"
+  },
+  "variables": {
+    "empty": "Nessuna variabile. Seleziona una parte dell'URL e usa il pulsante «+».",
+    "addList": "Aggiungi elenco",
+    "addTable": "Aggiungi tabella",
+    "namePlaceholder": "nome_variabile",
+    "nameLabel": "Nome variabile",
+    "valuesLabel": "Valori (uno per riga)",
+    "remove": "Rimuovi variabile",
+    "addColumn": "Aggiungi colonna",
+    "removeColumn": "Rimuovi colonna",
+    "columnName": "Nome colonna",
+    "list": "Elenco",
+    "table": "Tabella",
+    "rowCount_one": "{{count}} riga",
+    "rowCount_other": "{{count}} righe"
+  },
+  "templates": {
+    "name": "Nome segnalibro",
+    "namePlaceholder": "{name} — {categoria}",
+    "folder": "Cartella (usa / per annidare)",
+    "folderPlaceholder": "Ricerca/{engine}",
+    "keywords": "Parole chiave (separate da spazi)",
+    "keywordsPlaceholder": "{categoria} {tag}"
+  },
+  "results": {
+    "summary_one": "{{count}} segnalibro generato.",
+    "summary_other": "{{count}} segnalibri generati.",
+    "summaryEmpty": "Niente da generare ancora — incolla un URL sopra.",
+    "preview": "Anteprima",
+    "download": "Scarica file segnalibri",
+    "copy": "Copia tutti gli URL",
+    "copied": "Copiato!",
+    "format": "Formato",
+    "formatHtml": "HTML Netscape",
+    "formatJson": "JSON",
+    "formatCsv": "CSV"
+  },
+  "a11y": {
+    "live": "Aggiornamenti dal vivo",
+    "selectionPopup": "Azioni per la selezione",
+    "removeVariable": "Rimuovi variabile {{name}}",
+    "removeColumn": "Rimuovi colonna {{name}}"
+  }
+}

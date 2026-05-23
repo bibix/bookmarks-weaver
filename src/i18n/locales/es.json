@@ -1,0 +1,113 @@
+{
+  "app": {
+    "title": "Bookmarks Weaver",
+    "tagline": "Pega una URL, teje variables y obtén un conjunto completo de marcadores.",
+    "skipToContent": "Saltar al contenido principal",
+    "mainLandmark": "Espacio de trabajo de Bookmarks Weaver",
+    "footer": "Todo ocurre en tu navegador. No se envía nada al servidor."
+  },
+  "modes": {
+    "beginner": "Modo guiado",
+    "expert": "Modo experto",
+    "toggleHint": "Alterna entre el tutorial paso a paso y la vista compacta."
+  },
+  "controls": {
+    "theme": "Tema",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro",
+    "themeSystem": "Sistema",
+    "palette": "Paleta de colores",
+    "paletteDefault": "Por defecto",
+    "paletteDeuteranopia": "Apto para deuteranopía",
+    "paletteProtanopia": "Apto para protanopía",
+    "paletteTritanopia": "Apto para tritanopía",
+    "paletteHighContrast": "Alto contraste",
+    "language": "Idioma",
+    "textSize": "Tamaño de texto",
+    "textSizeDecrease": "Reducir tamaño",
+    "textSizeIncrease": "Aumentar tamaño",
+    "textSizeReset": "Tamaño por defecto",
+    "undo": "Deshacer",
+    "redo": "Rehacer",
+    "reset": "Reiniciar todo"
+  },
+  "sections": {
+    "input": "URL de entrada",
+    "inputHelp": "Pega cualquier URL. Cada parte se analiza automáticamente y se colorea abajo.",
+    "parsed": "URL analizada",
+    "parsedHelp": "Cada fragmento aparece como una etiqueta con su propio color.",
+    "parameters": "Parámetros de consulta",
+    "parametersHelp": "Cada clave y cada valor se muestran por separado para convertirlos en variables.",
+    "variables": "Variables",
+    "variablesHelp": "Define listas o tablas. Cada fila aporta un conjunto de valores al generar marcadores.",
+    "templates": "Plantillas de marcadores",
+    "templatesHelp": "Usa marcadores {{example}} para componer rutas de carpetas, nombres y palabras clave.",
+    "results": "Marcadores generados"
+  },
+  "input": {
+    "label": "URL a analizar",
+    "placeholder": "https://ejemplo.com/ruta?clave=valor#fragmento",
+    "paste": "Pegar del portapapeles"
+  },
+  "parts": {
+    "scheme": "Esquema",
+    "domain": "Dominio",
+    "port": "Puerto",
+    "path": "Ruta",
+    "query": "Consulta",
+    "queryKey": "Clave",
+    "queryValue": "Valor",
+    "fragment": "Fragmento",
+    "variable": "Variable",
+    "empty": "—"
+  },
+  "selection": {
+    "tooltip": "Seleccionado: \"{{text}}\"",
+    "create": "Convertir en variable",
+    "namePrompt": "Nombre de variable",
+    "cancel": "Cancelar"
+  },
+  "variables": {
+    "empty": "Aún no hay variables. Selecciona texto en la URL y usa el botón «+» para crear una.",
+    "addList": "Añadir lista",
+    "addTable": "Añadir tabla",
+    "namePlaceholder": "nombre_variable",
+    "nameLabel": "Nombre de variable",
+    "valuesLabel": "Valores (uno por línea)",
+    "remove": "Eliminar variable",
+    "addColumn": "Añadir columna",
+    "removeColumn": "Eliminar columna",
+    "columnName": "Nombre de columna",
+    "list": "Lista",
+    "table": "Tabla",
+    "rowCount_one": "{{count}} fila",
+    "rowCount_other": "{{count}} filas"
+  },
+  "templates": {
+    "name": "Nombre del marcador",
+    "namePlaceholder": "{name} — {categoria}",
+    "folder": "Carpeta (usa / para anidar)",
+    "folderPlaceholder": "Buscadores/{engine}",
+    "keywords": "Palabras clave (separadas por espacios)",
+    "keywordsPlaceholder": "{categoria} {tag}"
+  },
+  "results": {
+    "summary_one": "{{count}} marcador generado.",
+    "summary_other": "{{count}} marcadores generados.",
+    "summaryEmpty": "Nada que generar todavía — pega una URL arriba.",
+    "preview": "Vista previa",
+    "download": "Descargar archivo de marcadores",
+    "copy": "Copiar todas las URLs",
+    "copied": "¡Copiado!",
+    "format": "Formato",
+    "formatHtml": "HTML Netscape",
+    "formatJson": "JSON",
+    "formatCsv": "CSV"
+  },
+  "a11y": {
+    "live": "Actualizaciones en vivo",
+    "selectionPopup": "Acciones para la selección",
+    "removeVariable": "Eliminar variable {{name}}",
+    "removeColumn": "Eliminar columna {{name}}"
+  }
+}

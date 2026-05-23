@@ -1,0 +1,113 @@
+{
+  "app": {
+    "title": "Bookmarks Weaver",
+    "tagline": "URL einfügen, Variablen einweben, vollständigen Lesezeichensatz erhalten.",
+    "skipToContent": "Zum Hauptinhalt springen",
+    "mainLandmark": "Bookmarks-Weaver-Arbeitsbereich",
+    "footer": "Alles läuft im Browser. Es werden keine Daten an einen Server gesendet."
+  },
+  "modes": {
+    "beginner": "Geführter Modus",
+    "expert": "Expertenmodus",
+    "toggleHint": "Wechselt zwischen Schritt-für-Schritt-Anleitung und kompaktem Layout."
+  },
+  "controls": {
+    "theme": "Design",
+    "themeLight": "Hell",
+    "themeDark": "Dunkel",
+    "themeSystem": "System",
+    "palette": "Farbpalette",
+    "paletteDefault": "Standard",
+    "paletteDeuteranopia": "Deuteranopie-freundlich",
+    "paletteProtanopia": "Protanopie-freundlich",
+    "paletteTritanopia": "Tritanopie-freundlich",
+    "paletteHighContrast": "Hoher Kontrast",
+    "language": "Sprache",
+    "textSize": "Textgröße",
+    "textSizeDecrease": "Text verkleinern",
+    "textSizeIncrease": "Text vergrößern",
+    "textSizeReset": "Textgröße zurücksetzen",
+    "undo": "Rückgängig",
+    "redo": "Wiederholen",
+    "reset": "Alles zurücksetzen"
+  },
+  "sections": {
+    "input": "URL-Eingabe",
+    "inputHelp": "Beliebige URL einfügen. Jeder Bestandteil wird automatisch erkannt und farblich markiert.",
+    "parsed": "Geparste URL",
+    "parsedHelp": "Jeder Bestandteil wird als beschriftete, farbige Pille dargestellt.",
+    "parameters": "Query-Parameter",
+    "parametersHelp": "Jeder Schlüssel und Wert ist einzeln klickbar und kann zur Variablen werden.",
+    "variables": "Variablen",
+    "variablesHelp": "Listen oder Tabellen definieren. Jede Zeile liefert einen Wertesatz für die Lesezeichen.",
+    "templates": "Lesezeichen-Vorlagen",
+    "templatesHelp": "Mit {{example}}-Platzhaltern Ordnerpfade, Namen und Schlüsselwörter erstellen.",
+    "results": "Generierte Lesezeichen"
+  },
+  "input": {
+    "label": "Zu analysierende URL",
+    "placeholder": "https://beispiel.de/pfad?schluessel=wert#fragment",
+    "paste": "Aus Zwischenablage einfügen"
+  },
+  "parts": {
+    "scheme": "Schema",
+    "domain": "Domain",
+    "port": "Port",
+    "path": "Pfad",
+    "query": "Query",
+    "queryKey": "Schlüssel",
+    "queryValue": "Wert",
+    "fragment": "Fragment",
+    "variable": "Variable",
+    "empty": "—"
+  },
+  "selection": {
+    "tooltip": "Ausgewählt: \"{{text}}\"",
+    "create": "Als Variable anlegen",
+    "namePrompt": "Variablenname",
+    "cancel": "Abbrechen"
+  },
+  "variables": {
+    "empty": "Noch keine Variablen. Markiere oben einen Teil der URL und nutze die „+\"-Schaltfläche.",
+    "addList": "Listen-Variable hinzufügen",
+    "addTable": "Tabellen-Variable hinzufügen",
+    "namePlaceholder": "variablen_name",
+    "nameLabel": "Variablenname",
+    "valuesLabel": "Werte (eine pro Zeile)",
+    "remove": "Variable entfernen",
+    "addColumn": "Spalte hinzufügen",
+    "removeColumn": "Spalte entfernen",
+    "columnName": "Spaltenname",
+    "list": "Liste",
+    "table": "Tabelle",
+    "rowCount_one": "{{count}} Zeile",
+    "rowCount_other": "{{count}} Zeilen"
+  },
+  "templates": {
+    "name": "Name des Lesezeichens",
+    "namePlaceholder": "{name} — {kategorie}",
+    "folder": "Ordnerpfad (mit / verschachteln)",
+    "folderPlaceholder": "Suchen/{engine}",
+    "keywords": "Schlüsselwörter (durch Leerzeichen getrennt)",
+    "keywordsPlaceholder": "{kategorie} {tag}"
+  },
+  "results": {
+    "summary_one": "{{count}} Lesezeichen erstellt.",
+    "summary_other": "{{count}} Lesezeichen erstellt.",
+    "summaryEmpty": "Noch nichts zu generieren — bitte oben eine URL einfügen.",
+    "preview": "Vorschau",
+    "download": "Lesezeichendatei herunterladen",
+    "copy": "Alle URLs kopieren",
+    "copied": "Kopiert!",
+    "format": "Format",
+    "formatHtml": "Netscape HTML",
+    "formatJson": "JSON",
+    "formatCsv": "CSV"
+  },
+  "a11y": {
+    "live": "Live-Aktualisierungen",
+    "selectionPopup": "Aktionen für Auswahl",
+    "removeVariable": "Variable {{name}} entfernen",
+    "removeColumn": "Spalte {{name}} entfernen"
+  }
+}

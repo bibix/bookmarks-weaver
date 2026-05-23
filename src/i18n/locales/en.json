@@ -1,0 +1,113 @@
+{
+  "app": {
+    "title": "Bookmarks Weaver",
+    "tagline": "Paste a URL, weave variables in, get a whole set of bookmarks.",
+    "skipToContent": "Skip to main content",
+    "mainLandmark": "Bookmarks Weaver workspace",
+    "footer": "All processing happens in your browser. Nothing is sent to any server."
+  },
+  "modes": {
+    "beginner": "Beginner guide",
+    "expert": "Expert mode",
+    "toggleHint": "Switch between a guided walkthrough and the compact expert layout."
+  },
+  "controls": {
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System",
+    "palette": "Color palette",
+    "paletteDefault": "Default",
+    "paletteDeuteranopia": "Deuteranopia friendly",
+    "paletteProtanopia": "Protanopia friendly",
+    "paletteTritanopia": "Tritanopia friendly",
+    "paletteHighContrast": "High contrast",
+    "language": "Language",
+    "textSize": "Text size",
+    "textSizeDecrease": "Decrease text size",
+    "textSizeIncrease": "Increase text size",
+    "textSizeReset": "Reset text size",
+    "undo": "Undo",
+    "redo": "Redo",
+    "reset": "Reset everything"
+  },
+  "sections": {
+    "input": "URL input",
+    "inputHelp": "Paste any URL. Each part is parsed automatically and colour-coded below.",
+    "parsed": "Parsed URL",
+    "parsedHelp": "Each fragment is shown as a pill with its own colour and label.",
+    "parameters": "Query parameters",
+    "parametersHelp": "Each key and each value is rendered separately so you can extract any of them as a variable.",
+    "variables": "Variables",
+    "variablesHelp": "Define lists or tables. Each row contributes one set of values when the bookmarks are generated.",
+    "templates": "Bookmark templates",
+    "templatesHelp": "Use {{example}} placeholders to compose folder paths, bookmark names and keywords from your variables.",
+    "results": "Generated bookmarks"
+  },
+  "input": {
+    "label": "URL to parse",
+    "placeholder": "https://example.com/path?key=value#fragment",
+    "paste": "Paste from clipboard"
+  },
+  "parts": {
+    "scheme": "Scheme",
+    "domain": "Domain",
+    "port": "Port",
+    "path": "Path",
+    "query": "Query",
+    "queryKey": "Key",
+    "queryValue": "Value",
+    "fragment": "Fragment",
+    "variable": "Variable",
+    "empty": "—"
+  },
+  "selection": {
+    "tooltip": "Selected: \"{{text}}\"",
+    "create": "Make this a variable",
+    "namePrompt": "Variable name",
+    "cancel": "Cancel"
+  },
+  "variables": {
+    "empty": "No variables yet. Select any part of the URL above and use the \"+\" button to create one.",
+    "addList": "Add list variable",
+    "addTable": "Add table variable",
+    "namePlaceholder": "variable_name",
+    "nameLabel": "Variable name",
+    "valuesLabel": "Values (one per line)",
+    "remove": "Remove variable",
+    "addColumn": "Add column",
+    "removeColumn": "Remove column",
+    "columnName": "Column name",
+    "list": "List",
+    "table": "Table",
+    "rowCount_one": "{{count}} row",
+    "rowCount_other": "{{count}} rows"
+  },
+  "templates": {
+    "name": "Bookmark name",
+    "namePlaceholder": "{name} — {category}",
+    "folder": "Folder path (use / to nest)",
+    "folderPlaceholder": "Search/{engine}",
+    "keywords": "Keywords (space separated)",
+    "keywordsPlaceholder": "{category} {tag}"
+  },
+  "results": {
+    "summary_one": "{{count}} bookmark generated.",
+    "summary_other": "{{count}} bookmarks generated.",
+    "summaryEmpty": "Nothing to generate yet — paste a URL above.",
+    "preview": "Preview",
+    "download": "Download bookmarks file",
+    "copy": "Copy all URLs",
+    "copied": "Copied!",
+    "format": "Format",
+    "formatHtml": "Netscape HTML",
+    "formatJson": "JSON",
+    "formatCsv": "CSV"
+  },
+  "a11y": {
+    "live": "Live updates",
+    "selectionPopup": "Selection actions",
+    "removeVariable": "Remove variable {{name}}",
+    "removeColumn": "Remove column {{name}}"
+  }
+}

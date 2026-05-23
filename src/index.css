@@ -1,0 +1,256 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --c-scheme-bg: #bfdbfe;
+  --c-scheme-fg: #1e3a8a;
+  --c-domain-bg: #bbf7d0;
+  --c-domain-fg: #14532d;
+  --c-port-bg: #e9d5ff;
+  --c-port-fg: #581c87;
+  --c-path-bg: #fed7aa;
+  --c-path-fg: #7c2d12;
+  --c-query-key-bg: #fde68a;
+  --c-query-key-fg: #78350f;
+  --c-query-value-bg: #fef3c7;
+  --c-query-value-fg: #78350f;
+  --c-fragment-bg: #a5f3fc;
+  --c-fragment-fg: #155e75;
+  --c-variable-bg: #fbcfe8;
+  --c-variable-fg: #831843;
+  --c-app-bg: #faf6ee;
+  --c-app-surface: #ffffff;
+  --c-app-text: #1f2937;
+  --c-app-muted: #6b7280;
+  --c-app-border: #e5e7eb;
+  --c-accent: #0d9488;
+  --c-accent-hover: #0f766e;
+  --c-focus: #2563eb;
+  --text-scale: 1;
+}
+
+html.dark {
+  --c-scheme-bg: #1e3a8a;
+  --c-scheme-fg: #bfdbfe;
+  --c-domain-bg: #14532d;
+  --c-domain-fg: #bbf7d0;
+  --c-port-bg: #581c87;
+  --c-port-fg: #e9d5ff;
+  --c-path-bg: #7c2d12;
+  --c-path-fg: #fed7aa;
+  --c-query-key-bg: #78350f;
+  --c-query-key-fg: #fde68a;
+  --c-query-value-bg: #92400e;
+  --c-query-value-fg: #fef3c7;
+  --c-fragment-bg: #155e75;
+  --c-fragment-fg: #a5f3fc;
+  --c-variable-bg: #831843;
+  --c-variable-fg: #fbcfe8;
+  --c-app-bg: #0f172a;
+  --c-app-surface: #1e293b;
+  --c-app-text: #f1f5f9;
+  --c-app-muted: #94a3b8;
+  --c-app-border: #334155;
+  --c-accent: #14b8a6;
+  --c-accent-hover: #2dd4bf;
+  --c-focus: #60a5fa;
+}
+
+/* Color-blind safe palettes (Wong & IBM colour-blind-safe) */
+html[data-palette="deuteranopia"] {
+  --c-scheme-bg: #648fff;
+  --c-scheme-fg: #ffffff;
+  --c-domain-bg: #ffb000;
+  --c-domain-fg: #1f1f1f;
+  --c-port-bg: #785ef0;
+  --c-port-fg: #ffffff;
+  --c-path-bg: #fe6100;
+  --c-path-fg: #ffffff;
+  --c-query-key-bg: #dc267f;
+  --c-query-key-fg: #ffffff;
+  --c-query-value-bg: #ffafd1;
+  --c-query-value-fg: #1f1f1f;
+  --c-fragment-bg: #8ad8ff;
+  --c-fragment-fg: #1f1f1f;
+  --c-variable-bg: #000000;
+  --c-variable-fg: #ffffff;
+}
+html[data-palette="protanopia"] {
+  --c-scheme-bg: #0072b2;
+  --c-scheme-fg: #ffffff;
+  --c-domain-bg: #e69f00;
+  --c-domain-fg: #1f1f1f;
+  --c-port-bg: #56b4e9;
+  --c-port-fg: #1f1f1f;
+  --c-path-bg: #d55e00;
+  --c-path-fg: #ffffff;
+  --c-query-key-bg: #cc79a7;
+  --c-query-key-fg: #ffffff;
+  --c-query-value-bg: #f0e442;
+  --c-query-value-fg: #1f1f1f;
+  --c-fragment-bg: #009e73;
+  --c-fragment-fg: #ffffff;
+  --c-variable-bg: #000000;
+  --c-variable-fg: #ffffff;
+}
+html[data-palette="tritanopia"] {
+  --c-scheme-bg: #d81b60;
+  --c-scheme-fg: #ffffff;
+  --c-domain-bg: #1e88e5;
+  --c-domain-fg: #ffffff;
+  --c-port-bg: #ffc107;
+  --c-port-fg: #1f1f1f;
+  --c-path-bg: #004d40;
+  --c-path-fg: #ffffff;
+  --c-query-key-bg: #6a1b9a;
+  --c-query-key-fg: #ffffff;
+  --c-query-value-bg: #c2e7ff;
+  --c-query-value-fg: #1f1f1f;
+  --c-fragment-bg: #ffab91;
+  --c-fragment-fg: #1f1f1f;
+  --c-variable-bg: #000000;
+  --c-variable-fg: #ffffff;
+}
+html[data-palette="high-contrast"] {
+  --c-scheme-bg: #000000;
+  --c-scheme-fg: #ffffff;
+  --c-domain-bg: #ffffff;
+  --c-domain-fg: #000000;
+  --c-port-bg: #ffff00;
+  --c-port-fg: #000000;
+  --c-path-bg: #000000;
+  --c-path-fg: #ffff00;
+  --c-query-key-bg: #ffffff;
+  --c-query-key-fg: #000000;
+  --c-query-value-bg: #ffff00;
+  --c-query-value-fg: #000000;
+  --c-fragment-bg: #00ffff;
+  --c-fragment-fg: #000000;
+  --c-variable-bg: #ff00ff;
+  --c-variable-fg: #000000;
+  --c-app-bg: #ffffff;
+  --c-app-surface: #ffffff;
+  --c-app-text: #000000;
+  --c-app-border: #000000;
+  --c-accent: #000000;
+  --c-accent-hover: #333333;
+  --c-focus: #ff00ff;
+}
+html.dark[data-palette="high-contrast"] {
+  --c-app-bg: #000000;
+  --c-app-surface: #000000;
+  --c-app-text: #ffffff;
+  --c-app-border: #ffffff;
+  --c-accent: #ffff00;
+  --c-accent-hover: #ffffff;
+}
+
+html {
+  font-size: calc(16px * var(--text-scale));
+}
+
+body {
+  background-color: var(--c-app-bg);
+  color: var(--c-app-text);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  min-height: 100vh;
+}
+
+*:focus-visible {
+  outline: 3px solid var(--c-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.bw-surface {
+  background-color: var(--c-app-surface);
+  border: 1px solid var(--c-app-border);
+}
+
+.bw-muted { color: var(--c-app-muted); }
+
+.bw-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.bw-pill--scheme   { background: var(--c-scheme-bg);      color: var(--c-scheme-fg); }
+.bw-pill--domain   { background: var(--c-domain-bg);      color: var(--c-domain-fg); }
+.bw-pill--port     { background: var(--c-port-bg);        color: var(--c-port-fg); }
+.bw-pill--path     { background: var(--c-path-bg);        color: var(--c-path-fg); }
+.bw-pill--qkey     { background: var(--c-query-key-bg);   color: var(--c-query-key-fg); }
+.bw-pill--qvalue   { background: var(--c-query-value-bg); color: var(--c-query-value-fg); }
+.bw-pill--fragment { background: var(--c-fragment-bg);    color: var(--c-fragment-fg); }
+.bw-pill--variable { background: var(--c-variable-bg);    color: var(--c-variable-fg); font-weight: 600; }
+
+.bw-underline {
+  background-image: linear-gradient(to top, currentColor 0, currentColor 2px, transparent 2px);
+  padding-bottom: 1px;
+}
+
+.bw-button {
+  background-color: var(--c-accent);
+  color: #ffffff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: background-color 0.15s ease;
+  min-height: 44px;
+  min-width: 44px;
+}
+.bw-button:hover { background-color: var(--c-accent-hover); }
+.bw-button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.bw-button-ghost {
+  background: transparent;
+  color: var(--c-app-text);
+  border: 1px solid var(--c-app-border);
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.5rem;
+  min-height: 44px;
+  min-width: 44px;
+}
+.bw-button-ghost:hover { background-color: var(--c-app-border); }
+
+.bw-input,
+.bw-textarea,
+.bw-select {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--c-app-border);
+  background-color: var(--c-app-surface);
+  color: var(--c-app-text);
+  font-size: 1rem;
+  min-height: 44px;
+}
+
+.bw-textarea {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  resize: vertical;
+}
+
+.bw-skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  padding: 0.5rem 1rem;
+  background: var(--c-accent);
+  color: #ffffff;
+  z-index: 100;
+  border-radius: 0 0 0.5rem 0;
+}
+.bw-skip-link:focus { top: 0; }
+
+.bw-monospace {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
