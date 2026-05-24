@@ -1,17 +1,18 @@
 {
   "app": {
     "title": "Bookmarks Weaver",
-    "tagline": "URL einfügen, Variablen einweben, vollständigen Lesezeichensatz erhalten.",
-    "skipToContent": "Zum Hauptinhalt springen",
-    "mainLandmark": "Bookmarks-Weaver-Arbeitsbereich",
-    "footer": "Alles läuft im Browser. Es werden keine Daten an einen Server gesendet."
+    "tagline": "Vorlage erstellen, Variablen definieren, ganzen Lesezeichenbaum weben.",
+    "skipToContent": "Zum Inhalt springen",
+    "mainLandmark": "Arbeitsbereich Bookmarks Weaver",
+    "footer": "Alles läuft im Browser. Nichts wird an einen Server gesendet."
   },
-  "modes": {
-    "beginner": "Geführter Modus",
-    "expert": "Expertenmodus",
-    "toggleHint": "Wechselt zwischen Schritt-für-Schritt-Anleitung und kompaktem Layout."
+  "common": {
+    "delete": "Löschen"
   },
   "controls": {
+    "history": "Verlauf",
+    "view": "Ansicht",
+    "locale": "Sprache",
     "theme": "Design",
     "themeLight": "Hell",
     "themeDark": "Dunkel",
@@ -32,82 +33,86 @@
     "reset": "Alles zurücksetzen"
   },
   "sections": {
-    "input": "URL-Eingabe",
-    "inputHelp": "Beliebige URL einfügen. Jeder Bestandteil wird automatisch erkannt und farblich markiert.",
-    "parsed": "Geparste URL",
-    "parsedHelp": "Jeder Bestandteil wird als beschriftete, farbige Pille dargestellt.",
-    "parameters": "Query-Parameter",
-    "parametersHelp": "Jeder Schlüssel und Wert ist einzeln klickbar und kann zur Variablen werden.",
+    "filename": "Dateiname der Ausgabe",
+    "filenameHelp": "Wähle den Namen der heruntergeladenen Lesezeichendatei. Datumsplatzhalter werden unterstützt.",
+    "template": "Vorlage",
+    "templateHelp": "Verwende Ordner, Lesezeichen und Kommentare. Jedes Feld akzeptiert Handlebars-Ausdrücke wie {{beispiel}} oder {{user.name}}.",
     "variables": "Variablen",
-    "variablesHelp": "Listen oder Tabellen definieren. Jede Zeile liefert einen Wertesatz für die Lesezeichen.",
-    "templates": "Lesezeichen-Vorlagen",
-    "templatesHelp": "Mit {{example}}-Platzhaltern Ordnerpfade, Namen und Schlüsselwörter erstellen.",
-    "results": "Generierte Lesezeichen"
+    "variablesHelp": "Variablen aus der Vorlage erscheinen hier als Tabellen. Jede Zeile liefert ein Wertset.",
+    "results": "Erzeugte Lesezeichen",
+    "resultsHelp": "Klappbare Vorschau des Ordnerbaums. Als Netscape-Datei herunterladbar."
   },
-  "input": {
-    "label": "Zu analysierende URL",
-    "placeholder": "https://beispiel.de/pfad?schluessel=wert#fragment",
-    "paste": "Aus Zwischenablage einfügen"
+  "filename": {
+    "label": "Dateinamen-Vorlage",
+    "help": "Unterstützte Platzhalter: {{yyyy}}, {{mm}}, {{dd}}, {{hh}}, {{min}}.",
+    "preview": "Vorschau"
   },
-  "parts": {
-    "scheme": "Schema",
-    "domain": "Domain",
-    "port": "Port",
-    "path": "Pfad",
-    "query": "Query",
-    "queryKey": "Schlüssel",
-    "queryValue": "Wert",
-    "fragment": "Fragment",
-    "variable": "Variable",
-    "empty": "—"
-  },
-  "selection": {
-    "tooltip": "Ausgewählt: \"{{text}}\"",
-    "create": "Als Variable anlegen",
-    "namePrompt": "Variablenname",
-    "cancel": "Abbrechen"
+  "template": {
+    "editor": "Vorlagen-Editor",
+    "empty": "Füge einen Ordner, ein Lesezeichen oder einen Kommentar hinzu.",
+    "folder": "Ordner",
+    "folderName": "Ordnername",
+    "folderNamePlaceholder": "Ordnername (Handlebars erlaubt)",
+    "folderEmpty": "Leerer Ordner. Füge Unterordner oder Lesezeichen hinzu.",
+    "deleteFolder": "Ordner löschen",
+    "bookmark": "Lesezeichen",
+    "title": "Titel",
+    "titlePlaceholder": "{{name}} - {{category}}",
+    "url": "URL",
+    "urlPlaceholder": "https://beispiel.de/{{username}}",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Kurze Notiz zum Lesezeichen",
+    "tags": "Tags",
+    "tagPlaceholder": "{{category}}",
+    "keywords": "Schlüsselwörter",
+    "keywordPlaceholder": "{{shortcut}}",
+    "noTags": "Noch keine Einträge.",
+    "addTag": "Hinzufügen",
+    "removeTag": "Eintrag {{index}} entfernen",
+    "deleteBookmark": "Lesezeichen löschen",
+    "comment": "Kommentar",
+    "commentPlaceholder": "Hinterlasse eine Notiz für dich oder dein Team.",
+    "deleteComment": "Kommentar löschen"
   },
   "variables": {
-    "empty": "Noch keine Variablen. Markiere oben einen Teil der URL und nutze die „+\"-Schaltfläche.",
-    "addList": "Listen-Variable hinzufügen",
-    "addTable": "Tabellen-Variable hinzufügen",
-    "namePlaceholder": "variablen_name",
+    "empty": "Noch keine Variablen. Verwende {{variable}} oder {{table.column}} in der Vorlage oben.",
     "nameLabel": "Variablenname",
-    "valuesLabel": "Werte (eine pro Zeile)",
-    "remove": "Variable entfernen",
-    "addColumn": "Spalte hinzufügen",
-    "removeColumn": "Spalte entfernen",
     "columnName": "Spaltenname",
-    "list": "Liste",
-    "table": "Tabelle",
-    "rowCount_one": "{{count}} Zeile",
-    "rowCount_other": "{{count}} Zeilen"
+    "addColumn": "Spalte hinzufügen",
+    "addRow": "Zeile hinzufügen",
+    "removeRow": "Zeile {{index}} entfernen"
   },
-  "templates": {
-    "name": "Name des Lesezeichens",
-    "namePlaceholder": "{name} — {kategorie}",
-    "folder": "Ordnerpfad (mit / verschachteln)",
-    "folderPlaceholder": "Suchen/{engine}",
-    "keywords": "Schlüsselwörter (durch Leerzeichen getrennt)",
-    "keywordsPlaceholder": "{kategorie} {tag}"
+  "handlebars": {
+    "invalid_one": "{{count}} ungültiger Ausdruck in diesem Feld.",
+    "invalid_other": "{{count}} ungültige Ausdrücke in diesem Feld.",
+    "unknown_one": "{{count}} Verweis auf unbekannte Variable.",
+    "unknown_other": "{{count}} Verweise auf unbekannte Variablen."
   },
   "results": {
-    "summary_one": "{{count}} Lesezeichen erstellt.",
-    "summary_other": "{{count}} Lesezeichen erstellt.",
-    "summaryEmpty": "Noch nichts zu generieren — bitte oben eine URL einfügen.",
+    "summary_one": "{{count}} Lesezeichen erzeugt.",
+    "summary_other": "{{count}} Lesezeichen erzeugt.",
+    "summaryEmpty": "Noch nichts zu erzeugen - füge ein Lesezeichen zur Vorlage hinzu.",
     "preview": "Vorschau",
-    "download": "Lesezeichendatei herunterladen",
-    "copy": "Alle URLs kopieren",
-    "copied": "Kopiert!",
-    "format": "Format",
-    "formatHtml": "Netscape HTML",
-    "formatJson": "JSON",
-    "formatCsv": "CSV"
+    "previewEmpty": "(leer)",
+    "untitled": "Unbenanntes Lesezeichen",
+    "download": "Lesezeichendatei herunterladen"
   },
   "a11y": {
-    "live": "Live-Aktualisierungen",
-    "selectionPopup": "Aktionen für Auswahl",
     "removeVariable": "Variable {{name}} entfernen",
-    "removeColumn": "Spalte {{name}} entfernen"
+    "removeColumn": "Spalte {{name}} entfernen",
+    "cell": "Zeile {{row}}, Spalte {{column}}"
+  },
+  "library": {
+    "toolbar": "Vorlagenbibliothek",
+    "variablesToolbar": "Variablen importieren/exportieren",
+    "save": "Speichern…",
+    "load": "Laden",
+    "export": "Exportieren",
+    "import": "Importieren",
+    "delete": "Gespeicherte Vorlage löschen",
+    "deleteAria": "Gespeicherte Vorlage {{name}} löschen",
+    "deleteConfirm": "Gespeicherte Vorlage \"{{name}}\" löschen?",
+    "namePrompt": "Aktuelle Vorlage speichern als…",
+    "empty": "Noch keine gespeicherten Vorlagen."
   }
 }

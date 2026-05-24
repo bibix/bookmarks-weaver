@@ -57,16 +57,30 @@ export function useHistory<T>(initial: T) {
     setState({ past: [], present: value, future: [] })
   }, [])
 
+  /**
+   * Update `present` without touching `past` / `future`. Intended for
+   * derived/secondary changes (e.g., variable auto-sync) that should
+   * appear as part of the user's last committed edit when they undo.
+   */
+  const replace = useCallback((producer: (prev: T) => T) => {
+    setState((current) => {
+      const next = producer(current.present)
+      if (Object.is(next, current.present)) return current
+      return { ...current, present: next }
+    })
+  }, [])
+
   return useMemo(
     () => ({
       state: state.present,
       update,
+      replace,
       undo,
       redo,
       reset,
       canUndo: state.past.length > 0,
       canRedo: state.future.length > 0,
     }),
-    [state, update, undo, redo, reset],
+    [state, update, replace, undo, redo, reset],
   )
 }

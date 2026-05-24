@@ -1,117 +1,118 @@
 {
   "app": {
     "title": "Bookmarks Weaver",
-    "tagline": "Wklej URL, dodaj zmienne i pobierz gotowy zestaw zakładek.",
+    "tagline": "Zbuduj szablon, zdefiniuj zmienne i wygeneruj całe drzewo zakładek.",
     "skipToContent": "Przejdź do treści",
-    "mainLandmark": "Obszar roboczy Bookmarks Weaver",
-    "footer": "Wszystko dzieje się w przeglądarce. Żadne dane nie są wysyłane na serwer."
+    "mainLandmark": "Obszar pracy Bookmarks Weaver",
+    "footer": "Wszystko dzieje się w przeglądarce. Nic nie jest wysyłane na serwer."
   },
-  "modes": {
-    "beginner": "Tryb prowadzony",
-    "expert": "Tryb eksperta",
-    "toggleHint": "Przełącz między przewodnikiem krok po kroku a zwartym układem dla zaawansowanych."
+  "common": {
+    "delete": "Usuń"
   },
   "controls": {
+    "history": "Historia",
+    "view": "Widok",
+    "locale": "Język",
     "theme": "Motyw",
     "themeLight": "Jasny",
     "themeDark": "Ciemny",
     "themeSystem": "Systemowy",
     "palette": "Paleta kolorów",
     "paletteDefault": "Domyślna",
-    "paletteDeuteranopia": "Deuteranopia",
-    "paletteProtanopia": "Protanopia",
-    "paletteTritanopia": "Tritanopia",
+    "paletteDeuteranopia": "Przyjazna dla deuteranopii",
+    "paletteProtanopia": "Przyjazna dla protanopii",
+    "paletteTritanopia": "Przyjazna dla tritanopii",
     "paletteHighContrast": "Wysoki kontrast",
     "language": "Język",
     "textSize": "Rozmiar tekstu",
     "textSizeDecrease": "Zmniejsz tekst",
-    "textSizeIncrease": "Powiększ tekst",
-    "textSizeReset": "Domyślny rozmiar tekstu",
+    "textSizeIncrease": "Zwiększ tekst",
+    "textSizeReset": "Przywróć rozmiar tekstu",
     "undo": "Cofnij",
     "redo": "Ponów",
     "reset": "Wyczyść wszystko"
   },
   "sections": {
-    "input": "Wprowadź URL",
-    "inputHelp": "Wklej dowolny adres URL. Każda jego część zostanie automatycznie oznaczona kolorem.",
-    "parsed": "Sparsowany URL",
-    "parsedHelp": "Każdy fragment jest pokazany jako kolorowy znacznik z etykietą.",
-    "parameters": "Parametry zapytania",
-    "parametersHelp": "Każdy klucz i wartość są osobne — możesz z każdego zrobić zmienną.",
+    "filename": "Nazwa pliku wyjściowego",
+    "filenameHelp": "Wybierz nazwę pobieranego pliku z zakładkami. Obsługiwane są symbole daty.",
+    "template": "Szablon",
+    "templateHelp": "Używaj folderów, zakładek i komentarzy. Każde pole akceptuje wyrażenia handlebars, np. {{przykład}} lub {{user.name}}.",
     "variables": "Zmienne",
-    "variablesHelp": "Definiuj listy lub tabele. Każdy wiersz to jeden zestaw wartości w generowanych zakładkach.",
-    "templates": "Szablony zakładek",
-    "templatesHelp": "Używaj zapisu {{example}}, aby tworzyć ścieżki folderów, nazwy i słowa kluczowe.",
-    "results": "Wygenerowane zakładki"
+    "variablesHelp": "Zmienne użyte w szablonie pojawiają się tu jako tabele. Każdy wiersz dodaje jeden zestaw wartości.",
+    "results": "Wygenerowane zakładki",
+    "resultsHelp": "Rozwijalny podgląd drzewa folderów. Pobierz w formacie Netscape."
   },
-  "input": {
-    "label": "URL do analizy",
-    "placeholder": "https://przyklad.pl/sciezka?klucz=wartosc#fragment",
-    "paste": "Wklej ze schowka"
+  "filename": {
+    "label": "Szablon nazwy pliku",
+    "help": "Obsługiwane symbole: {{yyyy}}, {{mm}}, {{dd}}, {{hh}}, {{min}}.",
+    "preview": "Podgląd"
   },
-  "parts": {
-    "scheme": "Schemat",
-    "domain": "Domena",
-    "port": "Port",
-    "path": "Ścieżka",
-    "query": "Zapytanie",
-    "queryKey": "Klucz",
-    "queryValue": "Wartość",
-    "fragment": "Fragment",
-    "variable": "Zmienna",
-    "empty": "—"
-  },
-  "selection": {
-    "tooltip": "Zaznaczono: \"{{text}}\"",
-    "create": "Zrób z tego zmienną",
-    "namePrompt": "Nazwa zmiennej",
-    "cancel": "Anuluj"
+  "template": {
+    "editor": "Edytor szablonu",
+    "empty": "Dodaj folder, zakładkę lub komentarz, aby zacząć.",
+    "folder": "Folder",
+    "folderName": "Nazwa folderu",
+    "folderNamePlaceholder": "Nazwa folderu (handlebars dozwolony)",
+    "folderEmpty": "Pusty folder. Dodaj podfoldery lub zakładki.",
+    "deleteFolder": "Usuń folder",
+    "bookmark": "Zakładka",
+    "title": "Tytuł",
+    "titlePlaceholder": "{{name}} - {{category}}",
+    "url": "Adres",
+    "urlPlaceholder": "https://przyklad.pl/{{username}}",
+    "description": "Opis",
+    "descriptionPlaceholder": "Krótka notatka o zakładce",
+    "tags": "Tagi",
+    "tagPlaceholder": "{{category}}",
+    "keywords": "Słowa kluczowe",
+    "keywordPlaceholder": "{{shortcut}}",
+    "noTags": "Brak wpisów.",
+    "addTag": "Dodaj",
+    "removeTag": "Usuń wpis {{index}}",
+    "deleteBookmark": "Usuń zakładkę",
+    "comment": "Komentarz",
+    "commentPlaceholder": "Napisz notatkę dla siebie lub zespołu.",
+    "deleteComment": "Usuń komentarz"
   },
   "variables": {
-    "empty": "Brak zmiennych. Zaznacz fragment URL powyżej i kliknij „+\", aby dodać zmienną.",
-    "addList": "Dodaj listę",
-    "addTable": "Dodaj tabelę",
-    "namePlaceholder": "nazwa_zmiennej",
+    "empty": "Brak zmiennych. Użyj {{variable}} lub {{table.column}} w szablonie powyżej, aby utworzyć je automatycznie.",
     "nameLabel": "Nazwa zmiennej",
-    "valuesLabel": "Wartości (jedna w linii)",
-    "remove": "Usuń zmienną",
-    "addColumn": "Dodaj kolumnę",
-    "removeColumn": "Usuń kolumnę",
     "columnName": "Nazwa kolumny",
-    "list": "Lista",
-    "table": "Tabela",
-    "rowCount_one": "{{count}} wiersz",
-    "rowCount_few": "{{count}} wiersze",
-    "rowCount_many": "{{count}} wierszy",
-    "rowCount_other": "{{count}} wiersza"
+    "addColumn": "Dodaj kolumnę",
+    "addRow": "Dodaj wiersz",
+    "removeRow": "Usuń wiersz {{index}}"
   },
-  "templates": {
-    "name": "Nazwa zakładki",
-    "namePlaceholder": "{name} — {kategoria}",
-    "folder": "Folder (oddziel / aby zagnieździć)",
-    "folderPlaceholder": "Wyszukiwarki/{engine}",
-    "keywords": "Słowa kluczowe (rozdzielone spacją)",
-    "keywordsPlaceholder": "{kategoria} {tag}"
+  "handlebars": {
+    "invalid_one": "{{count}} nieprawidłowe wyrażenie w tym polu.",
+    "invalid_other": "{{count}} nieprawidłowych wyrażeń w tym polu.",
+    "unknown_one": "{{count}} odwołanie do nieznanej zmiennej.",
+    "unknown_other": "{{count}} odwołań do nieznanych zmiennych."
   },
   "results": {
     "summary_one": "Wygenerowano {{count}} zakładkę.",
-    "summary_few": "Wygenerowano {{count}} zakładki.",
-    "summary_many": "Wygenerowano {{count}} zakładek.",
-    "summary_other": "Wygenerowano {{count}} zakładki.",
-    "summaryEmpty": "Nic jeszcze nie wygenerowano — wklej URL powyżej.",
+    "summary_other": "Wygenerowano {{count}} zakładek.",
+    "summaryEmpty": "Nic do wygenerowania - dodaj zakładkę do szablonu.",
     "preview": "Podgląd",
-    "download": "Pobierz plik zakładek",
-    "copy": "Skopiuj wszystkie URL-e",
-    "copied": "Skopiowano!",
-    "format": "Format",
-    "formatHtml": "Netscape HTML",
-    "formatJson": "JSON",
-    "formatCsv": "CSV"
+    "previewEmpty": "(pusty)",
+    "untitled": "Zakładka bez tytułu",
+    "download": "Pobierz plik zakładek"
   },
   "a11y": {
-    "live": "Aktualizacje na żywo",
-    "selectionPopup": "Akcje dla zaznaczenia",
     "removeVariable": "Usuń zmienną {{name}}",
-    "removeColumn": "Usuń kolumnę {{name}}"
+    "removeColumn": "Usuń kolumnę {{name}}",
+    "cell": "Wiersz {{row}}, kolumna {{column}}"
+  },
+  "library": {
+    "toolbar": "Biblioteka szablonów",
+    "variablesToolbar": "Import/eksport zmiennych",
+    "save": "Zapisz…",
+    "load": "Wczytaj",
+    "export": "Eksport",
+    "import": "Import",
+    "delete": "Usuń zapisany szablon",
+    "deleteAria": "Usuń zapisany szablon {{name}}",
+    "deleteConfirm": "Usunąć zapisany szablon \"{{name}}\"?",
+    "namePrompt": "Zapisz bieżący szablon jako…",
+    "empty": "Brak zapisanych szablonów."
   }
 }

@@ -1,17 +1,18 @@
 {
   "app": {
     "title": "Bookmarks Weaver",
-    "tagline": "Paste a URL, weave variables in, get a whole set of bookmarks.",
+    "tagline": "Compose a template, define your variables, weave a whole bookmark tree.",
     "skipToContent": "Skip to main content",
     "mainLandmark": "Bookmarks Weaver workspace",
     "footer": "All processing happens in your browser. Nothing is sent to any server."
   },
-  "modes": {
-    "beginner": "Beginner guide",
-    "expert": "Expert mode",
-    "toggleHint": "Switch between a guided walkthrough and the compact expert layout."
+  "common": {
+    "delete": "Delete"
   },
   "controls": {
+    "history": "History",
+    "view": "View",
+    "locale": "Locale",
     "theme": "Theme",
     "themeLight": "Light",
     "themeDark": "Dark",
@@ -32,82 +33,98 @@
     "reset": "Reset everything"
   },
   "sections": {
-    "input": "URL input",
-    "inputHelp": "Paste any URL. Each part is parsed automatically and colour-coded below.",
-    "parsed": "Parsed URL",
-    "parsedHelp": "Each fragment is shown as a pill with its own colour and label.",
-    "parameters": "Query parameters",
-    "parametersHelp": "Each key and each value is rendered separately so you can extract any of them as a variable.",
+    "filename": "Output file name",
+    "filenameHelp": "Choose how the downloaded bookmarks file will be named. Date placeholders are supported.",
+    "template": "Template",
+    "templateHelp": "Use folders, bookmarks and comments. Every text field accepts handlebars expressions like {{example}} or {{user.name}}.",
     "variables": "Variables",
-    "variablesHelp": "Define lists or tables. Each row contributes one set of values when the bookmarks are generated.",
-    "templates": "Bookmark templates",
-    "templatesHelp": "Use {{example}} placeholders to compose folder paths, bookmark names and keywords from your variables.",
-    "results": "Generated bookmarks"
+    "variablesHelp": "Variables you reference in the template appear here as tables. Each row contributes one set of values when bookmarks are generated.",
+    "results": "Generated bookmarks",
+    "resultsHelp": "An expandable preview of the resolved folder tree. Download it as a Netscape bookmarks file."
   },
-  "input": {
-    "label": "URL to parse",
-    "placeholder": "https://example.com/path?key=value#fragment",
-    "paste": "Paste from clipboard"
+  "filename": {
+    "label": "File name template",
+    "help": "Supported placeholders: {{yyyy}}, {{mm}}, {{dd}}, {{hh}}, {{min}}.",
+    "preview": "Preview"
   },
-  "parts": {
-    "scheme": "Scheme",
-    "domain": "Domain",
-    "port": "Port",
-    "path": "Path",
-    "query": "Query",
-    "queryKey": "Key",
-    "queryValue": "Value",
-    "fragment": "Fragment",
-    "variable": "Variable",
-    "empty": "—"
-  },
-  "selection": {
-    "tooltip": "Selected: \"{{text}}\"",
-    "create": "Make this a variable",
-    "namePrompt": "Variable name",
-    "cancel": "Cancel"
+  "template": {
+    "editor": "Template editor",
+    "empty": "Add a folder, bookmark or comment to start.",
+    "folder": "Folder",
+    "folderName": "Folder name",
+    "folderNamePlaceholder": "Folder name (handlebars allowed)",
+    "folderEmpty": "Empty folder. Add nested folders or bookmarks.",
+    "deleteFolder": "Delete folder",
+    "bookmark": "Bookmark",
+    "title": "Title",
+    "titlePlaceholder": "{{name}} - {{category}}",
+    "url": "URL",
+    "urlPlaceholder": "https://example.com/{{username}}",
+    "description": "Description",
+    "descriptionPlaceholder": "Short note about this bookmark",
+    "tags": "Tags",
+    "tagPlaceholder": "{{category}}",
+    "keywords": "Keywords",
+    "keywordPlaceholder": "{{shortcut}}",
+    "noTags": "No entries yet.",
+    "addTag": "Add",
+    "removeTag": "Remove entry {{index}}",
+    "deleteBookmark": "Delete bookmark",
+    "comment": "Comment",
+    "commentPlaceholder": "Write a note for yourself or your team.",
+    "deleteComment": "Delete comment"
   },
   "variables": {
-    "empty": "No variables yet. Select any part of the URL above and use the \"+\" button to create one.",
-    "addList": "Add list variable",
-    "addTable": "Add table variable",
-    "namePlaceholder": "variable_name",
+    "empty": "No variables yet. Use {{variable}} or {{table.column}} in the template above to create them automatically.",
     "nameLabel": "Variable name",
-    "valuesLabel": "Values (one per line)",
-    "remove": "Remove variable",
-    "addColumn": "Add column",
-    "removeColumn": "Remove column",
     "columnName": "Column name",
-    "list": "List",
-    "table": "Table",
-    "rowCount_one": "{{count}} row",
-    "rowCount_other": "{{count}} rows"
+    "addColumn": "Add column",
+    "addRow": "Add row",
+    "removeRow": "Remove row {{index}}"
   },
-  "templates": {
-    "name": "Bookmark name",
-    "namePlaceholder": "{name} — {category}",
-    "folder": "Folder path (use / to nest)",
-    "folderPlaceholder": "Search/{engine}",
-    "keywords": "Keywords (space separated)",
-    "keywordsPlaceholder": "{category} {tag}"
+  "handlebars": {
+    "invalid_one": "{{count}} invalid expression in this field.",
+    "invalid_other": "{{count}} invalid expressions in this field.",
+    "unknown_one": "{{count}} reference to an unknown variable.",
+    "unknown_other": "{{count}} references to unknown variables.",
+    "preview": "Preview"
   },
   "results": {
     "summary_one": "{{count}} bookmark generated.",
     "summary_other": "{{count}} bookmarks generated.",
-    "summaryEmpty": "Nothing to generate yet — paste a URL above.",
+    "summaryEmpty": "Nothing to generate yet - add a bookmark to the template.",
     "preview": "Preview",
-    "download": "Download bookmarks file",
-    "copy": "Copy all URLs",
-    "copied": "Copied!",
-    "format": "Format",
-    "formatHtml": "Netscape HTML",
-    "formatJson": "JSON",
-    "formatCsv": "CSV"
+    "previewEmpty": "(empty)",
+    "untitled": "Untitled bookmark",
+    "download": "Download bookmarks file"
   },
   "a11y": {
-    "live": "Live updates",
-    "selectionPopup": "Selection actions",
     "removeVariable": "Remove variable {{name}}",
-    "removeColumn": "Remove column {{name}}"
+    "removeColumn": "Remove column {{name}}",
+    "cell": "Row {{row}}, column {{column}}"
+  },
+  "library": {
+    "toolbar": "Template library",
+    "variablesToolbar": "Variables import/export",
+    "sidebar": "Saved templates",
+    "save": "Save…",
+    "load": "Load",
+    "loadTooltip": "Load this template",
+    "export": "Export",
+    "import": "Import",
+    "delete": "Delete saved template",
+    "deleteAria": "Delete saved template {{name}}",
+    "deleteConfirm": "Delete the saved template \"{{name}}\"?",
+    "namePrompt": "Save current template as…",
+    "descPrompt": "Short description (optional)",
+    "renamePrompt": "Rename to…",
+    "rename": "Rename",
+    "empty": "No saved templates yet.",
+    "newFolder": "+ Folder",
+    "newFolderPrompt": "New folder name",
+    "move": "Move",
+    "movePrompt": "Move to which folder? (type the number)",
+    "moveUp": "Move up",
+    "moveDown": "Move down"
   }
 }

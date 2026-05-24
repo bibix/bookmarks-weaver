@@ -1,68 +1,114 @@
+export type NodeId = string
 export type VariableId = string
+export type ColumnId = string
 
-export interface ListVariable {
+export interface TemplateComment {
+  id: NodeId
+  kind: 'comment'
+  text: string
+}
+
+export interface TemplateFolder {
+  id: NodeId
+  kind: 'folder'
+  name: string
+  children: TemplateNode[]
+}
+
+export interface TemplateBookmark {
+  id: NodeId
+  kind: 'bookmark'
+  title: string
+  url: string
+  description: string
+  tags: string[]
+  keywords: string[]
+}
+
+export type TemplateNode = TemplateComment | TemplateFolder | TemplateBookmark
+
+export interface VariableColumn {
+  id: ColumnId
+  name: string
+}
+
+export interface Variable {
   id: VariableId
   name: string
-  kind: 'list'
   color: string
-  values: string[]
+  columns: VariableColumn[]
+  rows: string[][]
 }
-
-export interface TableColumn {
-  id: string
-  name: string
-  color: string
-  values: string[]
-}
-
-export interface TableVariable {
-  id: VariableId
-  name: string
-  kind: 'table'
-  columns: TableColumn[]
-}
-
-export type Variable = ListVariable | TableVariable
 
 export interface AppState {
-  urlTemplate: string
-  nameTemplate: string
-  folderTemplate: string
-  keywordsTemplate: string
+  outputFileName: string
+  template: TemplateNode[]
   variables: Variable[]
-  beginner: boolean
 }
 
-export interface ParsedUrl {
-  scheme: string
-  domain: string
-  port: string
-  path: string
-  query: { key: string; value: string }[]
-  fragment: string
-  raw: string
+export type TemplateField =
+  | 'folder.name'
+  | 'bookmark.title'
+  | 'bookmark.url'
+  | 'bookmark.description'
+  | 'bookmark.tag'
+  | 'bookmark.keyword'
+  | 'filename'
+
+export interface VarRef {
+  variable: string
+  column?: string
 }
 
-export interface GeneratedBookmark {
+export type TemplateSegment =
+  | { kind: 'text'; text: string }
+  | {
+      kind: 'ref'
+      raw: string
+      ref: VarRef
+      valid: boolean
+      known: boolean
+      start: number
+      end: number
+    }
+  | {
+      kind: 'invalid'
+      raw: string
+      start: number
+      end: number
+      reason: string
+    }
+
+export interface ResolvedBookmark {
+  title: string
   url: string
+  description: string
+  tags: string[]
+  keywords: string[]
+}
+
+export interface ResolvedNode {
+  kind: 'folder' | 'bookmark' | 'comment'
+  id: string
+}
+
+export interface ResolvedFolder extends ResolvedNode {
+  kind: 'folder'
   name: string
-  folder: string
-  keywords: string
+  children: AnyResolvedNode[]
 }
 
-export type FragmentKind =
-  | 'scheme'
-  | 'domain'
-  | 'port'
-  | 'path'
-  | 'qkey'
-  | 'qvalue'
-  | 'fragment'
-  | 'variable'
-  | 'literal'
+export interface ResolvedBookmarkNode extends ResolvedNode {
+  kind: 'bookmark'
+  bookmark: ResolvedBookmark
+}
 
-export interface UrlToken {
-  kind: FragmentKind
+export interface ResolvedComment extends ResolvedNode {
+  kind: 'comment'
   text: string
-  variableName?: string
 }
+
+export type AnyResolvedNode =
+  | ResolvedFolder
+  | ResolvedBookmarkNode
+  | ResolvedComment

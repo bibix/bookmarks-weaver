@@ -1,113 +1,118 @@
 {
   "app": {
     "title": "Bookmarks Weaver",
-    "tagline": "Pega una URL, teje variables y obtén un conjunto completo de marcadores.",
+    "tagline": "Crea una plantilla, define variables y teje todo un árbol de marcadores.",
     "skipToContent": "Saltar al contenido principal",
-    "mainLandmark": "Espacio de trabajo de Bookmarks Weaver",
-    "footer": "Todo ocurre en tu navegador. No se envía nada al servidor."
+    "mainLandmark": "Espacio de trabajo Bookmarks Weaver",
+    "footer": "Todo el procesamiento ocurre en tu navegador. Nada se envía a ningún servidor."
   },
-  "modes": {
-    "beginner": "Modo guiado",
-    "expert": "Modo experto",
-    "toggleHint": "Alterna entre el tutorial paso a paso y la vista compacta."
+  "common": {
+    "delete": "Eliminar"
   },
   "controls": {
+    "history": "Historial",
+    "view": "Vista",
+    "locale": "Idioma",
     "theme": "Tema",
     "themeLight": "Claro",
     "themeDark": "Oscuro",
     "themeSystem": "Sistema",
     "palette": "Paleta de colores",
-    "paletteDefault": "Por defecto",
+    "paletteDefault": "Predeterminada",
     "paletteDeuteranopia": "Apto para deuteranopía",
     "paletteProtanopia": "Apto para protanopía",
     "paletteTritanopia": "Apto para tritanopía",
     "paletteHighContrast": "Alto contraste",
     "language": "Idioma",
-    "textSize": "Tamaño de texto",
-    "textSizeDecrease": "Reducir tamaño",
-    "textSizeIncrease": "Aumentar tamaño",
-    "textSizeReset": "Tamaño por defecto",
+    "textSize": "Tamaño del texto",
+    "textSizeDecrease": "Reducir el texto",
+    "textSizeIncrease": "Aumentar el texto",
+    "textSizeReset": "Restablecer tamaño",
     "undo": "Deshacer",
     "redo": "Rehacer",
-    "reset": "Reiniciar todo"
+    "reset": "Restablecer todo"
   },
   "sections": {
-    "input": "URL de entrada",
-    "inputHelp": "Pega cualquier URL. Cada parte se analiza automáticamente y se colorea abajo.",
-    "parsed": "URL analizada",
-    "parsedHelp": "Cada fragmento aparece como una etiqueta con su propio color.",
-    "parameters": "Parámetros de consulta",
-    "parametersHelp": "Cada clave y cada valor se muestran por separado para convertirlos en variables.",
+    "filename": "Nombre del archivo de salida",
+    "filenameHelp": "Elige el nombre del archivo descargado. Se admiten marcadores de fecha.",
+    "template": "Plantilla",
+    "templateHelp": "Usa carpetas, marcadores y comentarios. Cada campo acepta expresiones handlebars como {{ejemplo}} o {{user.name}}.",
     "variables": "Variables",
-    "variablesHelp": "Define listas o tablas. Cada fila aporta un conjunto de valores al generar marcadores.",
-    "templates": "Plantillas de marcadores",
-    "templatesHelp": "Usa marcadores {{example}} para componer rutas de carpetas, nombres y palabras clave.",
-    "results": "Marcadores generados"
+    "variablesHelp": "Las variables usadas en la plantilla aparecen aquí como tablas. Cada fila aporta un conjunto de valores.",
+    "results": "Marcadores generados",
+    "resultsHelp": "Vista previa expandible del árbol resuelto. Descárgalo como archivo Netscape."
   },
-  "input": {
-    "label": "URL a analizar",
-    "placeholder": "https://ejemplo.com/ruta?clave=valor#fragmento",
-    "paste": "Pegar del portapapeles"
+  "filename": {
+    "label": "Plantilla del nombre de archivo",
+    "help": "Marcadores admitidos: {{yyyy}}, {{mm}}, {{dd}}, {{hh}}, {{min}}.",
+    "preview": "Vista previa"
   },
-  "parts": {
-    "scheme": "Esquema",
-    "domain": "Dominio",
-    "port": "Puerto",
-    "path": "Ruta",
-    "query": "Consulta",
-    "queryKey": "Clave",
-    "queryValue": "Valor",
-    "fragment": "Fragmento",
-    "variable": "Variable",
-    "empty": "—"
-  },
-  "selection": {
-    "tooltip": "Seleccionado: \"{{text}}\"",
-    "create": "Convertir en variable",
-    "namePrompt": "Nombre de variable",
-    "cancel": "Cancelar"
+  "template": {
+    "editor": "Editor de plantilla",
+    "empty": "Añade una carpeta, marcador o comentario para empezar.",
+    "folder": "Carpeta",
+    "folderName": "Nombre de la carpeta",
+    "folderNamePlaceholder": "Nombre de carpeta (handlebars permitido)",
+    "folderEmpty": "Carpeta vacía. Añade subcarpetas o marcadores.",
+    "deleteFolder": "Eliminar carpeta",
+    "bookmark": "Marcador",
+    "title": "Título",
+    "titlePlaceholder": "{{name}} - {{category}}",
+    "url": "URL",
+    "urlPlaceholder": "https://ejemplo.es/{{username}}",
+    "description": "Descripción",
+    "descriptionPlaceholder": "Nota corta sobre el marcador",
+    "tags": "Etiquetas",
+    "tagPlaceholder": "{{category}}",
+    "keywords": "Palabras clave",
+    "keywordPlaceholder": "{{shortcut}}",
+    "noTags": "Aún no hay entradas.",
+    "addTag": "Añadir",
+    "removeTag": "Quitar entrada {{index}}",
+    "deleteBookmark": "Eliminar marcador",
+    "comment": "Comentario",
+    "commentPlaceholder": "Escribe una nota para ti o tu equipo.",
+    "deleteComment": "Eliminar comentario"
   },
   "variables": {
-    "empty": "Aún no hay variables. Selecciona texto en la URL y usa el botón «+» para crear una.",
-    "addList": "Añadir lista",
-    "addTable": "Añadir tabla",
-    "namePlaceholder": "nombre_variable",
+    "empty": "Aún no hay variables. Usa {{variable}} o {{table.column}} en la plantilla para crearlas.",
     "nameLabel": "Nombre de variable",
-    "valuesLabel": "Valores (uno por línea)",
-    "remove": "Eliminar variable",
-    "addColumn": "Añadir columna",
-    "removeColumn": "Eliminar columna",
     "columnName": "Nombre de columna",
-    "list": "Lista",
-    "table": "Tabla",
-    "rowCount_one": "{{count}} fila",
-    "rowCount_other": "{{count}} filas"
+    "addColumn": "Añadir columna",
+    "addRow": "Añadir fila",
+    "removeRow": "Quitar fila {{index}}"
   },
-  "templates": {
-    "name": "Nombre del marcador",
-    "namePlaceholder": "{name} — {categoria}",
-    "folder": "Carpeta (usa / para anidar)",
-    "folderPlaceholder": "Buscadores/{engine}",
-    "keywords": "Palabras clave (separadas por espacios)",
-    "keywordsPlaceholder": "{categoria} {tag}"
+  "handlebars": {
+    "invalid_one": "{{count}} expresión inválida en este campo.",
+    "invalid_other": "{{count}} expresiones inválidas en este campo.",
+    "unknown_one": "{{count}} referencia a una variable desconocida.",
+    "unknown_other": "{{count}} referencias a variables desconocidas."
   },
   "results": {
     "summary_one": "{{count}} marcador generado.",
     "summary_other": "{{count}} marcadores generados.",
-    "summaryEmpty": "Nada que generar todavía — pega una URL arriba.",
+    "summaryEmpty": "Nada que generar - añade un marcador a la plantilla.",
     "preview": "Vista previa",
-    "download": "Descargar archivo de marcadores",
-    "copy": "Copiar todas las URLs",
-    "copied": "¡Copiado!",
-    "format": "Formato",
-    "formatHtml": "HTML Netscape",
-    "formatJson": "JSON",
-    "formatCsv": "CSV"
+    "previewEmpty": "(vacío)",
+    "untitled": "Marcador sin título",
+    "download": "Descargar archivo de marcadores"
   },
   "a11y": {
-    "live": "Actualizaciones en vivo",
-    "selectionPopup": "Acciones para la selección",
     "removeVariable": "Eliminar variable {{name}}",
-    "removeColumn": "Eliminar columna {{name}}"
+    "removeColumn": "Eliminar columna {{name}}",
+    "cell": "Fila {{row}}, columna {{column}}"
+  },
+  "library": {
+    "toolbar": "Biblioteca de plantillas",
+    "variablesToolbar": "Importar/exportar variables",
+    "save": "Guardar…",
+    "load": "Cargar",
+    "export": "Exportar",
+    "import": "Importar",
+    "delete": "Borrar plantilla guardada",
+    "deleteAria": "Borrar plantilla guardada {{name}}",
+    "deleteConfirm": "¿Borrar la plantilla guardada \"{{name}}\"?",
+    "namePrompt": "Guardar plantilla actual como…",
+    "empty": "Aún no hay plantillas guardadas."
   }
 }

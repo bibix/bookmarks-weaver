@@ -1,4 +1,4 @@
-import type { GeneratedBookmark } from '../types'
+import type { AnyResolvedNode } from '../types'
 
 function escapeHtml(input: string): string {
   return input
@@ -9,52 +9,39 @@ function escapeHtml(input: string): string {
     .replace(/'/g, '&#39;')
 }
 
-function buildFolderTree(items: GeneratedBookmark[]): FolderNode {
-  const root: FolderNode = { name: '', children: new Map(), bookmarks: [] }
-  for (const item of items) {
-    const segments = (item.folder || '')
-      .split('/')
-      .map((s) => s.trim())
-      .filter((s) => s.length > 0)
-    let node = root
-    for (const segment of segments) {
-      let next = node.children.get(segment)
-      if (!next) {
-        next = { name: segment, children: new Map(), bookmarks: [] }
-        node.children.set(segment, next)
-      }
-      node = next
-    }
-    node.bookmarks.push(item)
-  }
-  return root
-}
-
-interface FolderNode {
-  name: string
-  children: Map<string, FolderNode>
-  bookmarks: GeneratedBookmark[]
-}
-
-function renderNode(node: FolderNode, depth: number): string {
+function renderNodes(nodes: AnyResolvedNode[], depth: number): string {
   const indent = '    '.repeat(depth)
   const lines: string[] = []
-  for (const bookmark of node.bookmarks) {
-    const attrs = [`HREF="${escapeHtml(bookmark.url)}"`, 'ADD_DATE="0"']
-    if (bookmark.keywords) attrs.push(`TAGS="${escapeHtml(bookmark.keywords)}"`)
-    lines.push(`${indent}<DT><A ${attrs.join(' ')}>${escapeHtml(bookmark.name || bookmark.url)}</A>`)
+  for (const node of nodes) {
+    if (node.kind === 'comment') {
+      if (node.text) lines.push(`${indent}<!-- ${escapeHtml(node.text)} -->`)
+    } else if (node.kind === 'folder') {
+      lines.push(`${indent}<DT><H3>${escapeHtml(node.name || 'Folder')}</H3>`)
+      lines.push(`${indent}<DL><p>`)
+      lines.push(renderNodes(node.children, depth + 1))
+      lines.push(`${indent}</DL><p>`)
+    } else {
+      const { bookmark } = node
+      const attrs = [`HREF="${escapeHtml(bookmark.url)}"`, 'ADD_DATE="0"']
+      if (bookmark.tags.length > 0) {
+        attrs.push(`TAGS="${escapeHtml(bookmark.tags.join(','))}"`)
+      }
+      const title = bookmark.title || bookmark.url || 'Bookmark'
+      lines.push(`${indent}<DT><A ${attrs.join(' ')}>${escapeHtml(title)}</A>`)
+      if (bookmark.description) {
+        lines.push(`${indent}<DD>${escapeHtml(bookmark.description)}`)
+      }
+      if (bookmark.keywords.length > 0) {
+        lines.push(
+          `${indent}<!-- keywords: ${escapeHtml(bookmark.keywords.join(', '))} -->`,
+        )
+      }
+    }
   }
-  for (const child of node.children.values()) {
-    lines.push(`${indent}<DT><H3>${escapeHtml(child.name)}</H3>`)
-    lines.push(`${indent}<DL><p>`)
-    lines.push(renderNode(child, depth + 1))
-    lines.push(`${indent}</DL><p>`)
-  }
-  return lines.join('\n')
+  return lines.filter((s) => s.length > 0).join('\n')
 }
 
-export function toNetscapeHtml(items: GeneratedBookmark[]): string {
-  const tree = buildFolderTree(items)
+export function toNetscapeHtml(tree: AnyResolvedNode[]): string {
   return [
     '<!DOCTYPE NETSCAPE-Bookmark-file-1>',
     '<!-- This is an automatically generated file. -->',
@@ -62,21 +49,10 @@ export function toNetscapeHtml(items: GeneratedBookmark[]): string {
     '<TITLE>Bookmarks</TITLE>',
     '<H1>Bookmarks</H1>',
     '<DL><p>',
-    renderNode(tree, 1),
+    renderNodes(tree, 1),
     '</DL><p>',
     '',
   ].join('\n')
-}
-
-export function toJson(items: GeneratedBookmark[]): string {
-  return JSON.stringify(items, null, 2)
-}
-
-export function toCsv(items: GeneratedBookmark[]): string {
-  const headers = ['name', 'url', 'folder', 'keywords']
-  const escape = (s: string) => `"${s.replace(/"/g, '""')}"`
-  const rows = items.map((i) => [i.name, i.url, i.folder, i.keywords].map(escape).join(','))
-  return [headers.join(','), ...rows].join('\n')
 }
 
 export function triggerDownload(filename: string, content: string, mime: string): void {

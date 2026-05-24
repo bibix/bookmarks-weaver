@@ -1,113 +1,118 @@
 {
   "app": {
     "title": "Bookmarks Weaver",
-    "tagline": "Incolla un URL, intreccia le variabili, ottieni un set completo di segnalibri.",
+    "tagline": "Componi un template, definisci le variabili, intreccia un intero albero di segnalibri.",
     "skipToContent": "Vai al contenuto principale",
-    "mainLandmark": "Area di lavoro di Bookmarks Weaver",
-    "footer": "Tutto avviene nel browser. Niente viene inviato al server."
+    "mainLandmark": "Area di lavoro Bookmarks Weaver",
+    "footer": "Tutto avviene nel tuo browser. Nulla viene inviato a un server."
   },
-  "modes": {
-    "beginner": "Modalità guidata",
-    "expert": "Modalità esperto",
-    "toggleHint": "Passa dal tutorial passo-passo alla vista compatta."
+  "common": {
+    "delete": "Elimina"
   },
   "controls": {
+    "history": "Cronologia",
+    "view": "Vista",
+    "locale": "Lingua",
     "theme": "Tema",
     "themeLight": "Chiaro",
     "themeDark": "Scuro",
     "themeSystem": "Sistema",
-    "palette": "Palette colori",
+    "palette": "Tavolozza colori",
     "paletteDefault": "Predefinita",
-    "paletteDeuteranopia": "Per deuteranopia",
-    "paletteProtanopia": "Per protanopia",
-    "paletteTritanopia": "Per tritanopia",
+    "paletteDeuteranopia": "Adatta a deuteranopia",
+    "paletteProtanopia": "Adatta a protanopia",
+    "paletteTritanopia": "Adatta a tritanopia",
     "paletteHighContrast": "Alto contrasto",
     "language": "Lingua",
     "textSize": "Dimensione testo",
     "textSizeDecrease": "Riduci testo",
-    "textSizeIncrease": "Ingrandisci testo",
-    "textSizeReset": "Dimensione predefinita",
+    "textSizeIncrease": "Aumenta testo",
+    "textSizeReset": "Ripristina dimensione",
     "undo": "Annulla",
     "redo": "Ripeti",
     "reset": "Reimposta tutto"
   },
   "sections": {
-    "input": "Input URL",
-    "inputHelp": "Incolla qualsiasi URL. Ogni parte viene analizzata e colorata automaticamente.",
-    "parsed": "URL analizzato",
-    "parsedHelp": "Ogni frammento è mostrato come pillola con il suo colore.",
-    "parameters": "Parametri di query",
-    "parametersHelp": "Ogni chiave e ogni valore sono separati: puoi trasformarli in variabili.",
+    "filename": "Nome del file di output",
+    "filenameHelp": "Scegli il nome del file scaricato. Sono supportati segnaposto data.",
+    "template": "Template",
+    "templateHelp": "Usa cartelle, segnalibri e commenti. Ogni campo accetta espressioni handlebars come {{esempio}} o {{user.name}}.",
     "variables": "Variabili",
-    "variablesHelp": "Definisci elenchi o tabelle. Ogni riga aggiunge un set di valori ai segnalibri generati.",
-    "templates": "Template segnalibri",
-    "templatesHelp": "Usa segnaposto {{example}} per comporre cartelle, nomi e parole chiave.",
-    "results": "Segnalibri generati"
+    "variablesHelp": "Le variabili usate nel template compaiono qui come tabelle. Ogni riga aggiunge un set di valori.",
+    "results": "Segnalibri generati",
+    "resultsHelp": "Anteprima espandibile dell'albero risolto. Scaricabile come file Netscape."
   },
-  "input": {
-    "label": "URL da analizzare",
-    "placeholder": "https://esempio.it/percorso?chiave=valore#frammento",
-    "paste": "Incolla dagli appunti"
+  "filename": {
+    "label": "Template del nome file",
+    "help": "Segnaposto supportati: {{yyyy}}, {{mm}}, {{dd}}, {{hh}}, {{min}}.",
+    "preview": "Anteprima"
   },
-  "parts": {
-    "scheme": "Schema",
-    "domain": "Dominio",
-    "port": "Porta",
-    "path": "Percorso",
-    "query": "Query",
-    "queryKey": "Chiave",
-    "queryValue": "Valore",
-    "fragment": "Frammento",
-    "variable": "Variabile",
-    "empty": "—"
-  },
-  "selection": {
-    "tooltip": "Selezionato: \"{{text}}\"",
-    "create": "Crea variabile",
-    "namePrompt": "Nome variabile",
-    "cancel": "Annulla"
+  "template": {
+    "editor": "Editor del template",
+    "empty": "Aggiungi una cartella, un segnalibro o un commento per iniziare.",
+    "folder": "Cartella",
+    "folderName": "Nome cartella",
+    "folderNamePlaceholder": "Nome cartella (handlebars consentito)",
+    "folderEmpty": "Cartella vuota. Aggiungi sottocartelle o segnalibri.",
+    "deleteFolder": "Elimina cartella",
+    "bookmark": "Segnalibro",
+    "title": "Titolo",
+    "titlePlaceholder": "{{name}} - {{category}}",
+    "url": "URL",
+    "urlPlaceholder": "https://esempio.it/{{username}}",
+    "description": "Descrizione",
+    "descriptionPlaceholder": "Breve nota sul segnalibro",
+    "tags": "Tag",
+    "tagPlaceholder": "{{category}}",
+    "keywords": "Parole chiave",
+    "keywordPlaceholder": "{{shortcut}}",
+    "noTags": "Nessuna voce.",
+    "addTag": "Aggiungi",
+    "removeTag": "Rimuovi voce {{index}}",
+    "deleteBookmark": "Elimina segnalibro",
+    "comment": "Commento",
+    "commentPlaceholder": "Scrivi una nota per te o per il team.",
+    "deleteComment": "Elimina commento"
   },
   "variables": {
-    "empty": "Nessuna variabile. Seleziona una parte dell'URL e usa il pulsante «+».",
-    "addList": "Aggiungi elenco",
-    "addTable": "Aggiungi tabella",
-    "namePlaceholder": "nome_variabile",
+    "empty": "Nessuna variabile. Usa {{variable}} o {{table.column}} nel template per crearle.",
     "nameLabel": "Nome variabile",
-    "valuesLabel": "Valori (uno per riga)",
-    "remove": "Rimuovi variabile",
-    "addColumn": "Aggiungi colonna",
-    "removeColumn": "Rimuovi colonna",
     "columnName": "Nome colonna",
-    "list": "Elenco",
-    "table": "Tabella",
-    "rowCount_one": "{{count}} riga",
-    "rowCount_other": "{{count}} righe"
+    "addColumn": "Aggiungi colonna",
+    "addRow": "Aggiungi riga",
+    "removeRow": "Rimuovi riga {{index}}"
   },
-  "templates": {
-    "name": "Nome segnalibro",
-    "namePlaceholder": "{name} — {categoria}",
-    "folder": "Cartella (usa / per annidare)",
-    "folderPlaceholder": "Ricerca/{engine}",
-    "keywords": "Parole chiave (separate da spazi)",
-    "keywordsPlaceholder": "{categoria} {tag}"
+  "handlebars": {
+    "invalid_one": "{{count}} espressione non valida in questo campo.",
+    "invalid_other": "{{count}} espressioni non valide in questo campo.",
+    "unknown_one": "{{count}} riferimento a una variabile sconosciuta.",
+    "unknown_other": "{{count}} riferimenti a variabili sconosciute."
   },
   "results": {
     "summary_one": "{{count}} segnalibro generato.",
     "summary_other": "{{count}} segnalibri generati.",
-    "summaryEmpty": "Niente da generare ancora — incolla un URL sopra.",
+    "summaryEmpty": "Nulla da generare - aggiungi un segnalibro al template.",
     "preview": "Anteprima",
-    "download": "Scarica file segnalibri",
-    "copy": "Copia tutti gli URL",
-    "copied": "Copiato!",
-    "format": "Formato",
-    "formatHtml": "HTML Netscape",
-    "formatJson": "JSON",
-    "formatCsv": "CSV"
+    "previewEmpty": "(vuoto)",
+    "untitled": "Segnalibro senza titolo",
+    "download": "Scarica file segnalibri"
   },
   "a11y": {
-    "live": "Aggiornamenti dal vivo",
-    "selectionPopup": "Azioni per la selezione",
     "removeVariable": "Rimuovi variabile {{name}}",
-    "removeColumn": "Rimuovi colonna {{name}}"
+    "removeColumn": "Rimuovi colonna {{name}}",
+    "cell": "Riga {{row}}, colonna {{column}}"
+  },
+  "library": {
+    "toolbar": "Libreria template",
+    "variablesToolbar": "Import/export variabili",
+    "save": "Salva…",
+    "load": "Carica",
+    "export": "Esporta",
+    "import": "Importa",
+    "delete": "Elimina template salvato",
+    "deleteAria": "Elimina template salvato {{name}}",
+    "deleteConfirm": "Eliminare il template salvato \"{{name}}\"?",
+    "namePrompt": "Salva il template corrente come…",
+    "empty": "Ancora nessun template salvato."
   }
 }
