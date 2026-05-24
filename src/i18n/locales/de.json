@@ -72,7 +72,11 @@
     "deleteBookmark": "Lesezeichen löschen",
     "comment": "Kommentar",
     "commentPlaceholder": "Hinterlasse eine Notiz für dich oder dein Team.",
-    "deleteComment": "Kommentar löschen"
+    "deleteComment": "Kommentar löschen",
+    "slashGroup": "Vorlagen-Blöcke",
+    "folderSubtext": "Container für verschachtelte Ordner, Lesezeichen und Kommentare.",
+    "bookmarkSubtext": "Lesezeichen mit Titel, URL, Beschreibung, Tags und Stichworten.",
+    "commentSubtext": "Freier Text. Erzeugt kein Lesezeichen."
   },
   "variables": {
     "empty": "Noch keine Variablen. Verwende {{variable}} oder {{table.column}} in der Vorlage oben.",

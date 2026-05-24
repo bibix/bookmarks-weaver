@@ -101,18 +101,33 @@ Spanish / Italian translations through react-i18next, a skip-link, semantic
 landmarks, ARIA labels on every interactive element, and live-region
 announcements for issues in handlebars expressions.
 
-## Deviation from "blocknotejs"
+## Template editor on BlockNote
 
-The product brief calls for `blocknotejs`. The package is installed but we do
-not use it for editing because the requirement is for **bespoke** folder /
-bookmark / comment blocks with embedded structured inputs (URL, tags,
-keywords), which would require a substantial custom `createReactBlockSpec`
-schema and slash-menu wiring to feel right inside BlockNote. Instead, the
-template editor is hand-rolled with the same block-based UX: each block is
-its own rounded card, can be added or removed, and the folder block nests its
-children as an indented list. The HandlebarsInput component delivers the
-spec's "red wiggly / double-orange wiggly" feedback that BlockNote does not
-provide out of the box.
+The template editor is a `BlockNoteView` (via `@blocknote/mantine`) configured
+with a custom schema that exposes three block types — `folder`, `bookmark` and
+`comment` — alongside the default paragraph block. The user composes the
+template by typing `/` in any paragraph and picking one of the three blocks
+from the slash menu (wired through `SuggestionMenuController`).
+
+- **Folder** (`content: "inline"`) — the folder name is inline-editable text.
+  Nested children use BlockNote's native indentation (Tab / Shift-Tab).
+- **Bookmark** (`content: "none"`, `selectable: false`) — a structured card.
+  Title, URL, description, tags and keywords live in block props and are
+  edited through `HandlebarsInput` / `TagListEditor` instances rendered by
+  the block's React component. This preserves the red-wavy / orange-wavy
+  handlebars feedback for fields where BlockNote inline content cannot
+  carry it.
+- **Comment** (`content: "inline"`) — free-text note, styled distinctly so
+  it's visually obviously not a bookmark.
+
+Tag and keyword lists are stored in block props as newline-separated strings
+because `propSchema` only accepts primitives.
+
+The BlockNote document is the editor's source of truth; on every change we
+serialise it back to `AppState.template` via `blocksToTemplateNodes`. External
+mutations of `AppState.template` (library load, undo / redo, reset) are
+detected by hashing the current template against the last value we wrote and,
+on mismatch, calling `editor.replaceBlocks` to refill the editor.
 
 ## File layout
 
@@ -149,10 +164,12 @@ src/
     PreviewTree.tsx
     ResultsSection.tsx
     template/
-      TemplateEditor.tsx
-      TemplateNodeView.tsx
-      FolderBlock.tsx
-      BookmarkBlock.tsx
-      CommentBlock.tsx
+      TemplateEditor.tsx          BlockNoteView wiring + slash menu controller
+      schema.ts                   BlockNoteSchema with folder/bookmark/comment
+      conversion.ts               BlockNote document <-> TemplateNode[]
+      slashMenu.ts                Slash-menu item factory
+      FolderBlock.tsx             createReactBlockSpec for folder
+      BookmarkBlock.tsx           createReactBlockSpec for bookmark
+      CommentBlock.tsx            createReactBlockSpec for comment
       TagListEditor.tsx
 ```

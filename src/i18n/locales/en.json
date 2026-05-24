@@ -72,7 +72,11 @@
     "deleteBookmark": "Delete bookmark",
     "comment": "Comment",
     "commentPlaceholder": "Write a note for yourself or your team.",
-    "deleteComment": "Delete comment"
+    "deleteComment": "Delete comment",
+    "slashGroup": "Template blocks",
+    "folderSubtext": "Container for nested folders, bookmarks and comments.",
+    "bookmarkSubtext": "Bookmark with title, URL, description, tags and keywords.",
+    "commentSubtext": "Free-text note. Does not produce a bookmark."
   },
   "variables": {
     "empty": "No variables yet. Use {{variable}} or {{table.column}} in the template above to create them automatically.",

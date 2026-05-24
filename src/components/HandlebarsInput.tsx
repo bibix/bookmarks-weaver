@@ -11,6 +11,11 @@ interface Props {
   ariaLabel: string
   className?: string
   onEnter?: () => void
+  /**
+   * Focus the input on mount. Used by blocks that are inserted via the
+   * slash menu and want the user to land directly on their primary field.
+   */
+  autoFocus?: boolean
 }
 
 function variableColor(variables: Variable[], name: string): string | null {
@@ -19,6 +24,11 @@ function variableColor(variables: Variable[], name: string): string | null {
 }
 
 function segmentStyle(seg: TemplateSegment, variables: Variable[]): CSSProperties {
+  // IMPORTANT: every style on a non-text segment must be metrically
+  // invisible — no padding, no font-weight, no font-size, no letter-spacing
+  // — because the overlay sits on top of a real `<input>` whose character
+  // widths are fixed. Anything that changes glyph width misaligns the
+  // overlay from the input's cursor and selection rectangles.
   if (seg.kind === 'text') return {}
   if (seg.kind === 'invalid') {
     return {
@@ -38,9 +48,7 @@ function segmentStyle(seg: TemplateSegment, variables: Variable[]): CSSPropertie
   return {
     backgroundColor: color ?? 'var(--c-variable-bg)',
     color: '#1f2937',
-    padding: '0 0.15rem',
     borderRadius: '0.2rem',
-    fontWeight: 600,
   }
 }
 
@@ -56,6 +64,7 @@ export function HandlebarsInput({
   ariaLabel,
   className,
   onEnter,
+  autoFocus,
 }: Props) {
   const id = useId()
   const { t } = useTranslation()
@@ -76,6 +85,13 @@ export function HandlebarsInput({
     }
     input.addEventListener('scroll', sync)
     return () => input.removeEventListener('scroll', sync)
+  }, [])
+
+  useEffect(() => {
+    if (!autoFocus) return
+    inputRef.current?.focus()
+    // Only run on mount — re-triggering would steal focus on every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const issues = useMemo(() => {

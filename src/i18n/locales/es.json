@@ -72,7 +72,11 @@
     "deleteBookmark": "Eliminar marcador",
     "comment": "Comentario",
     "commentPlaceholder": "Escribe una nota para ti o tu equipo.",
-    "deleteComment": "Eliminar comentario"
+    "deleteComment": "Eliminar comentario",
+    "slashGroup": "Bloques de plantilla",
+    "folderSubtext": "Contenedor para carpetas, marcadores y comentarios anidados.",
+    "bookmarkSubtext": "Marcador con título, URL, descripción, etiquetas y palabras clave.",
+    "commentSubtext": "Texto libre. No produce un marcador."
   },
   "variables": {
     "empty": "Aún no hay variables. Usa {{variable}} o {{table.column}} en la plantilla para crearlas.",

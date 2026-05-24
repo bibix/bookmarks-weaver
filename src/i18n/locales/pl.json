@@ -72,7 +72,11 @@
     "deleteBookmark": "Usuń zakładkę",
     "comment": "Komentarz",
     "commentPlaceholder": "Napisz notatkę dla siebie lub zespołu.",
-    "deleteComment": "Usuń komentarz"
+    "deleteComment": "Usuń komentarz",
+    "slashGroup": "Bloki szablonu",
+    "folderSubtext": "Kontener na zagnieżdżone foldery, zakładki i komentarze.",
+    "bookmarkSubtext": "Zakładka z tytułem, URL, opisem, tagami i słowami kluczowymi.",
+    "commentSubtext": "Wolny tekst. Nie tworzy zakładki."
   },
   "variables": {
     "empty": "Brak zmiennych. Użyj {{variable}} lub {{table.column}} w szablonie powyżej, aby utworzyć je automatycznie.",

@@ -72,7 +72,11 @@
     "deleteBookmark": "Elimina segnalibro",
     "comment": "Commento",
     "commentPlaceholder": "Scrivi una nota per te o per il team.",
-    "deleteComment": "Elimina commento"
+    "deleteComment": "Elimina commento",
+    "slashGroup": "Blocchi del modello",
+    "folderSubtext": "Contenitore per cartelle, segnalibri e commenti annidati.",
+    "bookmarkSubtext": "Segnalibro con titolo, URL, descrizione, tag e parole chiave.",
+    "commentSubtext": "Testo libero. Non produce un segnalibro."
   },
   "variables": {
     "empty": "Nessuna variabile. Usa {{variable}} o {{table.column}} nel template per crearle.",

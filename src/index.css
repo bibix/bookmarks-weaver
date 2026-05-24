@@ -486,7 +486,12 @@ body {
   caret-color: var(--c-app-text);
   color: transparent;
 }
-.hb-input::selection { background: rgba(37, 99, 235, 0.3); color: var(--c-app-text); }
+/* Keep the input's text transparent even while selected — otherwise the
+   highlighted glyphs paint on top of the overlay span behind them and we
+   get a doubled, slightly-misaligned ghost. Use only `background` here
+   (no `color`) so the input stays invisible. */
+.hb-input::selection { background: rgba(37, 99, 235, 0.3); color: transparent; }
+.hb-input::-moz-selection { background: rgba(37, 99, 235, 0.3); color: transparent; }
 .hb-overlay {
   position: absolute;
   inset: 0;
@@ -512,6 +517,139 @@ body {
   gap: 0.5rem;
   padding-top: 0.5rem;
   border-top: 1px dashed var(--c-app-border);
+}
+
+/* BlockNote container — flush with the surrounding section card and
+   reuse our theme tokens. Take the full available width: by default
+   BlockNote applies 54px of horizontal padding which makes bookmark
+   cards feel cramped. */
+.bw-editor--blocknote {
+  --bn-colors-editor-background: var(--c-app-surface);
+  --bn-colors-editor-text: var(--c-app-text);
+  --bn-colors-menu-background: var(--c-app-surface);
+  --bn-colors-menu-text: var(--c-app-text);
+}
+.bw-editor--blocknote .bn-container { background: transparent; }
+.bw-editor--blocknote .bn-editor {
+  padding-inline: 0.25rem;
+  padding-block: 0.25rem;
+  max-width: none;
+}
+.bw-editor--blocknote .bn-block-content {
+  width: 100%;
+}
+.bw-block__inline {
+  flex: 1 1 14rem;
+  min-width: 0;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.4rem;
+}
+.bw-block__inline:empty::before {
+  content: attr(data-placeholder);
+  color: var(--c-app-muted);
+  opacity: 0.7;
+  pointer-events: none;
+}
+.bw-block__comment-text {
+  font-style: italic;
+  padding: 0.4rem 0.5rem;
+}
+
+/* ---------- BlockNote: folder visually contains its children ----------
+   The folder block's React render only paints the header; BlockNote
+   renders nested children in a sibling .bn-block-group inside the same
+   .bn-block-outer. We style that outer element as a card so it's
+   obvious the folder "owns" everything indented under it. */
+.bw-editor--blocknote .bn-block-outer:has(
+  > .bn-block > .bn-block-content[data-content-type="folder"]
+) {
+  border: 1px solid color-mix(in srgb, var(--c-accent) 35%, var(--c-app-border));
+  border-radius: 0.85rem;
+  padding: 0.5rem 0.75rem 0.75rem;
+  margin-block: 0.4rem;
+  background: var(--c-folder-bg, color-mix(in srgb, var(--c-accent) 6%, var(--c-app-surface)));
+}
+/* The folder's own header (the .bw-block--folder div) is rendered inside
+   .bn-block-content. Strip its own border so it doesn't double-up with
+   the wrapping card. */
+.bw-editor--blocknote .bn-block-content[data-content-type="folder"] .bw-block--folder {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-bottom: 0.25rem;
+}
+/* Highlight the children area visually as belonging to the folder. */
+.bw-editor--blocknote .bn-block-outer:has(
+  > .bn-block > .bn-block-content[data-content-type="folder"]
+) > .bn-block-group {
+  padding-left: 0.75rem;
+  border-left: 3px solid color-mix(in srgb, var(--c-accent) 55%, transparent);
+  margin-top: 0.25rem;
+}
+
+/* ---------- Nested folder colour rotation ----------
+   Each nesting level picks a slightly different tint so users can see
+   the hierarchy at a glance, even when several folders are nested. */
+.bw-editor--blocknote .bn-block-outer:has(
+  > .bn-block > .bn-block-content[data-content-type="folder"]
+) {
+  --c-folder-bg: color-mix(in srgb, var(--c-accent) 6%, var(--c-app-surface));
+}
+.bw-editor--blocknote .bn-block-outer:has(
+    > .bn-block > .bn-block-content[data-content-type="folder"]
+  ) .bn-block-outer:has(
+    > .bn-block > .bn-block-content[data-content-type="folder"]
+  ) {
+  --c-folder-bg: color-mix(in srgb, var(--c-fragment-bg) 18%, var(--c-app-surface));
+  border-color: color-mix(in srgb, var(--c-fragment-bg) 55%, var(--c-app-border));
+}
+.bw-editor--blocknote .bn-block-outer:has(
+    > .bn-block > .bn-block-content[data-content-type="folder"]
+  ) .bn-block-outer:has(
+    > .bn-block > .bn-block-content[data-content-type="folder"]
+  ) .bn-block-outer:has(
+    > .bn-block > .bn-block-content[data-content-type="folder"]
+  ) {
+  --c-folder-bg: color-mix(in srgb, var(--c-port-bg) 22%, var(--c-app-surface));
+  border-color: color-mix(in srgb, var(--c-port-bg) 55%, var(--c-app-border));
+}
+.bw-editor--blocknote .bn-block-outer:has(
+    > .bn-block > .bn-block-content[data-content-type="folder"]
+  ) .bn-block-outer:has(
+    > .bn-block > .bn-block-content[data-content-type="folder"]
+  ) .bn-block-outer:has(
+    > .bn-block > .bn-block-content[data-content-type="folder"]
+  ) .bn-block-outer:has(
+    > .bn-block > .bn-block-content[data-content-type="folder"]
+  ) {
+  --c-folder-bg: color-mix(in srgb, var(--c-query-key-bg) 22%, var(--c-app-surface));
+  border-color: color-mix(in srgb, var(--c-query-key-bg) 55%, var(--c-app-border));
+}
+.bw-editor--blocknote .bn-block-outer:has(
+    > .bn-block > .bn-block-content[data-content-type="folder"]
+  ) .bn-block-outer:has(
+    > .bn-block > .bn-block-content[data-content-type="folder"]
+  ) .bn-block-outer:has(
+    > .bn-block > .bn-block-content[data-content-type="folder"]
+  ) .bn-block-outer:has(
+    > .bn-block > .bn-block-content[data-content-type="folder"]
+  ) .bn-block-outer:has(
+    > .bn-block > .bn-block-content[data-content-type="folder"]
+  ) {
+  --c-folder-bg: color-mix(in srgb, var(--c-path-bg) 22%, var(--c-app-surface));
+  border-color: color-mix(in srgb, var(--c-path-bg) 55%, var(--c-app-border));
+}
+
+/* Bookmarks inside the editor: stretch to the available width and give
+   the inputs more breathing room. */
+.bw-editor--blocknote .bw-block--bookmark { width: 100%; }
+.bw-editor--blocknote .bw-block__grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 720px) {
+  .bw-editor--blocknote .bw-block__grid {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  }
 }
 
 .bw-block {

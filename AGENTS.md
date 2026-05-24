@@ -60,3 +60,6 @@ with `EBADF: bad file descriptor`.
   documented in `design/architecture.md`.
 - Don't drop the wavy-underline feedback in the HandlebarsInput — that's a
   spec requirement, not a polish.
+- Don't rip the template editor off BlockNote. Folder / Bookmark / Comment
+  are `createReactBlockSpec` blocks reachable via the slash menu — see
+  `design/architecture.md` and `src/components/template/`.

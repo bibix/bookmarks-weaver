@@ -1,31 +1,37 @@
+import { createReactBlockSpec } from '@blocknote/react'
 import { useTranslation } from 'react-i18next'
-import { useAppState } from '../../contexts/AppStateContext'
-import type { TemplateComment } from '../../types'
 
-export function CommentBlock({ node, onDelete }: { node: TemplateComment; onDelete: () => void }) {
-  const { t } = useTranslation()
-  const { updateComment } = useAppState()
-  return (
-    <div className="bw-block bw-block--comment" role="group" aria-label={t('template.comment')}>
-      <span className="bw-block__tag" aria-hidden="true">{t('template.comment')}</span>
-      <textarea
-        className="bw-textarea"
-        rows={2}
-        value={node.text}
-        placeholder={t('template.commentPlaceholder')}
-        aria-label={t('template.comment')}
-        onChange={(e) => updateComment(node.id, e.target.value)}
-      />
-      <div className="bw-block__actions">
-        <button
-          type="button"
-          className="bw-button-ghost"
-          onClick={onDelete}
-          aria-label={t('template.deleteComment')}
+/**
+ * Comment block — free-text note. Inline content lets the user type, and the
+ * block carries a distinct visual treatment so the user can see at a glance
+ * that it's a comment rather than something that will produce a bookmark.
+ */
+export const CommentBlockSpec = createReactBlockSpec(
+  {
+    type: 'comment',
+    propSchema: {},
+    content: 'inline',
+  } as const,
+  {
+    render: (props) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const { t } = useTranslation()
+      return (
+        <div
+          className="bw-block bw-block--comment"
+          role="group"
+          aria-label={t('template.comment')}
         >
-          {t('common.delete')}
-        </button>
-      </div>
-    </div>
-  )
-}
+          <span className="bw-block__tag" aria-hidden="true">
+            {t('template.comment')}
+          </span>
+          <div
+            className="bw-block__inline bw-block__comment-text"
+            ref={props.contentRef}
+            data-placeholder={t('template.commentPlaceholder')}
+          />
+        </div>
+      )
+    },
+  },
+)
