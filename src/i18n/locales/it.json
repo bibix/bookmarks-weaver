@@ -86,7 +86,8 @@
     "invalid_one": "{{count}} espressione non valida in questo campo.",
     "invalid_other": "{{count}} espressioni non valide in questo campo.",
     "unknown_one": "{{count}} riferimento a una variabile sconosciuta.",
-    "unknown_other": "{{count}} riferimenti a variabili sconosciute."
+    "unknown_other": "{{count}} riferimenti a variabili sconosciute.",
+    "preview": "Anteprima"
   },
   "results": {
     "summary_one": "{{count}} segnalibro generato.",
@@ -105,14 +106,25 @@
   "library": {
     "toolbar": "Libreria template",
     "variablesToolbar": "Import/export variabili",
+    "sidebar": "Template salvati",
     "save": "Salva…",
     "load": "Carica",
+    "loadTooltip": "Carica questo template",
     "export": "Esporta",
     "import": "Importa",
     "delete": "Elimina template salvato",
     "deleteAria": "Elimina template salvato {{name}}",
     "deleteConfirm": "Eliminare il template salvato \"{{name}}\"?",
     "namePrompt": "Salva il template corrente come…",
-    "empty": "Ancora nessun template salvato."
+    "descPrompt": "Breve descrizione (opzionale)",
+    "renamePrompt": "Rinomina in…",
+    "rename": "Rinomina",
+    "empty": "Ancora nessun template salvato.",
+    "newFolder": "+ Cartella",
+    "newFolderPrompt": "Nome nuova cartella",
+    "move": "Sposta",
+    "movePrompt": "In quale cartella spostarlo? (digita il numero)",
+    "moveUp": "Sposta su",
+    "moveDown": "Sposta giù"
   }
 }

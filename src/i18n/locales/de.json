@@ -86,7 +86,8 @@
     "invalid_one": "{{count}} ungültiger Ausdruck in diesem Feld.",
     "invalid_other": "{{count}} ungültige Ausdrücke in diesem Feld.",
     "unknown_one": "{{count}} Verweis auf unbekannte Variable.",
-    "unknown_other": "{{count}} Verweise auf unbekannte Variablen."
+    "unknown_other": "{{count}} Verweise auf unbekannte Variablen.",
+    "preview": "Vorschau"
   },
   "results": {
     "summary_one": "{{count}} Lesezeichen erzeugt.",
@@ -105,14 +106,25 @@
   "library": {
     "toolbar": "Vorlagenbibliothek",
     "variablesToolbar": "Variablen importieren/exportieren",
+    "sidebar": "Gespeicherte Vorlagen",
     "save": "Speichern…",
     "load": "Laden",
+    "loadTooltip": "Diese Vorlage laden",
     "export": "Exportieren",
     "import": "Importieren",
     "delete": "Gespeicherte Vorlage löschen",
     "deleteAria": "Gespeicherte Vorlage {{name}} löschen",
     "deleteConfirm": "Gespeicherte Vorlage \"{{name}}\" löschen?",
     "namePrompt": "Aktuelle Vorlage speichern als…",
-    "empty": "Noch keine gespeicherten Vorlagen."
+    "descPrompt": "Kurze Beschreibung (optional)",
+    "renamePrompt": "Umbenennen in…",
+    "rename": "Umbenennen",
+    "empty": "Noch keine gespeicherten Vorlagen.",
+    "newFolder": "+ Ordner",
+    "newFolderPrompt": "Name des neuen Ordners",
+    "move": "Verschieben",
+    "movePrompt": "In welchen Ordner verschieben? (Nummer eingeben)",
+    "moveUp": "Nach oben verschieben",
+    "moveDown": "Nach unten verschieben"
   }
 }

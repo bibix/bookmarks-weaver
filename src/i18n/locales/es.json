@@ -86,7 +86,8 @@
     "invalid_one": "{{count}} expresión inválida en este campo.",
     "invalid_other": "{{count}} expresiones inválidas en este campo.",
     "unknown_one": "{{count}} referencia a una variable desconocida.",
-    "unknown_other": "{{count}} referencias a variables desconocidas."
+    "unknown_other": "{{count}} referencias a variables desconocidas.",
+    "preview": "Vista previa"
   },
   "results": {
     "summary_one": "{{count}} marcador generado.",
@@ -105,14 +106,25 @@
   "library": {
     "toolbar": "Biblioteca de plantillas",
     "variablesToolbar": "Importar/exportar variables",
+    "sidebar": "Plantillas guardadas",
     "save": "Guardar…",
     "load": "Cargar",
+    "loadTooltip": "Cargar esta plantilla",
     "export": "Exportar",
     "import": "Importar",
     "delete": "Borrar plantilla guardada",
     "deleteAria": "Borrar plantilla guardada {{name}}",
     "deleteConfirm": "¿Borrar la plantilla guardada \"{{name}}\"?",
     "namePrompt": "Guardar plantilla actual como…",
-    "empty": "Aún no hay plantillas guardadas."
+    "descPrompt": "Descripción corta (opcional)",
+    "renamePrompt": "Renombrar a…",
+    "rename": "Renombrar",
+    "empty": "Aún no hay plantillas guardadas.",
+    "newFolder": "+ Carpeta",
+    "newFolderPrompt": "Nombre de la carpeta",
+    "move": "Mover",
+    "movePrompt": "¿A qué carpeta mover? (escribe el número)",
+    "moveUp": "Mover arriba",
+    "moveDown": "Mover abajo"
   }
 }

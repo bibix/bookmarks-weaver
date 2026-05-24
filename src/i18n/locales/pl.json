@@ -86,7 +86,8 @@
     "invalid_one": "{{count}} nieprawidłowe wyrażenie w tym polu.",
     "invalid_other": "{{count}} nieprawidłowych wyrażeń w tym polu.",
     "unknown_one": "{{count}} odwołanie do nieznanej zmiennej.",
-    "unknown_other": "{{count}} odwołań do nieznanych zmiennych."
+    "unknown_other": "{{count}} odwołań do nieznanych zmiennych.",
+    "preview": "Podgląd"
   },
   "results": {
     "summary_one": "Wygenerowano {{count}} zakładkę.",
@@ -105,14 +106,25 @@
   "library": {
     "toolbar": "Biblioteka szablonów",
     "variablesToolbar": "Import/eksport zmiennych",
+    "sidebar": "Zapisane szablony",
     "save": "Zapisz…",
     "load": "Wczytaj",
+    "loadTooltip": "Wczytaj ten szablon",
     "export": "Eksport",
     "import": "Import",
     "delete": "Usuń zapisany szablon",
     "deleteAria": "Usuń zapisany szablon {{name}}",
     "deleteConfirm": "Usunąć zapisany szablon \"{{name}}\"?",
     "namePrompt": "Zapisz bieżący szablon jako…",
-    "empty": "Brak zapisanych szablonów."
+    "descPrompt": "Krótki opis (opcjonalny)",
+    "renamePrompt": "Zmień nazwę na…",
+    "rename": "Zmień nazwę",
+    "empty": "Brak zapisanych szablonów.",
+    "newFolder": "+ Folder",
+    "newFolderPrompt": "Nazwa nowego folderu",
+    "move": "Przenieś",
+    "movePrompt": "Przenieść do którego folderu? (wpisz numer)",
+    "moveUp": "Przenieś w górę",
+    "moveDown": "Przenieś w dół"
   }
 }
