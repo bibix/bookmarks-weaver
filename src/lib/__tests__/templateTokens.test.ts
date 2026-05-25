@@ -36,6 +36,7 @@ describe('templateTokens', () => {
   it('validates variable token format', () => {
     expect(isValidVariablePath('cluster')).toBe(true)
     expect(isValidVariablePath('address.city')).toBe(true)
+    expect(isValidVariablePath('address.city.name')).toBe(false)
     expect(isValidVariablePath('address..city')).toBe(false)
     expect(isValidVariablePath('1wrong')).toBe(false)
   })
@@ -47,10 +48,14 @@ describe('templateTokens', () => {
   })
 
   it('reports invalid and missing tokens', () => {
-    const result = validateTokens('{{ cluster }} {{ address.zip }} {{ wrong..path }}', tables)
+    const result = validateTokens(
+      '{{ cluster }} {{ address.zip }} {{ wrong..path }} {{ address.city.extra }}',
+      tables,
+    )
 
     expect(result.missingTokens.map((token) => token.token)).toContain('address.zip')
     expect(result.invalidTokens.map((token) => token.token)).toContain('wrong..path')
+    expect(result.invalidTokens.map((token) => token.token)).toContain('address.city.extra')
   })
 
   it('updates variable references in template text', () => {

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
+import { BlockNoteSchema, createBlockSpec, defaultProps } from '@blocknote/core'
 import { BlockNoteView } from '@blocknote/mantine'
 import { useCreateBlockNote } from '@blocknote/react'
 
@@ -11,13 +12,50 @@ interface TemplateSectionProps {
   missingTokens: TokenInfo[]
 }
 
+const templateLineBlockSpec = createBlockSpec(
+  {
+    type: 'templateLine',
+    propSchema: defaultProps,
+    content: 'inline',
+  },
+  {
+    render: () => {
+      const paragraph = document.createElement('p')
+      paragraph.className = 'template-line'
+
+      return {
+        dom: paragraph,
+        contentDOM: paragraph,
+      }
+    },
+  },
+)
+
+const templateBlockSchema = BlockNoteSchema.create({
+  blockSpecs: {
+    templateLine: templateLineBlockSpec,
+  },
+})
+
+const toTemplateLineBlocks = (rawTemplate: string) => {
+  const normalized = rawTemplate.length > 0 ? rawTemplate : ' '
+
+  return normalized.split(/\r?\n/).map((line) => ({
+    type: 'templateLine',
+    content: line.length > 0 ? line : ' ',
+  }))
+}
+
 const TokenChip = ({ token, className }: { token: string; className: string }) => (
   <span className={`rounded px-2 py-1 text-sm ${className}`}>{`{{ ${token} }}`}</span>
 )
 
 export const TemplateSection = ({ value, onChange, invalidTokens, missingTokens }: TemplateSectionProps) => {
-  const editor = useCreateBlockNote()
+  const editor = useCreateBlockNote({
+    schema: templateBlockSchema,
+  })
   const isSyncingRef = useRef(false)
+  const hasHydratedRef = useRef(false)
 
   useEffect(() => {
     let disposed = false
@@ -29,18 +67,30 @@ export const TemplateSection = ({ value, onChange, invalidTokens, missingTokens 
 
       const currentMarkdown = await editor.blocksToMarkdownLossy(editor.document)
       if (currentMarkdown.trim() === value.trim()) {
+        hasHydratedRef.current = true
         return
       }
 
       isSyncingRef.current = true
-      const blocks = await editor.tryParseMarkdownToBlocks(value || ' ')
-      if (!disposed) {
-        editor.replaceBlocks(editor.document, blocks)
+      try {
+        let blocks
+        try {
+          blocks = await editor.tryParseMarkdownToBlocks(value || ' ')
+        } catch {
+          blocks = toTemplateLineBlocks(value)
+        }
+
+        if (!disposed) {
+          editor.replaceBlocks(editor.document, blocks)
+        }
+      } finally {
+        hasHydratedRef.current = true
+        isSyncingRef.current = false
       }
-      isSyncingRef.current = false
     }
 
     syncFromValue().catch(() => {
+      hasHydratedRef.current = true
       isSyncingRef.current = false
     })
 
@@ -50,7 +100,7 @@ export const TemplateSection = ({ value, onChange, invalidTokens, missingTokens 
   }, [editor, value])
 
   const handleEditorChange = useCallback(async () => {
-    if (!editor || isSyncingRef.current) {
+    if (!editor || isSyncingRef.current || !hasHydratedRef.current) {
       return
     }
 
@@ -61,14 +111,25 @@ export const TemplateSection = ({ value, onChange, invalidTokens, missingTokens 
   return (
     <div className="space-y-3">
       <p className="text-sm text-slate-700 dark:text-slate-300">
-        Use list items to define your structure. Example:
+        Use template lines to define your structure. Example:
         <code className="ml-1 rounded bg-slate-100 px-1 py-0.5 text-xs dark:bg-slate-800">
-          - folder: {'{{ cluster }}'}
+          folder: {'{{ cluster }}'}
         </code>
       </p>
 
       <div className="rounded-lg border border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-950">
-        <BlockNoteView editor={editor} onChange={handleEditorChange} className="min-h-72" />
+        <BlockNoteView
+          editor={editor}
+          onChange={handleEditorChange}
+          className="min-h-72"
+          formattingToolbar={false}
+          linkToolbar={false}
+          slashMenu={false}
+          sideMenu={false}
+          filePanel={false}
+          tableHandles={false}
+          emojiPicker={false}
+        />
       </div>
 
       <div aria-live="polite" className="space-y-2">

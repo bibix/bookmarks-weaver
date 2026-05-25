@@ -1,7 +1,7 @@
 import type { VariableTable } from '../types'
 
 const HANDLEBARS_TOKEN_REGEX = /{{\s*([^{}]+?)\s*}}/g
-const VARIABLE_PATH_REGEX = /^[a-zA-Z_][\w]*(?:\.[a-zA-Z_][\w]*)*$/
+const VARIABLE_PATH_REGEX = /^[a-zA-Z_][\w]*(?:\.[a-zA-Z_][\w]*)?$/
 
 export interface TokenInfo {
   raw: string
