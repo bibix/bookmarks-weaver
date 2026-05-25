@@ -2,6 +2,9 @@
 
 A modern, client-side URL generator and templating tool built with React, TypeScript, and TailwindCSS.
 
+
+![Bookmarks Weaver Screenshot](./docs/assets/screenshot.png)
+
 ## Features
 
 - **Automatic URL Parsing**: Parses pasted URLs into scheme, domain, port, path, query parameters, and fragments.
