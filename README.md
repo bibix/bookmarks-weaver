@@ -2,7 +2,7 @@
 
 First version
 
-![Screenshot](./docs/screenshot.png "Junie 2025-05-24")
+![Screenshot](./docs/assets/screenshot.png "Junie 2025-05-24")
 
 ## Running
 ```shell
