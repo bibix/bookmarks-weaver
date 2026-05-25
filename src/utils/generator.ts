@@ -154,11 +154,57 @@ export interface GenerationResult {
   bookmarkCount: number
 }
 
+/**
+ * Walk one level of siblings; when two folders share the same rendered
+ * name they're collapsed into a single folder whose children are the
+ * concatenation of both. Order is preserved by first appearance: the
+ * second (and later) folder's children are appended to the first
+ * folder's children list. Recurses so the merge applies at every
+ * depth.
+ *
+ * Bookmarks and comments are left alone — they're never deduplicated,
+ * even if two bookmarks resolve to the same title/URL, because that's
+ * usually a user-meaningful repetition (different tags, different
+ * keywords, …).
+ */
+function mergeSiblingFolders(nodes: AnyResolvedNode[]): AnyResolvedNode[] {
+  const out: AnyResolvedNode[] = []
+  const indexByName = new Map<string, number>()
+  for (const node of nodes) {
+    if (node.kind !== 'folder') {
+      out.push(node)
+      continue
+    }
+    const existingIdx = indexByName.get(node.name)
+    if (existingIdx === undefined) {
+      // First time we see a folder with this name at this level — keep
+      // its identity (id) and remember its slot so later occurrences
+      // can fold their children into it.
+      const fresh: ResolvedFolder = {
+        ...node,
+        children: [...node.children],
+      }
+      indexByName.set(node.name, out.length)
+      out.push(fresh)
+    } else {
+      const existing = out[existingIdx] as ResolvedFolder
+      existing.children = existing.children.concat(node.children)
+    }
+  }
+  // Now that this level is deduped, recurse into each folder's children.
+  return out.map((node) =>
+    node.kind === 'folder'
+      ? { ...node, children: mergeSiblingFolders(node.children) }
+      : node,
+  )
+}
+
 export function generate(
   template: TemplateNode[],
   variables: Variable[],
 ): GenerationResult {
-  const tree = generateNodes(template, variables, {})
+  const raw = generateNodes(template, variables, {})
+  const tree = mergeSiblingFolders(raw)
   return { tree, bookmarkCount: countBookmarks(tree) }
 }
 
