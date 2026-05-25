@@ -18,8 +18,7 @@ export const CommentInline = createReactInlineContentSpec(
           <MessageSquare size={14} className="shrink-0" />
           <span 
             ref={contentRef} 
-            className="outline-none min-w-[1em] relative blocknote-placeholder"
-            data-placeholder="Comment..."
+            className="outline-none min-w-[1em] relative"
           />
         </span>
       );
@@ -40,8 +39,7 @@ export const FolderInline = createReactInlineContentSpec(
           <Folder size={16} className="text-primary shrink-0" />
           <span 
             ref={contentRef} 
-            className="outline-none min-w-[2em] relative blocknote-placeholder"
-            data-placeholder="Folder Name"
+            className="outline-none min-w-[2em] relative"
           />
         </span>
       );

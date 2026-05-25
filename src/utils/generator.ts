@@ -150,20 +150,11 @@ function resolveBlocks(blocks: any[], data: any): (Folder | Bookmark)[] {
     const results: (Folder | Bookmark)[] = [];
 
     blocks.forEach(block => {
-        const isFolder = block.type === 'folder' || block.type === 'bulletListItem' || hasFolderInline(block.content);
-        if (isFolder) {
-            const nameTemplate = getInlineContentText(block.content);
-            const resolvedName = resolveTemplate(nameTemplate, data).trim();
-            results.push({
-                name: resolvedName || "Untitled Folder",
-                children: resolveBlocks(block.children || [], data)
-            } as Folder);
-        } else if (block.type === 'bulletList' || block.type === 'orderedList') {
-             if (block.children) {
-                 results.push(...resolveBlocks(block.children, data));
-             }
-        } else if (block.type === 'bookmark') {
-            const props = block.props;
+        if (!block) return;
+
+        // Handle custom bookmark block
+        if (block.type === 'bookmark') {
+            const props = block.props || {};
             results.push({
                 title: resolveTemplate(props.title || "", data).trim(),
                 url: resolveTemplate(props.url || "", data).trim(),
@@ -171,12 +162,26 @@ function resolveBlocks(blocks: any[], data: any): (Folder | Bookmark)[] {
                 tags: resolveTemplate(props.tags || "", data).split(',').map((s: string) => s.trim()).filter(Boolean),
                 keywords: resolveTemplate(props.keywords || "", data).split(',').map((s: string) => s.trim()).filter(Boolean),
             } as Bookmark);
-        } else if (block.type === 'paragraph' || block.type === 'comment') {
-             // Handle children of paragraphs/comments if they have folders/bookmarks inside
-             // In this project, they shouldn't but let's be safe
-             if (block.children) {
-                 results.push(...resolveBlocks(block.children, data));
-             }
+            return;
+        }
+
+        // Folders are identified by being list items or containing a folder inline element
+        const isFolderInline = hasFolderInline(block.content);
+        const isListType = block.type === 'bulletListItem' || block.type === 'numberedListItem' || block.type === 'checkListItem';
+        const isFolder = block.type === 'folder' || isListType || isFolderInline;
+
+        if (isFolder) {
+            const nameTemplate = getInlineContentText(block.content);
+            const resolvedName = resolveTemplate(nameTemplate, data).trim();
+            results.push({
+                name: resolvedName || "Untitled Folder",
+                children: resolveBlocks(block.children || [], data)
+            } as Folder);
+        } else {
+            // Recurse for containers (like bulletList/orderedList) or any other block that might have children
+            if (block.children && block.children.length > 0) {
+                results.push(...resolveBlocks(block.children, data));
+            }
         }
     });
 
